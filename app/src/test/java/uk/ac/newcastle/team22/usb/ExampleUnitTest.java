@@ -1,7 +1,7 @@
 package uk.ac.newcastle.team22.usb;
 
 import org.junit.Test;
-
+import uk.ac.newcastle.team22.usb.coreUSB.*;
 import static org.junit.Assert.*;
 
 /**
