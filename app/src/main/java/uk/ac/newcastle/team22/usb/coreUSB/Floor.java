@@ -24,7 +24,6 @@ public class Floor {
      * Constructor.
      *
      * @param number The floor number.
-     *
      */
     public Floor(int number) {
         this.number = number;
