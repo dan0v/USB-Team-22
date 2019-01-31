@@ -2,10 +2,17 @@ package uk.ac.newcastle.team22.usb;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+
+import java.util.List;
+
+import uk.ac.newcastle.team22.usb.coreUSB.Floor;
+import uk.ac.newcastle.team22.usb.firebase.FirebaseManager;
+import uk.ac.newcastle.team22.usb.firebase.FirestoreCompletionHandler;
+import uk.ac.newcastle.team22.usb.firebase.FirestoreDatabaseCollection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,8 +27,24 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                loadBuilding();
+            }
+        });
+    }
+
+    /** Loads the USB's floors. */
+    private void loadBuilding() {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.FLOORS, new FirestoreCompletionHandler<List<Floor>>() {
+            @Override
+            public void completed(List<Floor> floors) {
+                for (Floor floor : floors) {
+                    Log.i("", floor.toString());
+                }
+            }
+
+            @Override
+            public void failed(Throwable exception) {
+                Log.e("", "Unable to retrieve USB floors", exception);
             }
         });
     }

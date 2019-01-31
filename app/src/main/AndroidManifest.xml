@@ -3,6 +3,7 @@
     package="uk.ac.newcastle.team22.usb">
 
     <application
+        android:name=".coreApp.AppDelegate"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

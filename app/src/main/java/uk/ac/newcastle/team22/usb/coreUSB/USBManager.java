@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * A class which represents the Urban Science Building, stores a list of floors,
+ * A class which represents the Urban Sciences Building, stores a list of floors,
  * and deals with building state changes based on current device time.
  *
  * @author Daniel Vincent
@@ -59,7 +59,7 @@ public class USBManager {
      * at time intervals. Calls {@link #setBuildingState(BuildingState)} if building
      * state has changed.
      */
-    public void checkBuildingState() {
+    private void checkBuildingState() {
         Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
         double currentTime = currentCalendar.getTimeInMillis();
         int currentDay = currentCalendar.get(Calendar.DAY_OF_WEEK);
