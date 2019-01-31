@@ -15,6 +15,8 @@ import java.util.Locale;
 public class USBManager {
     private static USBManager sharedInstance = new USBManager();
 
+    private static boolean instantiated = false;
+
     private List<Floor> floors = new ArrayList<>();
     private BuildingState buildingState;
 
@@ -25,7 +27,10 @@ public class USBManager {
 
     public static USBManager getInstance()
     {
-        return sharedInstance;
+        if(instantiated)
+            return sharedInstance;
+        else
+            throw new IllegalArgumentException("USBManager not yet prepared and instantiated");
     }
 
     /**
@@ -34,19 +39,37 @@ public class USBManager {
     private USBManager() {}
 
     /**
-     * Method to add data to USBManager instance at launch instead of constructor.
+     * Constructor for one time construction of USBManager.
      * @param oTimes List of opening times (0 to 6) - could use arrays instead
      * @param cTimes List of closing times (0 to 6)
      * @param oohTimes List of out of hours times (0 to 6)
      * @param floors List of out of floors to be added to USBManager
      */
-    public void prepareUSBManager(List<Calendar> oTimes, List<Calendar> cTimes, List<Calendar> oohTimes, List<Floor> floors) {
+    private USBManager(List<Calendar> oTimes, List<Calendar> cTimes, List<Calendar> oohTimes, List<Floor> floors) {
+        instantiated = true;
         this.oTimes = oTimes;
         this.cTimes = cTimes;
         this.oohTimes = oohTimes;
         this.floors = floors;
 
         checkBuildingState(); //check building state at application launch
+    }
+
+    /**
+     * Method to guarantee single instance of USBManager.
+     * @param oTimes List of opening times (0 to 6) - could use arrays instead
+     * @param cTimes List of closing times (0 to 6)
+     * @param oohTimes List of out of hours times (0 to 6)
+     * @param floors List of out of floors to be added to USBManager
+     */
+    public static void prepareUSBManager(List<Calendar> oTimes, List<Calendar> cTimes, List<Calendar> oohTimes, List<Floor> floors) {
+        if(!instantiated) {
+            instantiated = true;
+            sharedInstance = new USBManager(oTimes, cTimes, oohTimes, floors);
+        }
+        else {
+            throw new IllegalArgumentException("USBManager already prepared and instantiated");
+        }
     }
 
     public List<Floor> getFloors() {
