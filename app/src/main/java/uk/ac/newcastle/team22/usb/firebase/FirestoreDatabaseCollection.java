@@ -1,5 +1,6 @@
 package uk.ac.newcastle.team22.usb.firebase;
 
+import org.jetbrains.annotations.NotNull;
 import uk.ac.newcastle.team22.usb.coreUSB.*;
 
 /**
@@ -14,6 +15,7 @@ public enum FirestoreDatabaseCollection {
     FLOORS;
 
     /** Returns the identifier of the collection. */
+    @NotNull
     public String getCollectionIdentifier() {
         switch (this) {
             case FLOORS: return "floors";

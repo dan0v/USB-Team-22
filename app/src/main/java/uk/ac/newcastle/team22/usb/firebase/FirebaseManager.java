@@ -23,7 +23,7 @@ public class FirebaseManager {
     /** The shared instance of the Firebase manager. */
     public static FirebaseManager shared = new FirebaseManager();
 
-    /** Initialises Firebase */
+    /** Initialises Firebase. */
     private FirebaseManager() {
         database = FirebaseFirestore.getInstance();
         initialiseFirestore();
@@ -31,9 +31,7 @@ public class FirebaseManager {
 
     /** Configures the Firestore's Database's default settings. */
     private void initialiseFirestore() {
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true)
-                .build();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder().build();
         database.setFirestoreSettings(settings);
     }
 
@@ -49,9 +47,10 @@ public class FirebaseManager {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 Class<? extends FirestoreConstructable> documentType = collection.getDocumentType();
+                QuerySnapshot result = task.getResult();
 
                 // Check whether the Firestore operation was successful.
-                if (!task.isSuccessful()) {
+                if (!task.isSuccessful() || result == null) {
                     handler.failed(task.getException());
                     return;
                 }
@@ -59,8 +58,9 @@ public class FirebaseManager {
                 // Decode Firestore document dictionaries into Java objects.
                 List<T> results = new ArrayList<>();
                 try {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        T newObject = (T) documentType.newInstance().initFromFirebase(document.getData());
+                    for (QueryDocumentSnapshot document : result) {
+                        T newObject = (T) documentType.newInstance();
+                        newObject.initFromFirebase(document.getData());
                         results.add(newObject);
                     }
                     handler.completed(results);
