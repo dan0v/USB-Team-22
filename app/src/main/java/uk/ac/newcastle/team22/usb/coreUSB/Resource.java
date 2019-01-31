@@ -1,9 +1,9 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
 /**
- * A class which represents a floor in USB.
+ * A class which represents an item in a Room.
  *
- * @author Alexander MacLeod
+ * @author Daniel Vincent
  * @version 1.0
  */
 public class Resource {
@@ -11,16 +11,16 @@ public class Resource {
     private ResourceType type;
     private boolean free = false; //usable computer? (if computer type)
 
-    public Resource(ResourceType type, boolean free){
+    public Resource(ResourceType type, boolean free) {
         this.type = type;
         this.free = free;
     }
 
-    public ResourceType getType(){
+    public ResourceType getType() {
         return type;
     }
 
-    public boolean isFree(){
+    public boolean isFree() {
         return free;
     }
 }

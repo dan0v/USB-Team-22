@@ -5,45 +5,105 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * A class which represents the Urban Science Building, stores a list of floors,
+ * and deals with building state changes based on current device time.
+ *
+ * @author Daniel Vincent
+ * @version 1.0
+ */
 public class USBManager {
+    private static USBManager sharedInstance = new USBManager();
+
     private List<Floor> floors = new ArrayList<>();
-    private boolean outOfHours = false;
+    private BuildingState buildingState;
 
-    public Calendar oTimeD1; //opening and closing times for each day of the week
-    private Calendar cTimeD1;
-    private Calendar oTimeD2;
-    private Calendar cTimeD2;
-    private Calendar oTimeD3;
-    private Calendar cTimeD3;
-    private Calendar oTimeD4;
-    private Calendar cTimeD4;
-    private Calendar oTimeD5;
-    private Calendar cTimeD5;
-    private Calendar oTimeD6;
-    private Calendar cTimeD6;
-    private Calendar oTimeD7;
-    private Calendar cTimeD7;
+    //times read from stored data
+    private List<Calendar> oTimes; //opening times
+    private List<Calendar> cTimes; //closing times
+    private List<Calendar> oohTimes; //out of hours times
 
-    private List<Calendar> oAndCTimes;
+    public static USBManager getInstance()
+    {
+        return sharedInstance;
+    }
 
-    public static USBManager shared = new USBManager();
+    /**
+     * Disallow multiple instances of USBManager
+     */
+    private USBManager() {}
 
-    public USBManager(){
+    /**
+     * Method to add data to USBManager instance at launch instead of constructor.
+     * @param oTimes List of opening times (0 to 6) - could use arrays instead
+     * @param cTimes List of closing times (0 to 6)
+     * @param oohTimes List of out of hours times (0 to 6)
+     */
+    public void prepareUSBManager(List<Calendar> oTimes, List<Calendar> cTimes, List<Calendar> oohTimes) {
+        this.oTimes = oTimes;
+        this.cTimes = cTimes;
+        this.oohTimes = oohTimes;
 
+        checkBuildingState(); //check building state at application launch
     }
 
     public List<Floor> getFloors() {
         return this.floors;
     }
 
-    public void checkOpenStatus(){
-//        Calendar currentTime = Calendar.getInstance(Locale.getDefault());
-//        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-//        int minute = calendar.get(Calendar.MINUTE);
-//        int second = calendar.get(Calendar.SECOND);
-//        int day = calendar.get(Calendar.DAY_OF_WEEK);
-//        int month = calendar.get(Calendar.MONTH);
-//        int year = calendar.get(Calendar.YEAR);
+    /**
+     * Compare current day and time to stored: open, closed, out of hours boundaries. To be called
+     * by a service TODO create timed looping service
+     * at time intervals. Calls {@link #setBuildingState(BuildingState)} if building
+     * state has changed.
+     */
+    public void checkBuildingState() {
+        Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
+        double currentTime = currentCalendar.getTimeInMillis();
+        int currentDay = currentCalendar.get(Calendar.DAY_OF_WEEK);
+
+        //Saturday = 1, Monday = 2 etc.
+        double oTime = this.oTimes.get(currentDay).getTimeInMillis();
+        double cTime = this.cTimes.get(currentDay).getTimeInMillis();
+        double oohTime = this.oohTimes.get(currentDay).getTimeInMillis();
+
+        if(currentTime < oTime || currentTime > oohTime) {
+            if(currentTime > cTime) {
+                //fully closed
+                if(this.buildingState != BuildingState.CLOSED) {
+                    this.buildingState = BuildingState.CLOSED;
+                    setBuildingState(this.buildingState);
+                }
+            }
+            else {
+                //out of hours
+                if(this.buildingState != BuildingState.OUT_OF_HOURS) {
+                    this.buildingState = BuildingState.OUT_OF_HOURS;
+                    setBuildingState(this.buildingState);
+                }
+            }
+        }
+        else {
+            //open
+            if(this.buildingState != BuildingState.OPEN) {
+                this.buildingState = BuildingState.OPEN;
+                setBuildingState(this.buildingState);
+            }
+        }
     }
 
+    /**
+     * Set building state according to parameter and update UI elements, route planning accordingly
+     * @param newBuildingState enum denotes state building should now be treated as
+     */
+    private void setBuildingState(BuildingState newBuildingState) {
+        //TODO display building state change on UI etc.
+    }
+
+    /**
+     * @return current state of USB as enum
+     */
+    public BuildingState getBuildingState() {
+        return this.buildingState;
+    }
 }
