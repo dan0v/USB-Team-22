@@ -22,7 +22,7 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
  */
 public class AUSBManagerShouldAlso {
 
-    @Test //expects Exception, but cannot use Junit notation to compare exception messages
+    @Test(expected = IllegalArgumentException.class)
     public void warnIfAlreadyInstantiated() {
         List<Calendar> list1 = new ArrayList<Calendar>(); //Calendar lists must contain 7 elements to pass test
         List<Calendar> list2 = new ArrayList<Calendar>();
@@ -37,14 +37,7 @@ public class AUSBManagerShouldAlso {
         }
 
         USBManager.prepareUSBManager(list1, list2, list3, list4); //first instance of USBManager
-        try
-        {
-            USBManager.prepareUSBManager(list1, list2, list3, list4); //attempt second instance of USBManager
-            fail("Should have thrown IllegalArgumentException but did not!"); //if no exception is thrown
-        }
-        catch(final IllegalArgumentException e) {
-            final String msg = "USBManager already prepared and instantiated";
-            assertEquals(msg, e.getMessage());
-        }
+
+        USBManager.prepareUSBManager(list1, list2, list3, list4); //attempt second instance of USBManager
     }
 }

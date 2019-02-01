@@ -39,6 +39,13 @@ public class USBManager {
     private USBManager() {}
 
     /**
+     * @return List of floors in USB
+     */
+    public List<Floor> getFloors() {
+        return this.floors;
+    }
+
+    /**
      * Constructor for one time construction of USBManager.
      * @param oTimes List of opening times (0 to 6) - could use arrays instead
      * @param cTimes List of closing times (0 to 6)
@@ -64,16 +71,11 @@ public class USBManager {
      */
     public static void prepareUSBManager(List<Calendar> oTimes, List<Calendar> cTimes, List<Calendar> oohTimes, List<Floor> floors) {
         if(!instantiated) {
-            instantiated = true;
             sharedInstance = new USBManager(oTimes, cTimes, oohTimes, floors);
         }
         else {
             throw new IllegalArgumentException("USBManager already prepared and instantiated");
         }
-    }
-
-    public List<Floor> getFloors() {
-        return this.floors;
     }
 
     /**
