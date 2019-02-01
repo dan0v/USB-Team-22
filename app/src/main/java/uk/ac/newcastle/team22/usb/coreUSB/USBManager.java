@@ -1,136 +1,81 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import uk.ac.newcastle.team22.usb.firebase.FirestoreCompletionHandler;
 
 /**
  * A class which represents the Urban Sciences Building, stores a list of floors,
  * and deals with building state changes based on current device time.
  *
  * @author Daniel Vincent
+ * @author Alexander MacLeod
  * @version 1.0
  */
 public class USBManager {
-    private static USBManager sharedInstance = new USBManager();
 
-    private static boolean instantiated = false;
+    /** The shared instance of the Urban Sciences Building. */
+    public static USBManager shared = new USBManager();
 
-    private List<Floor> floors = new ArrayList<>();
-    private BuildingState buildingState;
+    /** The update manager for USB */
+    private USBUpdateManager updateManager;
 
-    //times read from stored data
-    private List<Calendar> oTimes; //opening times
-    private List<Calendar> cTimes; //closing times
-    private List<Calendar> oohTimes; //out of hours times
-
-    public static USBManager getInstance()
-    {
-        if(instantiated)
-            return sharedInstance;
-        else
-            throw new IllegalArgumentException("USBManager not yet prepared and instantiated");
-    }
+    /** The Urban Sciences Building */
+    private USB building;
 
     /**
-     * Disallow multiple instances of USBManager
+     * Prepares the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the Urban Sciences Building has been retrieved.
      */
-    private USBManager() {}
-
-    /**
-     * @return List of floors in USB
-     */
-    public List<Floor> getFloors() {
-        return this.floors;
-    }
-
-    /**
-     * Constructor for one time construction of USBManager.
-     * @param oTimes List of opening times (0 to 6) - could use arrays instead
-     * @param cTimes List of closing times (0 to 6)
-     * @param oohTimes List of out of hours times (0 to 6)
-     * @param floors List of out of floors to be added to USBManager
-     */
-    private USBManager(List<Calendar> oTimes, List<Calendar> cTimes, List<Calendar> oohTimes, List<Floor> floors) {
-        instantiated = true;
-        this.oTimes = oTimes;
-        this.cTimes = cTimes;
-        this.oohTimes = oohTimes;
-        this.floors = floors;
-
-        checkBuildingState(); //check building state at application launch
-    }
-
-    /**
-     * Method to guarantee single instance of USBManager.
-     * @param oTimes List of opening times (0 to 6) - could use arrays instead
-     * @param cTimes List of closing times (0 to 6)
-     * @param oohTimes List of out of hours times (0 to 6)
-     * @param floors List of out of floors to be added to USBManager
-     */
-    public static void prepareUSBManager(List<Calendar> oTimes, List<Calendar> cTimes, List<Calendar> oohTimes, List<Floor> floors) {
-        if(!instantiated) {
-            sharedInstance = new USBManager(oTimes, cTimes, oohTimes, floors);
-        }
-        else {
-            throw new IllegalArgumentException("USBManager already prepared and instantiated");
-        }
-    }
-
-    /**
-     * Compare current day and time to stored: open, closed, out of hours boundaries. To be called
-     * by a service TODO create timed looping service
-     * at time intervals. Calls {@link #setBuildingState(BuildingState)} if building
-     * state has changed.
-     */
-    private void checkBuildingState() {
-        Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
-        double currentTime = currentCalendar.getTimeInMillis();
-        int currentDay = currentCalendar.get(Calendar.DAY_OF_WEEK);
-
-        //Saturday = 1, Monday = 2 etc.
-        double oTime = this.oTimes.get(currentDay).getTimeInMillis();
-        double cTime = this.cTimes.get(currentDay).getTimeInMillis();
-        double oohTime = this.oohTimes.get(currentDay).getTimeInMillis();
-
-        if(currentTime < oTime || currentTime > oohTime) {
-            if(currentTime > cTime) {
-                //fully closed
-                if(this.buildingState != BuildingState.CLOSED) {
-                    this.buildingState = BuildingState.CLOSED;
-                    setBuildingState(this.buildingState);
-                }
+    public void prepareBuilding(final USBUpdateManager.UpdateCompletionHandler handler) {
+        updateManager.requestCached(new FirestoreCompletionHandler<USB>() {
+            @Override
+            public void completed(USB updatedBuilding) {
+                building = updatedBuilding;
+                handler.loadedFromCache();
             }
-            else {
-                //out of hours
-                if(this.buildingState != BuildingState.OUT_OF_HOURS) {
-                    this.buildingState = BuildingState.OUT_OF_HOURS;
-                    setBuildingState(this.buildingState);
-                }
+            @Override
+            public void failed(Exception exception) {
+                boolean forceUpdate = (exception instanceof USBUpdateManager.USBNoCachedVersionAvailable);
+                handler.requiresUpdate(forceUpdate);
             }
-        }
-        else {
-            //open
-            if(this.buildingState != BuildingState.OPEN) {
-                this.buildingState = BuildingState.OPEN;
-                setBuildingState(this.buildingState);
-            }
-        }
+        });
     }
 
     /**
-     * Set building state according to parameter and update UI elements, route planning accordingly
-     * @param newBuildingState enum denotes state building should now be treated as
+     * Updates the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the Urban Sciences Building has been updated.
      */
-    private void setBuildingState(BuildingState newBuildingState) {
-        //TODO display building state change on UI etc.
+    public void updateBuilding(final USBUpdateManager.UpdateCompletionHandler handler) {
+        updateManager.update(new FirestoreCompletionHandler<USB>() {
+            @Override
+            public void completed(USB updatedBuilding) {
+                building = updatedBuilding;
+                handler.loadedFromCache();
+            }
+            @Override
+            public void failed(Exception exception) {
+                handler.requiresUpdate(true);
+            }
+        });
     }
 
     /**
-     * @return current state of USB as enum
+     * @return The Urban Sciences Building.
      */
-    public BuildingState getBuildingState() {
-        return this.buildingState;
+    public USB getBuilding() {
+        return building;
+    }
+
+    /** Constructor. */
+    private USBManager() {
+        updateManager = new USBUpdateManager();
     }
 }

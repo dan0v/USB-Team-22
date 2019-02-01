@@ -12,13 +12,14 @@ import uk.ac.newcastle.team22.usb.coreUSB.*;
  * @version 1.0
  */
 public enum FirestoreDatabaseCollection {
-    FLOORS;
+    FLOORS, ROOMS;
 
     /** Returns the identifier of the collection. */
     @NotNull
     public String getCollectionIdentifier() {
         switch (this) {
             case FLOORS: return "floors";
+            case ROOMS: return "rooms";
             default: return null;
         }
     }
@@ -27,6 +28,7 @@ public enum FirestoreDatabaseCollection {
     public Class<? extends FirestoreConstructable> getDocumentType() {
         switch (this) {
             case FLOORS: return Floor.class;
+            case ROOMS: return Room.class;
             default: return null;
         }
     }

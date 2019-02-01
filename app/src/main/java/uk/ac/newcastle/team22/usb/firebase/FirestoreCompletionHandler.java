@@ -18,5 +18,5 @@ public interface FirestoreCompletionHandler<Response> {
      * Called when the Firestore operation has failed.
      * @param exception The throwable exception.
      */
-    void failed(Throwable exception);
+    void failed(Exception exception);
 }

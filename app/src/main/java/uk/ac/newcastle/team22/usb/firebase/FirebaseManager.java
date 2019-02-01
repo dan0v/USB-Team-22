@@ -42,8 +42,19 @@ public class FirebaseManager {
      * @param handler The completion handler called once the Firestore operation has finished.
      */
     @SuppressWarnings("unchecked")
-    public <T extends FirestoreConstructable> void getDocuments(final FirestoreDatabaseCollection collection, final FirestoreCompletionHandler handler) {
-        database.collection(collection.getCollectionIdentifier()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public <T extends FirestoreConstructable> void getDocuments(final FirestoreDatabaseCollection collection, final String path, final FirestoreCompletionHandler handler) {
+        CollectionReference collectionRef;
+        String collectionIdentifier = collection.getCollectionIdentifier();
+
+        // Determine the location of the collection in the Firestore database.
+        if (path == null) {
+            collectionRef = database.collection(collectionIdentifier);
+        } else {
+            collectionRef = database.document(path).collection(collectionIdentifier);
+        }
+
+        // Request all documents in the Firestore collection.
+        collectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 Class<? extends FirestoreConstructable> documentType = collection.getDocumentType();

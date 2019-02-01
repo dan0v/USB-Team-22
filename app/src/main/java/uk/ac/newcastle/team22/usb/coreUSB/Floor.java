@@ -1,5 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import android.util.Log;
+
 import java.util.*;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
@@ -23,10 +25,8 @@ public class Floor implements FirestoreConstructable<Floor> {
     @Override
     public Floor initFromFirebase(Map<String, Object> firestoreDictionary) {
         int number = ((Long) firestoreDictionary.get("number")).intValue();
-
-        Floor floor = new Floor();
-        floor.number = number;
-        return floor;
+        this.number = number;
+        return this;
     }
 
     /** Empty constructor. */
@@ -37,7 +37,7 @@ public class Floor implements FirestoreConstructable<Floor> {
      *
      * @param room The room which is to be situated on the floor.
      */
-    void attachRoom(Room room) {
+    public void attachRoom(Room room) {
         this.rooms.add(room);
     }
 
@@ -47,7 +47,7 @@ public class Floor implements FirestoreConstructable<Floor> {
     }
 
     /** Returns the floor number. */
-    int getNumber() {
+    public int getNumber() {
         return number;
     }
 
