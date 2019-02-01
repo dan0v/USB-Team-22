@@ -19,13 +19,13 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreCompletionHandler;
  */
 public class USBManager {
 
-    /** The shared instance of the Urban Sciences Building. */
+    /** The shared instance of the Urban Sciences Building manager. */
     public static USBManager shared = new USBManager();
 
-    /** The update manager for USB */
+    /** The update manager for USB. */
     private USBUpdateManager updateManager;
 
-    /** The Urban Sciences Building */
+    /** The Urban Sciences Building. */
     private USB building;
 
     /**
