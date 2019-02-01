@@ -32,11 +32,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void requiresUpdate(boolean force) {
                 if (force) {
-                    // TODO Explain to user USB needs to be updated (forced).
-                    presentUSBUpdateAvailableAlert();
+                    presentUSBUpdateRequiredAlert();
                 } else {
-                    // TODO Ask user whether they want USB to be updated (not forced).
-                    startUSBBuildingUpdate();
+                    presentUSBUpdateAvailableAlert();
                 }
             }
 
@@ -47,19 +45,34 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /** Presents an alert stating the an update is available for USB. */
-    private void presentUSBUpdateAvailableAlert() {
+    /** Presents an alert stating that an update is required for the applcation function. */
+    private void presentUSBUpdateRequiredAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.updateRequired);
+        builder.setMessage(R.string.usbUpdateRequiredInstallMessage);
 
-        builder.setTitle("Update Available");
-        builder.setMessage("An update for the Urban Sciences Building is available. Do you want to install this update now?");
-
-        builder.setPositiveButton("Install", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.install, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 startUSBBuildingUpdate();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    /** Presents an alert stating that an update is available for USB. */
+    private void presentUSBUpdateAvailableAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.updateAvailable);
+        builder.setMessage(R.string.usbUpdateAvailableInstallMessage);
+
+        builder.setPositiveButton(R.string.install, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                startUSBBuildingUpdate();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
             }
