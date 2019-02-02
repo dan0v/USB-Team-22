@@ -15,7 +15,10 @@ import java.util.Locale;
 public class USB {
 
     /** The floors in the Urban Sciences Building. */
-    private List<Floor> floors = new ArrayList<>();
+    private List<Floor> floors;
+
+    /** The staff members in the Urban Sciences Building. */
+    private List<StaffMember> staffMembers;
 
     private BuildingState buildingState;
 
@@ -24,23 +27,10 @@ public class USB {
     private List<Calendar> cTimes; //closing times
     private List<Calendar> oohTimes; //out of hours times
 
-    /** Empty constructor. */
-    public USB() {}
-
-    /**
-     * Constructor for one time construction of USBManager.
-     * @param oTimes List of opening times (0 to 6) - could use arrays instead
-     * @param cTimes List of closing times (0 to 6)
-     * @param oohTimes List of out of hours times (0 to 6)
-     * @param floors List of out of floors to be added to USBManager
-     */
-    private USB(List<Calendar> oTimes, List<Calendar> cTimes, List<Calendar> oohTimes, List<Floor> floors) {
-        this.oTimes = oTimes;
-        this.cTimes = cTimes;
-        this.oohTimes = oohTimes;
-        this.floors = floors;
-
-        checkBuildingState();
+    /** Constructor from a USB update. */
+    public USB(USBUpdateManager.USBUpdate update) {
+        this.floors = update.getFloors();
+        this.staffMembers = update.getStaffMembers();
     }
 
     /**
@@ -90,25 +80,24 @@ public class USB {
     }
 
     /**
-     * @return current state of USB as enum
-     */
-    public BuildingState getBuildingState() {
-        return this.buildingState;
-    }
-
-    /**
-     * @return List of floors in USB
+     * @return The floors in the Urban Sciences Building.
      */
     public List<Floor> getFloors() {
         return this.floors;
     }
 
     /**
-     * Sets the floors in the building.
-     * @param floors The floors in the building.
+     * @return The staff members in the Urban Sciences Building.
      */
-    public void setFloors(List<Floor> floors) {
-        this.floors = floors;
+    public List<StaffMember> getStaffMembers() {
+        return staffMembers;
+    }
+
+    /**
+     * @return The current state of the Urban Sciences Building.
+     */
+    public BuildingState getBuildingState() {
+        return this.buildingState;
     }
 
     @Override

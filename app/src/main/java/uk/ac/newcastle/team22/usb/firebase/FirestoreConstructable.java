@@ -15,7 +15,8 @@ public interface FirestoreConstructable<T> {
      * Constructs the object from a Firestore document dictionary.
      *
      * @param firestoreDictionary The Firestore document dictionary.
+     * @param documentIdentifier The identifier of the Firestore document.
      * @return The initialised object.
      */
-    T initFromFirebase(Map<String, Object> firestoreDictionary);
+    T initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier);
 }

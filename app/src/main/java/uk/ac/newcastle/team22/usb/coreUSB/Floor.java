@@ -23,8 +23,8 @@ public class Floor implements FirestoreConstructable<Floor> {
     private List<Room> rooms = new ArrayList<>();
 
     @Override
-    public Floor initFromFirebase(Map<String, Object> firestoreDictionary) {
-        int number = ((Long) firestoreDictionary.get("number")).intValue();
+    public Floor initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
+        int number = Integer.parseInt(documentIdentifier);
         this.number = number;
         return this;
     }

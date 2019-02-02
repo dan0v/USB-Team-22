@@ -12,7 +12,7 @@ import uk.ac.newcastle.team22.usb.coreUSB.*;
  * @version 1.0
  */
 public enum FirestoreDatabaseCollection {
-    FLOORS, ROOMS;
+    FLOORS, ROOMS, STAFF;
 
     /** Returns the identifier of the collection. */
     @NotNull
@@ -20,6 +20,7 @@ public enum FirestoreDatabaseCollection {
         switch (this) {
             case FLOORS: return "floors";
             case ROOMS: return "rooms";
+            case STAFF: return "staffMembers";
             default: return null;
         }
     }
@@ -29,6 +30,7 @@ public enum FirestoreDatabaseCollection {
         switch (this) {
             case FLOORS: return Floor.class;
             case ROOMS: return Room.class;
+            case STAFF: return StaffMember.class;
             default: return null;
         }
     }

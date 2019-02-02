@@ -1,22 +1,52 @@
 package uk.ac.newcastle.team22.usb.firebase;
 
+import android.util.Log;
+
 /**
  * A Firestore operation completion handler.
  *
  * @author Alexander MacLeod
  * @version 1.0
  */
-public interface FirestoreCompletionHandler<Response> {
+public abstract class FirestoreCompletionHandler<Response> {
+
+    /** The number of operations to complete. */
+    private int operationsToComplete;
 
     /**
      * Called when the Firestore operation has completed.
      * @param response The response of the operation.
      */
-     void completed(Response response);
+    public void completed(Response response) {
+        operationsToComplete--;
+    }
 
     /**
      * Called when the Firestore operation has failed.
      * @param exception The throwable exception.
      */
-    void failed(Exception exception);
+    public void failed(Exception exception) {
+        operationsToComplete--;
+    }
+
+    /**
+     * Constructor for Firestore Completion handler.
+     * @param toComplete The number of operators to complete.
+     */
+    public FirestoreCompletionHandler(int toComplete) {
+        this.operationsToComplete = toComplete;
+    }
+
+    /** Constructor for Firestore Completion handler. */
+    public FirestoreCompletionHandler() {
+        this.operationsToComplete = 0;
+    }
+
+    /**
+     * @return Boolean value whether all operations have been completed.
+     */
+    public boolean isCompleted() {
+        return operationsToComplete == 0;
+    }
+
 }

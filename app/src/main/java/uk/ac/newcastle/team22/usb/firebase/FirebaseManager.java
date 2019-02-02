@@ -71,7 +71,7 @@ public class FirebaseManager {
                 try {
                     for (QueryDocumentSnapshot document : result) {
                         T newObject = (T) documentType.newInstance();
-                        newObject.initFromFirebase(document.getData());
+                        newObject.initFromFirebase(document.getData(), document.getId());
                         results.add(newObject);
                     }
                     handler.completed(results);

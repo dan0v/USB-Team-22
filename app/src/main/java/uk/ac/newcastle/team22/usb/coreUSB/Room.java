@@ -24,8 +24,8 @@ public class Room implements FirestoreConstructable<Room> {
     private String staffResidenceIdentifier;
 
     @Override
-    public Room initFromFirebase(Map<String, Object> firestoreDictionary) {
-        int number = ((Long) firestoreDictionary.get("number")).intValue();
+    public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
+        int number = Integer.parseInt(documentIdentifier);
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
 
         this.number = number;
@@ -45,18 +45,31 @@ public class Room implements FirestoreConstructable<Room> {
         this.floor = floor;
     }
 
-    /** Returns the floor on which the room is situated. */
+    /**
+     * @return The floor on which the room is situated.
+     */
     public Floor getFloor() {
         return floor;
     }
 
-
-    // /** Returns the staff member who occupies this room. */
-    /*
-    public StaffMember getResidentStaff() {
-        return USBManager.shared.staff.get(staffResidenceIdentifier);
+    /**
+     * @return The identifier of the resident staff member.
+     */
+    public String getStaffResidenceIdentifier() {
+        return staffResidenceIdentifier;
     }
-    */
+
+    /**
+     * @return The room's resident staff member.
+     */
+    public StaffMember getResidentStaff() {
+        for (StaffMember staffMember : USBManager.shared.getBuilding().getStaffMembers()) {
+            if (staffMember.getRoom() == this) {
+                return staffMember;
+            }
+        }
+        return null;
+    }
 
     /**
      * Returns the formatted room number.

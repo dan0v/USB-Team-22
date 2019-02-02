@@ -10,7 +10,7 @@ import java.util.Locale;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreCompletionHandler;
 
 /**
- * A class which manages the current version of the Urban Sciences Building, building caching and updates.
+ * A class which manages the current version, caching and updates for the Urban Sciences Building.
  *
  * @author Daniel Vincent
  * @author Alexander MacLeod
@@ -35,8 +35,8 @@ public class USBManager {
     public void prepareBuilding(final USBUpdateManager.UpdateCompletionHandler handler) {
         updateManager.requestCached(new FirestoreCompletionHandler<USB>() {
             @Override
-            public void completed(USB updatedBuilding) {
-                building = updatedBuilding;
+            public void completed(USB cachedBuilding) {
+                building = cachedBuilding;
                 handler.loadedFromCache();
             }
             @Override
@@ -53,10 +53,10 @@ public class USBManager {
      * @param handler The completion handler called once the Urban Sciences Building has been updated.
      */
     public void updateBuilding(final USBUpdateManager.UpdateCompletionHandler handler) {
-        updateManager.update(new FirestoreCompletionHandler<USB>() {
+        updateManager.update(new FirestoreCompletionHandler<USBUpdateManager.USBUpdate>() {
             @Override
-            public void completed(USB updatedBuilding) {
-                building = updatedBuilding;
+            public void completed(USBUpdateManager.USBUpdate update) {
+                building = new USB(update);
                 handler.loadedFromCache();
             }
             @Override
