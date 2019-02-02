@@ -10,8 +10,7 @@ import java.util.Locale;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreCompletionHandler;
 
 /**
- * A class which represents the Urban Sciences Building, stores a list of floors,
- * and deals with building state changes based on current device time.
+ * A class which manages the current version of the Urban Sciences Building, building caching and updates.
  *
  * @author Daniel Vincent
  * @author Alexander MacLeod
