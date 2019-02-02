@@ -81,6 +81,7 @@ public class USBUpdateManager {
             @Override
             public void completed(final List<Floor> floors) {
 
+                // Configure completion handler for whenever a room has been retrieved.
                 final FirestoreCompletionHandler<Void> roomLoadHandler = new FirestoreCompletionHandler<Void>(floors.size()) {
                     @Override
                     public void completed(Void aVoid) {
@@ -89,7 +90,6 @@ public class USBUpdateManager {
                             handler.completed(floors);
                         }
                     }
-
                     @Override
                     public void failed(Exception exception) {
                         super.failed(exception);
@@ -99,14 +99,15 @@ public class USBUpdateManager {
                     }
                 };
 
+                // Load rooms on each floor.
                 for (final Floor floor : floors) {
                     loadRooms(floor, roomLoadHandler);
                 }
             }
-
             @Override
             public void failed(Exception exception) {
                 Log.e("", "Unable to retrieve USB floors", exception);
+                handler.failed(exception);
             }
         });
     }
@@ -128,7 +129,6 @@ public class USBUpdateManager {
                 }
                 handler.completed(null);
             }
-
             @Override
             public void failed(Exception exception) {
                 Log.e("", "Unable to retrieve USB rooms on floor " + floor.getNumber(), exception);
