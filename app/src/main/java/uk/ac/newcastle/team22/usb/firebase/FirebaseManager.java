@@ -1,6 +1,7 @@
 package uk.ac.newcastle.team22.usb.firebase;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,7 +32,9 @@ public class FirebaseManager {
 
     /** Configures the Firestore's Database's default settings. */
     private void initialiseFirestore() {
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder().build();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
         database.setFirestoreSettings(settings);
     }
 
@@ -42,7 +45,7 @@ public class FirebaseManager {
      * @param handler The completion handler called once the Firestore operation has finished.
      */
     @SuppressWarnings("unchecked")
-    public <T extends FirestoreConstructable> void getDocuments(final FirestoreDatabaseCollection collection, final String path, final FirestoreCompletionHandler handler) {
+    public <T extends FirestoreConstructable> void getDocuments(final FirestoreDatabaseCollection collection, final String path, final FirestoreCompletionHandler<List<T>> handler) {
         CollectionReference collectionRef;
         String collectionIdentifier = collection.getCollectionIdentifier();
 
@@ -61,7 +64,7 @@ public class FirebaseManager {
                 QuerySnapshot result = task.getResult();
 
                 // Check whether the Firestore operation was successful.
-                if (!task.isSuccessful() || result == null) {
+                if (!task.isSuccessful() || result == null || result.isEmpty()) {
                     handler.failed(task.getException());
                     return;
                 }
@@ -78,6 +81,45 @@ public class FirebaseManager {
                 } catch (Exception e) {
                     handler.failed(e);
                 }
+            }
+        });
+    }
+
+    /**
+     * Enables the Firestore cache.
+     * By enabling the cache, network access is disabled.
+     * While the cache is enabled, all snapshot listeners and document requests retrieve results
+     * from the cache. Write operations are queued until network access is re-enabled.
+     *
+     * See <a href="https://firebase.google.com/docs/firestore/manage-data/enable-offline">Firestore Data Model</a>
+     * for more information on Firestore caching.
+     *
+     * @param handler The completion handler called once the cache has been enabled.
+     */
+    public void enableCache(final FirestoreCompletionHandler<Void> handler) {
+        database.disableNetwork().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                handler.completed(null);
+            }
+        });
+    }
+
+    /**
+     * Disables the Firestore cache.
+     * By disabling the cache, network access is enabled.
+     * It is not guaranteed that new data will be returned from Firestore operations.
+     *
+     * See <a href="https://firebase.google.com/docs/firestore/manage-data/enable-offline">Firestore Data Model</a>
+     * for more information on Firestore caching.
+     *
+     * @param handler The completion handler called once the cache has been disabled.
+     */
+    public void disableCache(final FirestoreCompletionHandler<Void> handler) {
+        database.enableNetwork().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                handler.completed(null);
             }
         });
     }

@@ -27,13 +27,49 @@ public class USBUpdateManager {
      *
      * @param handler The completion handler called once the Urban Sciences Building has been retrieved.
      */
-    public void requestCached(final FirestoreCompletionHandler handler) {
-        // TODO Check for cached version of USB.
-        boolean cacheAvailable = false;
-        if (!cacheAvailable) {
-            handler.failed(new USBNoCachedVersionAvailable());
-            return;
-        }
+    public void requestCached(final FirestoreCompletionHandler<USBUpdate> handler) {
+        // Disable network access to force application to load cached data, if available.
+        FirebaseManager.shared.enableCache(new FirestoreCompletionHandler<Void>() {
+            @Override
+            public void completed(Void aVoid) {
+                super.completed(aVoid);
+
+                // Request the cached version of the Urban Sciences Building.
+                update(new FirestoreCompletionHandler<USBUpdate>() {
+                    @Override
+                    public void completed(final USBUpdate usbUpdate) {
+                        super.completed(usbUpdate);
+                        didFinishLoadingFromCache(new FirestoreCompletionHandler<Void>() {
+                            @Override
+                            public void completed(Void aVoid) {
+                                handler.completed(usbUpdate);
+                            }
+                        });
+                    }
+                    @Override
+                    public void failed(Exception exception) {
+                        super.failed(exception);
+                        didFinishLoadingFromCache(new FirestoreCompletionHandler<Void>() {
+                            @Override
+                            public void completed(Void aVoid) {
+                                super.completed(aVoid);
+                                handler.failed(new USBNoCachedVersionAvailable());
+                            }
+                        });
+                    }
+                    private void didFinishLoadingFromCache(final FirestoreCompletionHandler<Void> handler) {
+                        // Re-enable network access for future requests.
+                        FirebaseManager.shared.disableCache(new FirestoreCompletionHandler<Void>() {
+                            @Override
+                            public void completed(Void aVoid) {
+                                super.completed(aVoid);
+                                handler.completed(null);
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -41,7 +77,7 @@ public class USBUpdateManager {
      *
      * @param handler The completion handler called once the Urban Sciences Building has been updated.
      */
-    public void update(final FirestoreCompletionHandler handler) {
+    public void update(final FirestoreCompletionHandler<USBUpdate> handler) {
         final USBUpdate update = new USBUpdate();
 
         // Request updated floors and rooms.
@@ -87,12 +123,11 @@ public class USBUpdateManager {
      *
      * @param handler The completion handler called once the floors have been retrieved.
      */
-    private void loadFloors(final FirestoreCompletionHandler handler) {
+    private void loadFloors(final FirestoreCompletionHandler<List<Floor>> handler) {
 
         FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.FLOORS, null, new FirestoreCompletionHandler<List<Floor>>() {
             @Override
             public void completed(final List<Floor> floors) {
-
                 // Configure completion handler for whenever a room has been retrieved.
                 final FirestoreCompletionHandler<Void> roomLoadHandler = new FirestoreCompletionHandler<Void>(floors.size()) {
                     @Override
@@ -130,7 +165,7 @@ public class USBUpdateManager {
      * @param floor The floor on which to load rooms.
      * @param handler The completion handler called once the floors have been retrieved.
      */
-    private void loadRooms(final Floor floor, final FirestoreCompletionHandler handler) {
+    private void loadRooms(final Floor floor, final FirestoreCompletionHandler<Void> handler) {
         String roomsPath = FirestoreDatabaseCollection.FLOORS.getCollectionIdentifier() + "/" + floor.getNumber();
         FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.ROOMS, roomsPath, new FirestoreCompletionHandler<List<Room>>() {
             @Override
@@ -154,7 +189,7 @@ public class USBUpdateManager {
      *
      * @param handler The completion handler called once the staff members have been retrieved.
      */
-    private void loadStaffMembers(final FirestoreCompletionHandler handler) {
+    private void loadStaffMembers(final FirestoreCompletionHandler<List<StaffMember>> handler) {
         FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.STAFF, null, new FirestoreCompletionHandler<List<StaffMember>>() {
             @Override
             public void completed(final List<StaffMember> staffMembers) {
@@ -172,7 +207,7 @@ public class USBUpdateManager {
      *
      * @param handler The completion handler called once the café menu items have been retrieved.
      */
-    private void loadCafeMenuItems(final FirestoreCompletionHandler handler) {
+    private void loadCafeMenuItems(final FirestoreCompletionHandler<List<CafeMenuItem>> handler) {
         FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.CAFE_MENU, null, new FirestoreCompletionHandler<List<CafeMenuItem>>() {
             @Override
             public void completed(final List<CafeMenuItem> menuItems) {
