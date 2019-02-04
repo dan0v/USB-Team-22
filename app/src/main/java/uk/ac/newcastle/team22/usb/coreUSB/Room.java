@@ -5,11 +5,13 @@ import android.annotation.SuppressLint;
 import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
+import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
  * A class which represents a room in Urban Sciences Building.
  *
  * @author Alexander MacLeod
+ * @author Daniel Vincet
  * @version 1.0
  */
 public class Room implements FirestoreConstructable<Room> {
@@ -23,13 +25,18 @@ public class Room implements FirestoreConstructable<Room> {
     /** The identifier of the staff member who occupies this room */
     private String staffResidenceIdentifier;
 
+    /** The nearest Navigation Node to this Room */
+    private Node navNode;
+
     @Override
     public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
         int number = Integer.parseInt(documentIdentifier);
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
+        Node navNode = USBManager.shared.getBuilding().sharedNavNodes.get(Integer.parseInt((String) firestoreDictionary.get("navNode")));
 
         this.number = number;
         this.staffResidenceIdentifier = staffResidenceIdentifier;
+        this.navNode = navNode;
         return this;
     }
 
@@ -69,6 +76,13 @@ public class Room implements FirestoreConstructable<Room> {
             }
         }
         return null;
+    }
+
+    /**
+     * @return Copy of Room's nearest Nav Node
+     */
+    public Node getNavNode() {
+        return navNode.clone();
     }
 
     /**

@@ -7,4 +7,12 @@
     <string name="usbUpdateRequiredInstallMessage">An update for the Urban Sciences Building is required.</string>
     <string name="install">Install</string>
     <string name="cancel">Cancel</string>
+
+    <!--navigation start-->
+    <string name="directionForward">Forward</string>
+    <string name="directionLeft">Left</string>
+    <string name="directionRight">Right</string>
+    <string name="directionUp">Up</string>
+    <string name="directionDown">Down</string>
+    <!--navigation end-->
 </resources>

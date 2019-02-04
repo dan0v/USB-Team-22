@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import uk.ac.newcastle.team22.usb.navigation.Node;
+
 /**
  * A class which represents the Urban Sciences Building.
  *
@@ -22,6 +24,8 @@ public class USB {
 
     private BuildingState buildingState;
 
+    public List<Node> sharedNavNodes;
+
     //times read from stored data
     private List<Calendar> oTimes; //opening times
     private List<Calendar> cTimes; //closing times
@@ -29,6 +33,7 @@ public class USB {
 
     /** Constructor from a USB update. */
     public USB(USBUpdateManager.USBUpdate update) {
+        //this.sharedNavNodes = update.getNavNodes();
         this.floors = update.getFloors();
         this.staffMembers = update.getStaffMembers();
     }
