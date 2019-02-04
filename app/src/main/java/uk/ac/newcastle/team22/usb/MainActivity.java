@@ -3,6 +3,7 @@ package uk.ac.newcastle.team22.usb;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -82,6 +83,32 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /** Presents an alert stating that an update for USB was unable to be installed. */
+    private void presentUSBUpdateErrorAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.updateUnableToInstall);
+        builder.setMessage(R.string.usbUpdateUnableToInstallMessage);
+
+        builder.setPositiveButton(R.string.tryAgain, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                startUSBBuildingUpdate();
+            }
+        });
+
+        // Check whether an update is required to use the app.
+        // Hide cancel button if no Urban Sciences Building is cached.
+        if (USBManager.shared.getBuilding() != null) {
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            });
+        }
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     /** Requests an update of the Urban Sciences Building. */
     private void startUSBBuildingUpdate() {
         // Present loading dialog.
@@ -101,10 +128,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void requiresUpdate(boolean force) {
                         nDialog.dismiss();
-                        Log.i("","Error");
-                        // TODO Explain to user that USB failed to update.
+                        presentUSBUpdateErrorAlert();
                     }
-
                     @Override
                     public void loadedFromCache() {
                         nDialog.dismiss();
@@ -125,7 +150,9 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {}
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, USBRoutePlanner.class));
+            }
         });
     }
 }

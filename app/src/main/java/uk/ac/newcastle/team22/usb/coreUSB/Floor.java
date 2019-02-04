@@ -1,7 +1,5 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
-import android.util.Log;
-
 import java.util.*;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
@@ -41,12 +39,16 @@ public class Floor implements FirestoreConstructable<Floor> {
         this.rooms.add(room);
     }
 
-    /** Returns the rooms which are situated on the floor. */
+    /**
+     * @return The rooms which are situated on the floor.
+     */
     public List<Room> getRooms() {
         return rooms;
     }
 
-    /** Returns the floor number. */
+    /**
+     * @return The floor number.
+     */
     public int getNumber() {
         return number;
     }

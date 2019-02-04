@@ -20,6 +20,9 @@ public class USB {
     /** The staff members in the Urban Sciences Building. */
     private List<StaffMember> staffMembers;
 
+    /** The café in the Urban Sciences Building. */
+    private Cafe cafe;
+
     private BuildingState buildingState;
 
     //times read from stored data
@@ -27,10 +30,11 @@ public class USB {
     private List<Calendar> cTimes; //closing times
     private List<Calendar> oohTimes; //out of hours times
 
-    /** Constructor from a USB update. */
+    /** Constructor using an Urban Sciences Building update. */
     public USB(USBUpdateManager.USBUpdate update) {
         this.floors = update.getFloors();
         this.staffMembers = update.getStaffMembers();
+        this.cafe = new Cafe(update);
     }
 
     /**
@@ -91,6 +95,13 @@ public class USB {
      */
     public List<StaffMember> getStaffMembers() {
         return staffMembers;
+    }
+
+    /**
+     * @return The café at the Urban Sciences Building.
+     */
+    public Cafe getCafe() {
+        return cafe;
     }
 
     /**

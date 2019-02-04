@@ -55,7 +55,19 @@ public class USBUpdateManager {
                     @Override
                     public void completed(List<StaffMember> staffMembers) {
                         update.setStaffMembers(staffMembers);
-                        handler.completed(update);
+
+                        // Request café menu items.
+                        loadCafeMenuItems(new FirestoreCompletionHandler<List<CafeMenuItem>>() {
+                            @Override
+                            public void completed(List<CafeMenuItem> menuItems) {
+                                update.setCafeMenuItems(menuItems);
+                                handler.completed(update);
+                            }
+                            @Override
+                            public void failed(Exception exception) {
+                                handler.failed(exception);
+                            }
+                        });
                     }
                     @Override
                     public void failed(Exception exception) {
@@ -156,6 +168,24 @@ public class USBUpdateManager {
     }
 
     /**
+     * Loads each item which is served at the café in the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the café menu items have been retrieved.
+     */
+    private void loadCafeMenuItems(final FirestoreCompletionHandler handler) {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.CAFE_MENU, null, new FirestoreCompletionHandler<List<CafeMenuItem>>() {
+            @Override
+            public void completed(final List<CafeMenuItem> menuItems) {
+                handler.completed(menuItems);
+            }
+            @Override
+            public void failed(Exception exception) {
+                Log.e("", "Unable to retrieve USB café menu items", exception);
+            }
+        });
+    }
+
+    /**
      * An Urban Sciences Building update completion handler.
      *
      * @author Alexander MacLeod
@@ -192,6 +222,9 @@ public class USBUpdateManager {
         /** The staff members in the Urban Sciences Building. */
         private List<StaffMember> staffMembers = new ArrayList<>();
 
+        /** The items, food or drink, which are served at the café in the Urban Sciences Building. */
+        private List<CafeMenuItem> cafeMenuItems = new ArrayList<>();
+
         /** Empty constructor. */
         USBUpdate() {}
 
@@ -205,10 +238,18 @@ public class USBUpdateManager {
 
         /**
          * Sets the new staff members in the update.
-         * @param floors The updated floors.
+         * @param staffMembers The updated floors.
          */
         public void setStaffMembers(List<StaffMember> staffMembers) {
             this.staffMembers = staffMembers;
+        }
+
+        /**
+         * Sets the new café menu items in the update.
+         * @param cafeMenuItems The updated café menu items.
+         */
+        public void setCafeMenuItems(List<CafeMenuItem> cafeMenuItems) {
+            this.cafeMenuItems = cafeMenuItems;
         }
 
         /**
@@ -223,6 +264,13 @@ public class USBUpdateManager {
          */
         public List<StaffMember> getStaffMembers() {
             return staffMembers;
+        }
+
+        /**
+         * @return The updated café menu items.
+         */
+        public List<CafeMenuItem> getCafeMenuItems() {
+            return cafeMenuItems;
         }
     }
 }

@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">USB</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="updateUnableToInstall">Unable To Update</string>
     <string name="updateAvailable">Update Available</string>
     <string name="updateRequired">Update Required</string>
     <string name="usbUpdateAvailableInstallMessage">An update for the Urban Sciences Building is available. Do you want to install this update now?</string>
     <string name="usbUpdateRequiredInstallMessage">An update for the Urban Sciences Building is required.</string>
+    <string name="usbUpdateUnableToInstallMessage">An error occured when installing the Urban Sciences Building update. Please try again.</string>
     <string name="install">Install</string>
     <string name="cancel">Cancel</string>
+    <string name="tryAgain">Try Again</string>
 </resources>

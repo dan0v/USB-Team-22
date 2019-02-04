@@ -10,17 +10,16 @@ import static org.junit.Assert.*;
  * @author Patrick Lindley
  * @version 1.0
  */
-
 public class ACafeMenuItemShould {
 
     @Test
-    public void haveAnItemName() {
+    public void haveAName() {
         CafeMenuItem item = new CafeMenuItem(200, "sandwich");
-        assertEquals("sandwich", item.getItemName());
+        assertEquals("sandwich", item.getName());
     }
 
     @Test
-    public void haveAnItemPrice() {
+    public void haveAPrice() {
         CafeMenuItem item = new CafeMenuItem(200, "sandwich");
         assertEquals(200, item.getPrice());
     }

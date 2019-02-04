@@ -6,5 +6,6 @@ package uk.ac.newcastle.team22.usb.coreUSB;
  * @author Daniel Vincent
  * @version 1.0
  */
-public enum ResourceType { COMPUTER, PRINTER, WHITEBOARD, PROJECTOR
+public enum ResourceType {
+    COMPUTER, PRINTER, WHITEBOARD, PROJECTOR
 }
