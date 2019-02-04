@@ -11,10 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import java.util.List;
-
 import uk.ac.newcastle.team22.usb.coreUSB.*;
-import uk.ac.newcastle.team22.usb.firebase.*;
 
 public class MainActivity extends AppCompatActivity {
 
