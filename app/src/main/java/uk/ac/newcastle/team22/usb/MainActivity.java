@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle(R.string.updateUnableToInstall);
         builder.setMessage(R.string.usbUpdateUnableToInstallMessage);
 
-        builder.setPositiveButton(R.string.tryAgain, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 startUSBBuildingUpdate();
             }

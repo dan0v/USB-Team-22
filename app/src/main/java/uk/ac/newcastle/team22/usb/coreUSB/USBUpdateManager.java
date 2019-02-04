@@ -4,15 +4,11 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import uk.ac.newcastle.team22.usb.firebase.*;
 
 /**
- * The manager for the maintenance of Urban Sciences Building data.
+ * A class which manages and maintains new and cached versions of the Urban Sciences Building.
  *
  * @author Alexander MacLeod
  * @version 1.0
@@ -36,6 +32,8 @@ public class USBUpdateManager {
 
                 // Request the cached version of the Urban Sciences Building.
                 update(new FirestoreCompletionHandler<USBUpdate>() {
+
+                    // A cached version of the Urban Sciences Building was available.
                     @Override
                     public void completed(final USBUpdate usbUpdate) {
                         super.completed(usbUpdate);
@@ -46,6 +44,8 @@ public class USBUpdateManager {
                             }
                         });
                     }
+
+                    // Unable to retrieve cached version of the Urban Sciences Building.
                     @Override
                     public void failed(Exception exception) {
                         super.failed(exception);
@@ -57,6 +57,8 @@ public class USBUpdateManager {
                             }
                         });
                     }
+
+                    /** Called once the Urban Sciences Building has loaded from cache. */
                     private void didFinishLoadingFromCache(final FirestoreCompletionHandler<Void> handler) {
                         // Re-enable network access for future requests.
                         FirebaseManager.shared.disableCache(new FirestoreCompletionHandler<Void>() {
@@ -124,7 +126,6 @@ public class USBUpdateManager {
      * @param handler The completion handler called once the floors have been retrieved.
      */
     private void loadFloors(final FirestoreCompletionHandler<List<Floor>> handler) {
-
         FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.FLOORS, null, new FirestoreCompletionHandler<List<Floor>>() {
             @Override
             public void completed(final List<Floor> floors) {
@@ -245,6 +246,8 @@ public class USBUpdateManager {
 
     /**
      * An Urban Sciences Building update.
+     * An update may be new information retrieved from Firestore or a cached version of the
+     * Urban Sciences Building. A {@link USBUpdate} is used to initialise a {@link USB} object.
      *
      * @author Alexander MacLeod
      * @version 1.0

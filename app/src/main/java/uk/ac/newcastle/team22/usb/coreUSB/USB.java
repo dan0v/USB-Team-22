@@ -1,6 +1,5 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -30,8 +29,19 @@ public class USB {
     private List<Calendar> cTimes; //closing times
     private List<Calendar> oohTimes; //out of hours times
 
-    /** Constructor using an Urban Sciences Building update. */
-    public USB(USBUpdateManager.USBUpdate update) {
+    /**
+     * Constructor using a {@link USBUpdateManager.USBUpdate}.
+     * This constructor is used to initialise a {@link USB} from either a cached version of the
+     * building or from new data retrieved from Firestore. Both new and cached versions of the
+     * building are represented by {@link USBUpdateManager.USBUpdate}. This constructor will usually be called at
+     * application launch by {@link USBManager } to initialise the shared {@link USB} instance.
+     *
+     * See {@link USBUpdateManager.USBUpdate} for more information on Urban Sciences Building
+     * updates.
+     *
+     * @param update The Urban Sciences Building update.
+     */
+    USB(USBUpdateManager.USBUpdate update) {
         this.floors = update.getFloors();
         this.staffMembers = update.getStaffMembers();
         this.cafe = new Cafe(update);
