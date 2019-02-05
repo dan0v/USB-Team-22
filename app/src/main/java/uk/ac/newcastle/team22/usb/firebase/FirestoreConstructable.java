@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface FirestoreConstructable<T> {
 
-    /** The exception to throw when the construction of a {@link FirestoreConstructable} object fails. */
+    /** The exception to throw when the initialisation of a {@link FirestoreConstructable} object fails. */
     class InitialisationFailed extends Exception {
         public InitialisationFailed(String message) {
             super(message);

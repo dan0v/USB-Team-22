@@ -16,8 +16,8 @@ public enum ResourceType {
     private int identifier;
 
     /**
-     * Constructor for {@link ResourceType} using raw value.
-     * @param identifier The integer representation or raw value of the type.
+     * Constructor for {@link ResourceType} using its raw value.
+     * @param identifier The integer representation or raw value of the resource type.
      */
     ResourceType(int identifier) {
         this.identifier = identifier;
@@ -25,7 +25,7 @@ public enum ResourceType {
 
     /**
      * Returns the {@link ResourceType} for a given identifier.
-     * @param rawIdentifier The identifier of the resource.
+     * @param rawIdentifier The identifier of the resource type.
      * @return The {@link ResourceType}.
      * @throws FirestoreConstructable.InitialisationFailed
      */
@@ -36,6 +36,6 @@ public enum ResourceType {
                 return type;
             }
         }
-        throw new FirestoreConstructable.InitialisationFailed("Unknown resource type with identifier '" + identifier + "'");
+        throw new FirestoreConstructable.InitialisationFailed("Unknown resource type identifier '" + identifier + "'");
     }
 }

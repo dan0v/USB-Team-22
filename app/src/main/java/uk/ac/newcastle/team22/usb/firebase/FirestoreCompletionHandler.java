@@ -1,7 +1,5 @@
 package uk.ac.newcastle.team22.usb.firebase;
 
-import android.util.Log;
-
 /**
  * A Firestore operation completion handler.
  *

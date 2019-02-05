@@ -1,7 +1,6 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
