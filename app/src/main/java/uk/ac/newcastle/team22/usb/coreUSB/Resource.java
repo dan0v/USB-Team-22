@@ -1,5 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
+
 /**
  * A class which represents a resource in a {@link Room}.
  *
@@ -19,8 +21,9 @@ public class Resource {
      * Constructor for {@link Resource}.
      * @param resourceTypeIdentifier The identifier of the resource type.
      * @param available The number of this resource which is available.
+     * @throws FirestoreConstructable.InitialisationFailed
      */
-    public Resource(String resourceTypeIdentifier, int available) {
+    public Resource(String resourceTypeIdentifier, int available) throws FirestoreConstructable.InitialisationFailed {
         ResourceType type = ResourceType.valueFor(resourceTypeIdentifier);
 
         this.type = type;

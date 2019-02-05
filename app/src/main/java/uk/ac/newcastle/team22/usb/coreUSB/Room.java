@@ -31,7 +31,8 @@ public class Room implements FirestoreConstructable<Room> {
     private String staffResidenceIdentifier;
 
     @Override
-    public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
+    @SuppressWarnings("unchecked")
+    public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
         int number = Integer.parseInt(documentIdentifier);
         Map<String, Long> resources = (Map<String, Long>) firestoreDictionary.get("resources");
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
@@ -54,9 +55,9 @@ public class Room implements FirestoreConstructable<Room> {
     public Room() {}
 
     /**
-     * Helper method to set the floor which this room is situated.
+     * Helper method to set the floor on which this room is situated.
      *
-     * @param floor The floor which this room is situated.
+     * @param floor The floor on which this room is situated.
      */
     public void attachFloor(Floor floor) {
         this.floor = floor;

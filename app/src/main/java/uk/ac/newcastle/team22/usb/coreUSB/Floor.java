@@ -55,6 +55,6 @@ public class Floor implements FirestoreConstructable<Floor> {
 
     @Override
     public String toString() {
-        return "Floor Number: " + getNumber();
+        return "Floor (number: " + getNumber() + ")";
     }
 }
