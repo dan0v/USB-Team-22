@@ -14,7 +14,7 @@ public class USBManager {
     /** The shared instance of the Urban Sciences Building manager. */
     public static USBManager shared = new USBManager();
 
-    /** The update manager for USB. */
+    /** The update manager for the Urban Sciences Building. */
     private USBUpdateManager updateManager;
 
     /** The Urban Sciences Building. */

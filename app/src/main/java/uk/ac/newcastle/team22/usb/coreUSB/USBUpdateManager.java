@@ -15,8 +15,14 @@ import uk.ac.newcastle.team22.usb.firebase.*;
  */
 public class USBUpdateManager {
 
+    /** Boolean value whether the cache is enabled. Used for debugging purposes. */
+    private static final boolean CACHED_ENABLED = false;
+
     /** The exception to throw when a cached version of the Urban Sciences Building is not available. */
     public class USBNoCachedVersionAvailable extends Exception {}
+
+    /** The exception to throw when the cache of the Urban Sciences Building is disabled. */
+    public class USBCachedDisabled extends Exception {}
 
     /**
      * Requests a cached version of the Urban Sciences Building.
@@ -24,6 +30,12 @@ public class USBUpdateManager {
      * @param handler The completion handler called once the Urban Sciences Building has been retrieved.
      */
     public void requestCached(final FirestoreCompletionHandler<USBUpdate> handler) {
+        // Check if the cache is enabled.
+        if (!CACHED_ENABLED) {
+            handler.failed(new USBCachedDisabled());
+            return;
+        }
+
         // Disable network access to force application to load cached data, if available.
         FirebaseManager.shared.enableCache(new FirestoreCompletionHandler<Void>() {
             @Override
