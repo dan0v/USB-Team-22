@@ -45,7 +45,7 @@ public class Node implements Cloneable {
      */
     @Override
     public Node clone() {
-        return new Node(this.nodeID, this.adjacent);
+        return new Node(this.nodeID, new ArrayList<Edge>(this.adjacent));
     }
 
     /**
