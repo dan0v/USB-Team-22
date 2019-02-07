@@ -10,7 +10,7 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
  * such as accessibility requirements
  *
  * @author Daniel Vincent
- * @version 1
+ * @version 1.0
  */
 public class Navigator {
 
@@ -21,7 +21,7 @@ public class Navigator {
      * @param accessibility will use only lifts to traverse floors
      * @return List of Edges to be traversed to reach destination
      */
-    public List<Edge> getRoute(Room start, Room end, boolean accessibility) {
+    public List<Edge> getRoute(Navigable start, Navigable end, boolean accessibility) {
         return getRoute(start.getNavNode(), end.getNavNode(), accessibility);
     }
 
@@ -31,7 +31,7 @@ public class Navigator {
      * @param accessibility will use only lifts to traverse floors
      * @return List of Edges to be traversed to reach destination
      */
-    public List<Edge> getRoute(Room end, boolean accessibility) {
+    public List<Edge> getRoute(Navigable end, boolean accessibility) {
         return getRoute(USBManager.shared.getBuilding().getFloors().get(0).getRooms().get(0).getNavNode(), end.getNavNode(), accessibility);
     }
 
