@@ -2,6 +2,9 @@ package uk.ac.newcastle.team22.usb.coreUSB;
 
 import android.annotation.SuppressLint;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
@@ -22,21 +25,34 @@ public class Room implements FirestoreConstructable<Room> {
     /** The room number on a given floor. */
     private int number;
 
-    /** The identifier of the staff member who occupies this room */
+    /** The resources which are available in the room. */
+    private List<Resource> resources = new ArrayList<>();
+
+    /** The identifier of the staff member who occupies the room. */
     private String staffResidenceIdentifier;
 
     /** The nearest Navigation Node to this Room */
     private Node navNode;
 
     @Override
-    public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
+    @SuppressWarnings("unchecked")
+    public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
         int number = Integer.parseInt(documentIdentifier);
+        Map<String, Long> resources = (Map<String, Long>) firestoreDictionary.get("resources");
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
         Node navNode = USBManager.shared.getBuilding().sharedNavNodes.get(Integer.parseInt((String) firestoreDictionary.get("navNode")));
 
         this.number = number;
         this.staffResidenceIdentifier = staffResidenceIdentifier;
-        this.navNode = navNode;
+
+        // Initialise room resources.
+        resources = resources == null ? Collections.<String, Long>emptyMap() : resources;
+        for (Map.Entry<String, Long> entry : resources.entrySet()) {
+            Resource newResource = new Resource(entry.getKey(), entry.getValue().intValue());
+            if (newResource != null) {
+                this.resources.add(newResource);
+            }
+        }
         return this;
     }
 
@@ -44,9 +60,9 @@ public class Room implements FirestoreConstructable<Room> {
     public Room() {}
 
     /**
-     * Helper method to set the floor which this room is situated.
+     * Helper method to set the floor on which this room is situated.
      *
-     * @param floor The floor which this room is situated.
+     * @param floor The floor on which this room is situated.
      */
     public void attachFloor(Floor floor) {
         this.floor = floor;
@@ -57,6 +73,17 @@ public class Room implements FirestoreConstructable<Room> {
      */
     public Floor getFloor() {
         return floor;
+    }
+
+    /**
+     * Returns the formatted room number.
+     * The formatted room number includes the floor number.
+     */
+    @SuppressLint("DefaultLocale")
+    public String getNumber() {
+        String floorNumber = String.valueOf(floor.getNumber());
+        String roomNumber = String.format("%03d", number);
+        return floorNumber + "." + roomNumber;
     }
 
     /**
@@ -79,21 +106,10 @@ public class Room implements FirestoreConstructable<Room> {
     }
 
     /**
-     * @return Copy of Room's nearest Nav Node
+     * @return The resources which are available in the room.
      */
-    public Node getNavNode() {
-        return navNode.clone();
-    }
-
-    /**
-     * Returns the formatted room number.
-     * The formatted room number includes the floor number.
-     */
-    @SuppressLint("DefaultLocale")
-    public String getNumber() {
-        String floorNumber = String.valueOf(floor.getNumber());
-        String roomNumber = String.format("%03d", number);
-        return floorNumber + "." + roomNumber;
+    public List<Resource> getResources() {
+        return resources;
     }
 
     @Override

@@ -11,19 +11,24 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
  * @author Alexander MacLeod
  * @version 1.0
  */
-
 public class StaffMember implements FirestoreConstructable<StaffMember> {
 
+    /** The unique identifier of the staff member. */
     private String identifier;
 
+    /** The title of the staff member. */
     private String title;
 
+    /** The first name of the staff member. */
     private String firstName;
 
+    /** The last name of the staff member. */
     private String lastName;
 
+    /** The phone number of the staff member. */
     private String phoneNumber;
 
+    /** The email address of the staff member. */
     private String emailAddress;
 
     /** Empty constructor. */
@@ -54,22 +59,44 @@ public class StaffMember implements FirestoreConstructable<StaffMember> {
         this.emailAddress = emailAddress;
     }
 
+    /**
+     * @return The title of the staff member.
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @return The first name of the staff member.
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * @return The last name of the staff member.
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * @return The phone number of the staff member.
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /**
+     * @return The email address of the staff member.
+     */
     public String getEmailAddress() {
         return emailAddress;
     }
 
+    /**
+     * @return The room of the staff member.
+     */
     public Room getRoom() {
         for (Floor floor : USBManager.shared.getBuilding().getFloors()) {
             for (Room room : floor.getRooms()) {

@@ -4,36 +4,86 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import uk.ac.newcastle.team22.usb.firebase.*;
 
 /**
- * The manager for the maintenance of Urban Sciences Building data.
+ * A class which manages and maintains new and cached versions of the Urban Sciences Building.
  *
  * @author Alexander MacLeod
  * @version 1.0
  */
 public class USBUpdateManager {
 
+    /** Boolean value whether the cache is enabled. Used for debugging purposes. */
+    private static final boolean CACHED_ENABLED = true;
+
     /** The exception to throw when a cached version of the Urban Sciences Building is not available. */
     public class USBNoCachedVersionAvailable extends Exception {}
+
+    /** The exception to throw when the cache of the Urban Sciences Building is disabled. */
+    public class USBCachedDisabled extends Exception {}
 
     /**
      * Requests a cached version of the Urban Sciences Building.
      *
      * @param handler The completion handler called once the Urban Sciences Building has been retrieved.
      */
-    public void requestCached(final FirestoreCompletionHandler handler) {
-        // TODO Check for cached version of USB.
-        boolean cacheAvailable = false;
-        if (!cacheAvailable) {
-            handler.failed(new USBNoCachedVersionAvailable());
+    public void requestCached(final FirestoreCompletionHandler<USBUpdate> handler) {
+        // Check if the cache is enabled.
+        if (!CACHED_ENABLED) {
+            handler.failed(new USBCachedDisabled());
             return;
         }
+
+        // Disable network access to force application to load cached data, if available.
+        FirebaseManager.shared.enableCache(new FirestoreCompletionHandler<Void>() {
+            @Override
+            public void completed(Void aVoid) {
+                super.completed(aVoid);
+
+                // Request the cached version of the Urban Sciences Building.
+                update(new FirestoreCompletionHandler<USBUpdate>() {
+
+                    // A cached version of the Urban Sciences Building was available.
+                    @Override
+                    public void completed(final USBUpdate usbUpdate) {
+                        super.completed(usbUpdate);
+                        didFinishLoadingFromCache(new FirestoreCompletionHandler<Void>() {
+                            @Override
+                            public void completed(Void aVoid) {
+                                handler.completed(usbUpdate);
+                            }
+                        });
+                    }
+
+                    // Unable to retrieve cached version of the Urban Sciences Building.
+                    @Override
+                    public void failed(Exception exception) {
+                        super.failed(exception);
+                        didFinishLoadingFromCache(new FirestoreCompletionHandler<Void>() {
+                            @Override
+                            public void completed(Void aVoid) {
+                                super.completed(aVoid);
+                                handler.failed(new USBNoCachedVersionAvailable());
+                            }
+                        });
+                    }
+
+                    /** Called once the Urban Sciences Building has loaded from cache. */
+                    private void didFinishLoadingFromCache(final FirestoreCompletionHandler<Void> handler) {
+                        // Re-enable network access for future requests.
+                        FirebaseManager.shared.disableCache(new FirestoreCompletionHandler<Void>() {
+                            @Override
+                            public void completed(Void aVoid) {
+                                super.completed(aVoid);
+                                handler.completed(null);
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -41,7 +91,7 @@ public class USBUpdateManager {
      *
      * @param handler The completion handler called once the Urban Sciences Building has been updated.
      */
-    public void update(final FirestoreCompletionHandler handler) {
+    public void update(final FirestoreCompletionHandler<USBUpdate> handler) {
         final USBUpdate update = new USBUpdate();
 
         // Request updated floors and rooms.
@@ -55,7 +105,19 @@ public class USBUpdateManager {
                     @Override
                     public void completed(List<StaffMember> staffMembers) {
                         update.setStaffMembers(staffMembers);
-                        handler.completed(update);
+
+                        // Request café menu items.
+                        loadCafeMenuItems(new FirestoreCompletionHandler<List<CafeMenuItem>>() {
+                            @Override
+                            public void completed(List<CafeMenuItem> menuItems) {
+                                update.setCafeMenuItems(menuItems);
+                                handler.completed(update);
+                            }
+                            @Override
+                            public void failed(Exception exception) {
+                                handler.failed(exception);
+                            }
+                        });
                     }
                     @Override
                     public void failed(Exception exception) {
@@ -75,12 +137,10 @@ public class USBUpdateManager {
      *
      * @param handler The completion handler called once the floors have been retrieved.
      */
-    private void loadFloors(final FirestoreCompletionHandler handler) {
-
+    private void loadFloors(final FirestoreCompletionHandler<List<Floor>> handler) {
         FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.FLOORS, null, new FirestoreCompletionHandler<List<Floor>>() {
             @Override
             public void completed(final List<Floor> floors) {
-
                 // Configure completion handler for whenever a room has been retrieved.
                 final FirestoreCompletionHandler<Void> roomLoadHandler = new FirestoreCompletionHandler<Void>(floors.size()) {
                     @Override
@@ -118,7 +178,7 @@ public class USBUpdateManager {
      * @param floor The floor on which to load rooms.
      * @param handler The completion handler called once the floors have been retrieved.
      */
-    private void loadRooms(final Floor floor, final FirestoreCompletionHandler handler) {
+    private void loadRooms(final Floor floor, final FirestoreCompletionHandler<Void> handler) {
         String roomsPath = FirestoreDatabaseCollection.FLOORS.getCollectionIdentifier() + "/" + floor.getNumber();
         FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.ROOMS, roomsPath, new FirestoreCompletionHandler<List<Room>>() {
             @Override
@@ -142,7 +202,7 @@ public class USBUpdateManager {
      *
      * @param handler The completion handler called once the staff members have been retrieved.
      */
-    private void loadStaffMembers(final FirestoreCompletionHandler handler) {
+    private void loadStaffMembers(final FirestoreCompletionHandler<List<StaffMember>> handler) {
         FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.STAFF, null, new FirestoreCompletionHandler<List<StaffMember>>() {
             @Override
             public void completed(final List<StaffMember> staffMembers) {
@@ -151,6 +211,24 @@ public class USBUpdateManager {
             @Override
             public void failed(Exception exception) {
                 Log.e("", "Unable to retrieve USB staff members", exception);
+            }
+        });
+    }
+
+    /**
+     * Loads each item which is served at the café in the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the café menu items have been retrieved.
+     */
+    private void loadCafeMenuItems(final FirestoreCompletionHandler<List<CafeMenuItem>> handler) {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.CAFE_MENU, null, new FirestoreCompletionHandler<List<CafeMenuItem>>() {
+            @Override
+            public void completed(final List<CafeMenuItem> menuItems) {
+                handler.completed(menuItems);
+            }
+            @Override
+            public void failed(Exception exception) {
+                Log.e("", "Unable to retrieve USB café menu items", exception);
             }
         });
     }
@@ -180,6 +258,8 @@ public class USBUpdateManager {
 
     /**
      * An Urban Sciences Building update.
+     * An update may be new information retrieved from Firestore or a cached version of the
+     * Urban Sciences Building. A {@link USBUpdate} is used to initialise a {@link USB} object.
      *
      * @author Alexander MacLeod
      * @version 1.0
@@ -191,6 +271,9 @@ public class USBUpdateManager {
 
         /** The staff members in the Urban Sciences Building. */
         private List<StaffMember> staffMembers = new ArrayList<>();
+
+        /** The items, food or drink, which are served at the café in the Urban Sciences Building. */
+        private List<CafeMenuItem> cafeMenuItems = new ArrayList<>();
 
         /** Empty constructor. */
         USBUpdate() {}
@@ -205,10 +288,18 @@ public class USBUpdateManager {
 
         /**
          * Sets the new staff members in the update.
-         * @param floors The updated floors.
+         * @param staffMembers The updated floors.
          */
         public void setStaffMembers(List<StaffMember> staffMembers) {
             this.staffMembers = staffMembers;
+        }
+
+        /**
+         * Sets the new café menu items in the update.
+         * @param cafeMenuItems The updated café menu items.
+         */
+        public void setCafeMenuItems(List<CafeMenuItem> cafeMenuItems) {
+            this.cafeMenuItems = cafeMenuItems;
         }
 
         /**
@@ -223,6 +314,13 @@ public class USBUpdateManager {
          */
         public List<StaffMember> getStaffMembers() {
             return staffMembers;
+        }
+
+        /**
+         * @return The updated café menu items.
+         */
+        public List<CafeMenuItem> getCafeMenuItems() {
+            return cafeMenuItems;
         }
     }
 }

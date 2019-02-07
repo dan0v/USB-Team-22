@@ -1,12 +1,5 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-
 import uk.ac.newcastle.team22.usb.firebase.FirestoreCompletionHandler;
 
 /**
@@ -21,7 +14,7 @@ public class USBManager {
     /** The shared instance of the Urban Sciences Building manager. */
     public static USBManager shared = new USBManager();
 
-    /** The update manager for USB. */
+    /** The update manager for the Urban Sciences Building. */
     private USBUpdateManager updateManager;
 
     /** The Urban Sciences Building. */
@@ -33,10 +26,10 @@ public class USBManager {
      * @param handler The completion handler called once the Urban Sciences Building has been retrieved.
      */
     public void prepareBuilding(final USBUpdateManager.UpdateCompletionHandler handler) {
-        updateManager.requestCached(new FirestoreCompletionHandler<USB>() {
+        updateManager.requestCached(new FirestoreCompletionHandler<USBUpdateManager.USBUpdate>() {
             @Override
-            public void completed(USB cachedBuilding) {
-                building = cachedBuilding;
+            public void completed(USBUpdateManager.USBUpdate cached) {
+                building = new USB(cached);
                 handler.loadedFromCache();
             }
             @Override

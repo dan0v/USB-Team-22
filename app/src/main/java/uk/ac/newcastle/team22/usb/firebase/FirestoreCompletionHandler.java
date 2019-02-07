@@ -1,7 +1,5 @@
 package uk.ac.newcastle.team22.usb.firebase;
 
-import android.util.Log;
-
 /**
  * A Firestore operation completion handler.
  *
@@ -18,7 +16,9 @@ public abstract class FirestoreCompletionHandler<Response> {
      * @param response The response of the operation.
      */
     public void completed(Response response) {
-        operationsToComplete--;
+        if (operationsToComplete > 0) {
+            operationsToComplete--;
+        }
     }
 
     /**
@@ -26,7 +26,9 @@ public abstract class FirestoreCompletionHandler<Response> {
      * @param exception The throwable exception.
      */
     public void failed(Exception exception) {
-        operationsToComplete--;
+        if (operationsToComplete > 0) {
+            operationsToComplete--;
+        }
     }
 
     /**
