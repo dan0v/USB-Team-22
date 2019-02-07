@@ -9,5 +9,12 @@
     <string name="usbUpdateUnableToInstallMessage">An error occured when installing the Urban Sciences Building update. Please try again.</string>
     <string name="install">Install</string>
     <string name="cancel">Cancel</string>
+    <!--navigation start-->
+    <string name="directionForward">Forward</string>
+    <string name="directionLeft">Left</string>
+    <string name="directionRight">Right</string>
+    <string name="directionUp">Up</string>
+    <string name="directionDown">Down</string>
+    <!--navigation end-->
     <string name="retry">Retry</string>
 </resources>

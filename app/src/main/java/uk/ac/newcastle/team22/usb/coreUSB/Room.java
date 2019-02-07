@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
+import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
  * A class which represents a room in Urban Sciences Building.
  *
  * @author Alexander MacLeod
+ * @author Daniel Vincet
  * @version 1.0
  */
 public class Room implements FirestoreConstructable<Room> {
@@ -29,12 +31,16 @@ public class Room implements FirestoreConstructable<Room> {
     /** The identifier of the staff member who occupies the room. */
     private String staffResidenceIdentifier;
 
+    /** The nearest Navigation Node to this Room */
+    private Node navNode;
+
     @Override
     @SuppressWarnings("unchecked")
     public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
         int number = Integer.parseInt(documentIdentifier);
         Map<String, Long> resources = (Map<String, Long>) firestoreDictionary.get("resources");
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
+        Node navNode = USBManager.shared.getBuilding().sharedNavNodes.get(Integer.parseInt((String) firestoreDictionary.get("navNode")));
 
         this.number = number;
         this.staffResidenceIdentifier = staffResidenceIdentifier;
