@@ -6,43 +6,43 @@ import uk.ac.newcastle.team22.usb.coreUSB.Room;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
 /**
- * Find routes between locations within the Urban Sciences Building obeying constraints
- * such as accessibility requirements
+ * A class which calculates routes between locations in the Urban Sciences Building.
+ * The journey planner obeys constraints such as the user's accessibility requirements.
  *
  * @author Daniel Vincent
- * @version 1
+ * @version 1.0
  */
 public class Navigator {
 
     /**
-     * Calculate route from start Node to end Node
-     * @param start Room to be navigated from
-     * @param end Room to be navigated to
-     * @param accessibility will use only lifts to traverse floors
-     * @return List of Edges to be traversed to reach destination
+     * Calculates a route between two locations in the Urban Sciences Building.
+     * @param origin The origin of the journey.
+     * @param destination The destination of the journey.
+     * @param accessibility Boolean value whether the journey needs to include an accessible route.
+     * @return The collection of edges to be traversed to reach the destination.
      */
-    public List<Edge> getRoute(Room start, Room end, boolean accessibility) {
-        return getRoute(start.getNavNode(), end.getNavNode(), accessibility);
+    public List<Edge> getRoute(Room origin, Room destination, boolean accessibility) {
+        return getRoute(origin.getNavNode(), destination.getNavNode(), accessibility);
     }
 
     /**
-     * Calculate route from building entrance if no start position provided
-     * @param end Room to be navigated to
-     * @param accessibility will use only lifts to traverse floors
-     * @return List of Edges to be traversed to reach destination
+     * Calculates a route between the entrance of the Urban Sciences Building and another location.
+     * @param destination The destination of the journey.
+     * @param accessibility Boolean value whether the journey needs to include an accessible route.
+     * @return The collection of edges to be traversed to reach the destination.
      */
-    public List<Edge> getRoute(Room end, boolean accessibility) {
+    public List<Edge> getRoute(Room destination, boolean accessibility) {
         return getRoute(USBManager.shared.getBuilding().getFloors().get(0).getRooms().get(0).getNavNode(), end.getNavNode(), accessibility);
     }
 
     /**
-     * Calculate route from start Node to end Node
-     * @param start node to be navigated from
-     * @param end node to be navigated to
-     * @param accessibility will use only lifts to traverse floors
-     * @return List of Edges to be traversed to reach destination
+     * Calculates a route between between two nodes.
+     * @param origin The origin node.
+     * @param destination The destination node.
+     * @param accessibility Boolean value whether the journey needs to include an accessible route.
+     * @return The collection of edges to be traversed to reach the destination.
      */
-    public List<Edge> getRoute(Node start, Node end, boolean accessibility) {
+    public List<Edge> getRoute(Node origin, Node destination, boolean accessibility) {
 
         //TODO add sharedNavNodes field to USB to be pulled from firebase
         //use bruteforce with backtracking
