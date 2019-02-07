@@ -40,7 +40,6 @@ public class Room implements FirestoreConstructable<Room> {
         int number = Integer.parseInt(documentIdentifier);
         Map<String, Long> resources = (Map<String, Long>) firestoreDictionary.get("resources");
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
-        Node navNode = USBManager.shared.getBuilding().sharedNavNodes.get(Integer.parseInt((String) firestoreDictionary.get("navNode")));
 
         this.number = number;
         this.staffResidenceIdentifier = staffResidenceIdentifier;

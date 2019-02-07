@@ -1,43 +1,65 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import uk.ac.newcastle.team22.usb.coreUSB.Resource;
+import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
 /**
+ * A class that represents a node in the Urban Sciences Building.
+ *
  * @author Daniel Vincent
  * @version 1.0
  */
-public class Node implements Cloneable {
-    private int nodeID;
-    private List<Edge> adjacent = new ArrayList<Edge>();
+public class Node implements Cloneable, FirestoreConstructable<Node> {
 
-    public Node(int nodeID) {
-        this.nodeID = nodeID;
+    /** The unique identifier of the node. */
+    private int nodeIdentifier;
+
+    /** The adjacent edges to the node. */
+    private List<Edge> adjacentEdges = new ArrayList<>();
+
+    @Override
+    public Node initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
+        List<> edges = (ArrayList<>) firestoreDictionary.get("edges");
+
+        this.nodeIdentifier = Integer.parseInt(documentIdentifier);
+
+        // Initialise edges.
+        edges = edges == null ? ArrayList<>() : edges;
+        for (String entry : edges) {
+            Edge newEdge = new Edge(entry);
+            if (newEdge != null) {
+                this.adjacent.add(newEdge);
+            }
+        }
+
     }
 
-    private Node(int nodeID, List<Edge> adjacent) {
-        this.nodeID = nodeID;
+    public Node(int nodeIdentifier) {
+        this.nodeIdentifier = nodeIdentifier;
+    }
+
+    private Node(int nodeIdentifier, List<Edge> adjacent) {
+        this.nodeIdentifier = nodeIdentifier;
         this.adjacent = new ArrayList<>(adjacent);
     }
 
     /**
-     * Return Node identifier
-     * @return unique ID of this Node
+     * @return The unique identifier of the node.
      */
-    public int getNodeID() {
-        return nodeID;
-    }
-
-    public void addAdjacent(Node adj, int weight, List<Direction> directions, List<Integer> distances, boolean cardLocked, boolean accessible) {
-        this.adjacent.add(new Edge(this, adj, weight, directions, distances, cardLocked, accessible));
+    public int getNodeIdentifier() {
+        return nodeIdentifier;
     }
 
     /**
-     * Get adjacent Edges of this Node with defensive copying
-     * @return
+     * @return The adjacent edges to the node.
      */
-    public List<Edge> getAdjacents() {
-        return new ArrayList<Edge>(adjacent);
+    public List<Edge> getAdjacentEdges() {
+        return adjacentEdges;
     }
 
     /**
