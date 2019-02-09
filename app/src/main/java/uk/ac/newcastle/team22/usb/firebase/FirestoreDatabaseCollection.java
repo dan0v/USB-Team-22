@@ -2,6 +2,7 @@ package uk.ac.newcastle.team22.usb.firebase;
 
 import org.jetbrains.annotations.NotNull;
 import uk.ac.newcastle.team22.usb.coreUSB.*;
+import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
  * A Firestore Database collection.
@@ -12,7 +13,7 @@ import uk.ac.newcastle.team22.usb.coreUSB.*;
  * @version 1.0
  */
 public enum FirestoreDatabaseCollection {
-    FLOORS, ROOMS, STAFF, CAFE_MENU;
+    FLOORS, ROOMS, STAFF, CAFE_MENU, NAVIGATION_NODES;
 
     /** Returns the identifier of the collection. */
     @NotNull
@@ -22,6 +23,7 @@ public enum FirestoreDatabaseCollection {
             case ROOMS: return "rooms";
             case STAFF: return "staffMembers";
             case CAFE_MENU: return "cafeMenu";
+            case NAVIGATION_NODES: return "nodes";
             default: return null;
         }
     }
@@ -33,6 +35,7 @@ public enum FirestoreDatabaseCollection {
             case ROOMS: return Room.class;
             case STAFF: return StaffMember.class;
             case CAFE_MENU: return CafeMenuItem.class;
+            case NAVIGATION_NODES: return Node.class;
             default: return null;
         }
     }
