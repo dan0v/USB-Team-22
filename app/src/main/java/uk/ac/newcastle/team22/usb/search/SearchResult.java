@@ -1,4 +1,4 @@
-package uk.ac.newcastle.team22.usb.Search;
+package uk.ac.newcastle.team22.usb.search;
 
 /**
  * A class which represents a search result when the user uses the search feature.

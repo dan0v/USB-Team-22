@@ -20,4 +20,5 @@
     <!--search start-->
     <string name="app_label">USB Tour App</string>
     <string name="search_hint">Room number, staff member or cafe item</string>
+    <string name="title_activity_search">Search</string>
 </resources>

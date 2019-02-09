@@ -1,4 +1,4 @@
-package uk.ac.newcastle.team22.usb.Search;
+package uk.ac.newcastle.team22.usb.search;
 
 /**
  * Interface that marks objects as searchable.
