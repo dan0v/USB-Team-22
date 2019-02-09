@@ -13,8 +13,10 @@
     <string name="directionForward">Forward</string>
     <string name="directionLeft">Left</string>
     <string name="directionRight">Right</string>
-    <string name="directionUp">Up</string>
-    <string name="directionDown">Down</string>
+    <string name="directionLiftUp">LiftUp</string>
+    <string name="directionLiftDown">LiftDown</string>
+    <string name="directionStairUp">StairUp</string>
+    <string name="directionStairDown">StairDown</string>
     <!--navigation end-->
     <string name="retry">Retry</string>
 </resources>

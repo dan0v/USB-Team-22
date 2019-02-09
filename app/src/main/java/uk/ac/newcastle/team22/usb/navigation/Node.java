@@ -3,61 +3,68 @@ package uk.ac.newcastle.team22.usb.navigation;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
+
 /**
  * @author Daniel Vincent
  * @version 1.0
  */
-public class Node implements Cloneable {
+public class Node {
     private int nodeID;
-    private List<Edge> adjacent = new ArrayList<Edge>();
+    private int floorNumber;
+    private List<Edge> edges = new ArrayList<Edge>();
 
-    public Node(int nodeID) {
+    /**
+     * Public constructor.
+     * @param nodeID Identifier of Node in <pre>USBManager.sharedNodes</>.
+     * @param floorNumber
+     */
+    public Node(int nodeID, int floorNumber) {
         this.nodeID = nodeID;
-    }
-
-    private Node(int nodeID, List<Edge> adjacent) {
-        this.nodeID = nodeID;
-        this.adjacent = new ArrayList<>(adjacent);
+        this.floorNumber = floorNumber;
+        //add this Node to the shared map of Nodes for access during Navigation
+        USBManager.sharedNodes.put(nodeID, this);
     }
 
     /**
-     * Return Node identifier
-     * @return unique ID of this Node
+     * @return Unique ID of this Node.
      */
     public int getNodeID() {
-        return nodeID;
-    }
-
-    public void addAdjacent(Node adj, int weight, List<Direction> directions, List<Integer> distances, boolean cardLocked, boolean accessible) {
-        this.adjacent.add(new Edge(this, adj, weight, directions, distances, cardLocked, accessible));
+        return this.nodeID;
     }
 
     /**
-     * Get adjacent Edges of this Node with defensive copying
-     * @return
+     * @return Floor number node resides on.
      */
-    public List<Edge> getAdjacents() {
-        return new ArrayList<Edge>(adjacent);
+    public int getFloorNumber() {
+        return this.floorNumber;
     }
 
     /**
-     * @return Logically equal copy of this Node
+     * Add an Edge to this Node.
+     * @param edge Edge to add to this Node's List of Edges.
      */
-    @Override
-    public Node clone() {
-        return new Node(this.nodeID, new ArrayList<Edge>(this.adjacent));
+    public void addEdge(Edge edge) {
+        this.edges.add(edge);
     }
 
     /**
-     * Logical equality checking for Node objects, falls back to superclass for other object types
-     * @param obj
-     * @return
+     * @return List of Edges.
+     */
+    public List<Edge> getEdges() {
+        return edges;
+    }
+
+    /**
+     * Logical equality checking for Node objects, falls back to superclass for other object types.
+     * @param obj Object to compare to <pre>this</pre>.
+     * @return True if Node objects are logically equivalent, or have same hash, false otherwise.
      */
     @Override
     public boolean equals(Object obj) {
         if(obj.getClass().equals(Node.class)) {
-            if(this.nodeID == ((Node)obj).getNodeID()) {
-                if(this.adjacent.equals(((Node) obj).getAdjacents()));
+            Node that = (Node)obj;
+            if(this.nodeID == that.getNodeID() && this.floorNumber == that.getFloorNumber() && this.edges.equals(that.getEdges())) {
                     return true;
             }
         }

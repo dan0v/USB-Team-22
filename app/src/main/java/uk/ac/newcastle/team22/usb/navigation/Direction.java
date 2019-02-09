@@ -11,7 +11,7 @@ import uk.ac.newcastle.team22.usb.R;
  * @version 1.0
  */
 public enum Direction {
-    FORWARD, LEFT, RIGHT, UP, DOWN;
+    FORWARD, LEFT, RIGHT, LIFTUP, LIFTDOWN, STAIRUP, STAIRDOWN;
 
     public @StringRes int getLocalisedDirection()
     {
@@ -19,8 +19,10 @@ public enum Direction {
             case FORWARD:   return R.string.directionForward;
             case LEFT:  return R.string.directionLeft;
             case RIGHT: return R.string.directionRight;
-            case UP:    return R.string.directionUp;
-            case DOWN:  return R.string.directionDown;
+            case LIFTUP:    return R.string.directionLiftUp;
+            case LIFTDOWN:  return R.string.directionLiftDown;
+            case STAIRUP:    return R.string.directionStairUp;
+            case STAIRDOWN:  return R.string.directionStairDown;
             default:    return 0;
         }
     }
