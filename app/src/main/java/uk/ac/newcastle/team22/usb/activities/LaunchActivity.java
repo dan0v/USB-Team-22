@@ -1,14 +1,13 @@
 
-package uk.ac.newcastle.team22.usb;
+package uk.ac.newcastle.team22.usb.activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.content.*;
+import android.support.v7.app.*;
 import android.os.Bundle;
 
+import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.coreUSB.USBUpdateManager;
 
@@ -38,7 +37,7 @@ public class LaunchActivity extends AppCompatActivity {
 
     /** Called when the Urban Sciences Building was initialised. */
     private void didInitialiseUSB() {
-        Intent i = new Intent(LaunchActivity.this, NavigationDrawer.class);
+        Intent i = new Intent(LaunchActivity.this, NavigationDrawerActivity.class);
         startActivity(i);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -112,7 +111,7 @@ public class LaunchActivity extends AppCompatActivity {
         });
 
         // Check whether an update is required to use the app.
-        // Hide cancel button if no Urban Sciences Building is cached.
+        // Hide cancel button if no Urban Sciences Building has been cached.
         if (USBManager.shared.getBuilding() != null) {
             builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {

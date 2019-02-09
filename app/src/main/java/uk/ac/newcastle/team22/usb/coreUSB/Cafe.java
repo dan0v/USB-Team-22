@@ -1,6 +1,5 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +14,7 @@ public class Cafe {
      * The items, food or drink, which are served at the café.
      * See {@link CafeMenuItem} for more information.
      */
-    private List<CafeMenuItem> items = new ArrayList<>();
+    private List<CafeMenuItem> items;
 
     /** Constructor using an Urban Sciences Building update. */
     public Cafe(USBUpdateManager.USBUpdate update) {
