@@ -24,19 +24,9 @@ public class Node implements Cloneable, FirestoreConstructable<Node> {
 
     @Override
     public Node initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
-        List<> edges = (ArrayList<>) firestoreDictionary.get("edges");
-
+        //List<> edges = (ArrayList<>) firestoreDictionary.get("edges");
         this.nodeIdentifier = Integer.parseInt(documentIdentifier);
-
-        // Initialise edges.
-        edges = edges == null ? ArrayList<>() : edges;
-        for (String entry : edges) {
-            Edge newEdge = new Edge(entry);
-            if (newEdge != null) {
-                this.adjacent.add(newEdge);
-            }
-        }
-
+        return this;
     }
 
     public Node(int nodeIdentifier) {
@@ -45,7 +35,7 @@ public class Node implements Cloneable, FirestoreConstructable<Node> {
 
     private Node(int nodeIdentifier, List<Edge> adjacent) {
         this.nodeIdentifier = nodeIdentifier;
-        this.adjacent = new ArrayList<>(adjacent);
+        this.adjacentEdges = new ArrayList<>(adjacent);
     }
 
     /**
@@ -67,7 +57,7 @@ public class Node implements Cloneable, FirestoreConstructable<Node> {
      */
     @Override
     public Node clone() {
-        return new Node(this.nodeID, new ArrayList<Edge>(this.adjacent));
+        return new Node(this.nodeIdentifier, new ArrayList<Edge>(this.adjacentEdges));
     }
 
     /**
@@ -78,8 +68,8 @@ public class Node implements Cloneable, FirestoreConstructable<Node> {
     @Override
     public boolean equals(Object obj) {
         if(obj.getClass().equals(Node.class)) {
-            if(this.nodeID == ((Node)obj).getNodeID()) {
-                if(this.adjacent.equals(((Node) obj).getAdjacents()));
+            if(this.nodeIdentifier == ((Node)obj).getNodeIdentifier()) {
+                if(this.adjacentEdges.equals(((Node) obj).getAdjacentEdges()));
                     return true;
             }
         }

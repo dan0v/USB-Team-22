@@ -1,5 +1,6 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.coreUSB.Room;
@@ -22,7 +23,7 @@ public class Navigator {
      * @return The collection of edges to be traversed to reach the destination.
      */
     public List<Edge> getRoute(Room origin, Room destination, boolean accessibility) {
-        return getRoute(origin.getNavNode(), destination.getNavNode(), accessibility);
+        return new ArrayList<Edge>(); // getRoute(origin.get(), destination.getNavNode(), accessibility);
     }
 
     /**
@@ -32,7 +33,7 @@ public class Navigator {
      * @return The collection of edges to be traversed to reach the destination.
      */
     public List<Edge> getRoute(Room destination, boolean accessibility) {
-        return getRoute(USBManager.shared.getBuilding().getFloors().get(0).getRooms().get(0).getNavNode(), end.getNavNode(), accessibility);
+        return new ArrayList<Edge>(); //getRoute(USBManager.shared.getBuilding().getFloors().get(0).getRooms().get(0).getNavNode(), end.getNavNode(), accessibility);
     }
 
     /**

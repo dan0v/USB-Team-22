@@ -29,7 +29,7 @@ public class Edge {
     public Node getDestinationNode() {
         List<Node> allNodes = new ArrayList<Node>();
         for (Node node : allNodes) {
-            if (node.getNodeID() == destinationNodeIdentifier) {
+            if (node.getNodeIdentifier() == destinationNodeIdentifier) {
                 return node;
             }
         }
@@ -38,6 +38,12 @@ public class Edge {
 
     public Edge(String firestoreDictionary, Node origin) {
         this.origin = origin;
+        this.destination = origin;
+        this.weight = 0;
+        this.directions = new ArrayList<Direction>();
+        this.distances = new ArrayList<Integer>();
+        this.cardLocked = false;
+        this.accessible = false;
     }
 
     /**
@@ -51,7 +57,7 @@ public class Edge {
      */
     public Edge(Node origin, int weight, List<Direction> directions, List<Integer> distances, boolean cardLocked, boolean accessible) {
         this.origin = origin;
-        this.destination = destination;
+        this.destination = origin;
         this.weight = weight;
         this.directions = new ArrayList<Direction>(directions);
         this.distances = new ArrayList<Integer>(distances);
