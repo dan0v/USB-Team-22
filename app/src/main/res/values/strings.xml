@@ -6,7 +6,7 @@
     <string name="updateRequired">Update Required</string>
     <string name="usbUpdateAvailableInstallMessage">An update for the Urban Sciences Building is available. Do you want to install this update now?</string>
     <string name="usbUpdateRequiredInstallMessage">An update for the Urban Sciences Building is required.</string>
-    <string name="usbUpdateUnableToInstallMessage">An error occured when installing the Urban Sciences Building update. Please try again.</string>
+    <string name="usbUpdateUnableToInstallMessage">An error occurred when installing the Urban Sciences Building update. Please try again.</string>
     <string name="install">Install</string>
     <string name="cancel">Cancel</string>
     <!--navigation start-->
@@ -17,4 +17,7 @@
     <string name="directionDown">Down</string>
     <!--navigation end-->
     <string name="retry">Retry</string>
+    <!--search start-->
+    <string name="app_label">USB Tour App</string>
+    <string name="search_hint">Room number, staff member or cafe item</string>
 </resources>
