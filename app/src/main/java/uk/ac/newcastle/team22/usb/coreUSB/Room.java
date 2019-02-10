@@ -116,7 +116,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
 
     @Override
     public Node getNavNode() {
-        return USBManager.sharedNodes.get(nodeIdentifier);
+        return USBManager.shared.getBuilding().getNavigationNodes().get(nodeIdentifier);
     }
 
     @Override

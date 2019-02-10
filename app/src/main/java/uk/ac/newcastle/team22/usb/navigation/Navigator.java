@@ -35,7 +35,7 @@ public class Navigator {
      * @return List of Edges to be traversed to reach destination.
      */
     public List<Edge> getRoute(Navigable destination, boolean accessibility) {
-        return getRoute(USBManager.sharedNodes.get(0), destination.getNavNode(), accessibility);
+        return getRoute(USBManager.shared.getBuilding().getNavigationNodes().get(0), destination.getNavNode(), accessibility);
     }
 
     /**

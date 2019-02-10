@@ -1,7 +1,7 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
 /**
- * All locations to be navigated to must implement this interface
+ * All locations to be navigated to must implement this interface.
  *
  * @author Daniel Vincent
  * @version 1.0

@@ -1,8 +1,10 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.navigation.Node;
 
@@ -26,7 +28,8 @@ public class USB {
 
     private BuildingState buildingState;
 
-    public List<Node> sharedNavNodes;
+    /** The map of navigation Nodes to their NodeIDs. */
+    private Map<Integer, Node> navigationNodes = new HashMap<Integer, Node>();
 
     //times read from stored data
     private List<Calendar> oTimes; //opening times
@@ -49,6 +52,11 @@ public class USB {
         this.floors = update.getFloors();
         this.staffMembers = update.getStaffMembers();
         this.cafe = new Cafe(update);
+        //populate Map of Nodes to their NodeIdentifiers for faster access during navigation
+        this.navigationNodes = new HashMap<Integer, Node>();
+        for (Node node : update.getNavigationNodes()) {
+            this.navigationNodes.put(node.getNodeIdentifier(), node);
+        }
     }
 
     /**
@@ -116,6 +124,13 @@ public class USB {
      */
     public Cafe getCafe() {
         return cafe;
+    }
+
+    /**
+     * @return The navigation nodes in the Urban Sciences Building.
+     */
+    public Map<Integer, Node> getNavigationNodes() {
+        return this.navigationNodes;
     }
 
     /**

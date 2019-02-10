@@ -19,25 +19,23 @@ public class Node implements FirestoreConstructable<Node> {
     /**
      * Public constructor.
      * @param nodeIdentifier Identifier of Node in <pre>USBManager.sharedNodes</>.
-     * @param floorNumber
+     * @param floorNumber The floor this Node resides on.
      */
     public Node(int nodeIdentifier, int floorNumber) {
         this.nodeIdentifier = nodeIdentifier;
         this.floorNumber = floorNumber;
-        //add this Node to the shared map of Nodes for access during Navigation
-        USBManager.sharedNodes.put(nodeIdentifier, this);
     }
 
     @Override
     public Node initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
-        int firestoreFloorNumber = (int) firestoreDictionary.get("floor");
-        List<Map<String, Object>> firestoreEdges = (ArrayList<Map<String, Object>>) firestoreDictionary.get("edges");
+        int floorNumber = (int) firestoreDictionary.get("floor");
+        List<Map<String, Object>> edges = (ArrayList<Map<String, Object>>) firestoreDictionary.get("edges");
 
         this.nodeIdentifier = Integer.parseInt(documentIdentifier);
-        this.floorNumber = firestoreFloorNumber;
+        this.floorNumber = floorNumber;
 
-        if (firestoreEdges != null) {
-            for (Map<String, Object> edgeData : firestoreEdges) {
+        if (edges != null) {
+            for (Map<String, Object> edgeData : edges) {
                 Edge edge = new Edge(this, edgeData);
                 this.addEdge(edge);
             }
@@ -45,9 +43,6 @@ public class Node implements FirestoreConstructable<Node> {
         else {
             throw new FirestoreConstructable.InitialisationFailed("Node could not be initialised - missing Edges");
         }
-
-        //add this Node to the shared map of Nodes for access during Navigation
-        USBManager.sharedNodes.put(nodeIdentifier, this);
 
         return this;
     }

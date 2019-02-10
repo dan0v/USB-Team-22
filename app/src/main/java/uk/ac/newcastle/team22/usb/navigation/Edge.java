@@ -16,27 +16,26 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
  */
 public class Edge {
     private final Node origin;
-    private final int destinationID;
+    private final int destinationIdentifier;
     public final int weight;
     public final List<Direction> directions;
     public final List<Integer> distances;
     public final boolean cardLocked;
     public final boolean accessible;
 
-
     /**
      * Construct an Edge between nodes.
      * @param origin Origin Node of this Edge.
-     * @param destinationID Identifier of destination Node of this Edge.
+     * @param destinationIdentifier Identifier of destination Node of this Edge.
      * @param weight Total weight of the path this Edge represents.
      * @param directions List of Direction - Copy is made.
      * @param distances List of distances for each direction - Copy is made.
      * @param cardLocked boolean whether card access is required.
      * @param accessible boolean whether this edge meets accessibility needs.
      */
-    public Edge(Node origin, int destinationID, int weight, List<Direction> directions, List<Integer> distances, boolean cardLocked, boolean accessible) {
+    public Edge(Node origin, int destinationIdentifier, int weight, List<Direction> directions, List<Integer> distances, boolean cardLocked, boolean accessible) {
         this.origin = origin;
-        this.destinationID = destinationID;
+        this.destinationIdentifier = destinationIdentifier;
         this.weight = weight;
         this.directions = new ArrayList<Direction>(directions);
         this.distances = new ArrayList<Integer>(distances);
@@ -51,7 +50,7 @@ public class Edge {
      */
     public Edge(Node origin, Map<String, Object> firestoreDictionary) throws FirestoreConstructable.InitialisationFailed {
         this.origin = origin;
-        this.destinationID = (int) firestoreDictionary.get("destination");
+        this.destinationIdentifier = (int) firestoreDictionary.get("destination");
         this.weight = (int) firestoreDictionary.get("weight");
         this.cardLocked = (boolean) firestoreDictionary.get("cardLocked");
         this.accessible = (boolean) firestoreDictionary.get("accessible");
@@ -82,17 +81,17 @@ public class Edge {
     }
 
     /**
-     * @return Node with origin ID from <pre>USBManager.sharedNodes</pre>.
+     * @return Origin Node of this Edge.
      */
     public Node getOrigin() {
-        return USBManager.sharedNodes.get(origin);
+        return origin;
     }
 
     /**
-     * @return Node with destination ID from <pre>USBManager.sharedNodes</pre>.
+     * @return Node with nodeIdentifier of this Edge from <pre>USBManager.sharedNodes</pre>.
      */
     public Node getDestination() {
-        return USBManager.sharedNodes.get(destinationID);
+        return USBManager.shared.getBuilding().getNavigationNodes().get(destinationIdentifier);
     }
 
     /**

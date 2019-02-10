@@ -1,10 +1,6 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import uk.ac.newcastle.team22.usb.firebase.FirestoreCompletionHandler;
-import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
  * A class which manages the current version, caching and updates for the Urban Sciences Building.
@@ -17,9 +13,6 @@ public class USBManager {
 
     /** The shared instance of the Urban Sciences Building manager. */
     public static USBManager shared = new USBManager();
-
-    /** The shared map of navigation Nodes to their NodeIDs. */
-    public static Map<Integer, Node> sharedNodes = new HashMap<Integer, Node>();
 
     /** The update manager for the Urban Sciences Building. */
     private USBUpdateManager updateManager;
