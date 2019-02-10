@@ -84,7 +84,7 @@ public class Edge {
      * @return Origin Node of this Edge.
      */
     public Node getOrigin() {
-        return origin;
+        return this.origin;
     }
 
     /**
@@ -97,7 +97,7 @@ public class Edge {
     /**
      * Logical equality checking for Edges, falls back to superclass for unknown object types.
      * @param obj Object to compare to <pre>this</pre>.
-     * @return true if Edge objects are logically equivalent, or have same hash, false otherwise.
+     * @return True if Edges are logically equivalent, or Objects have the same hash, false otherwise.
      */
     @Override
     public boolean equals(Object obj) {

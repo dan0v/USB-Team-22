@@ -21,7 +21,7 @@ public class Navigator {
      * Calculates route from start Navigable to end Navigable.
      * @param origin The origin of the journey.
      * @param destination The destination of the journey.
-     * @param accessibility Boolean value whether the journey needs to include an accessible route.
+     * @param accessibility Boolean value whether the journey needs to be accessible.
      * @return List of Edges to be traversed to reach destination.
      */
     public List<Edge> getRoute(Navigable origin, Navigable destination, boolean accessibility) {
@@ -30,8 +30,8 @@ public class Navigator {
 
     /**
      * Calculate route from building entrance if no start position provided.
-     * @param destination Navigable to be navigated to.
-     * @param accessibility Boolean value whether the journey needs to include an accessible route.
+     * @param destination The origin of the journey.
+     * @param accessibility Boolean value whether the journey needs to be accessible.
      * @return List of Edges to be traversed to reach destination.
      */
     public List<Edge> getRoute(Navigable destination, boolean accessibility) {
@@ -40,16 +40,16 @@ public class Navigator {
 
     /**
      * Calculate route from start Node to end Node.
-     * @param origin Node to be navigated from.
-     * @param destination Node to be navigated to.
-     * @param accessibility Boolean value whether the journey needs to include an accessible route.
+     * @param origin The origin of the journey.
+     * @param destination The destination of the journey.
+     * @param accessibility Boolean value whether the journey needs to be accessible.
      * @return List of Edges to be traversed to reach the destination.
      */
     public List<Edge> getRoute(Node origin, Node destination, boolean accessibility) {
         bestRouteWeight = Integer.MAX_VALUE;
         bestRoute = new ArrayList<Edge>();
 
-        //find shortest route between start and end nodes using backtracking
+        //find shortest route between origin and destination Nodes using backtracking
         recursiveExplore(origin, destination, origin, origin, accessibility, new ArrayList<Edge>(), Integer.MAX_VALUE);
         return bestRoute;
     }
@@ -57,7 +57,7 @@ public class Navigator {
     /**
      * Recursively explore all Edges of adjacent Nodes, backtracking if the current Edge does not
      * meet requirements. <pre>bestRoute</pre> and <pre>bestRouteWeight</pre> will be updated with
-     * the shortest route from the provided start Node to the provided end Node which meets
+     * the shortest route from the provided origin Node to the provided destination Node which meets
      * accessibility requirements.
      *
      * @param originNode Node to navigate from.

@@ -20,10 +20,12 @@ public class Node implements FirestoreConstructable<Node> {
      * Public constructor.
      * @param nodeIdentifier Identifier of Node in <pre>USBManager.sharedNodes</>.
      * @param floorNumber The floor this Node resides on.
+     * @param edges A List of Edges adjacent to this Node.
      */
-    public Node(int nodeIdentifier, int floorNumber) {
+    public Node(int nodeIdentifier, int floorNumber, List<Edge> edges) {
         this.nodeIdentifier = nodeIdentifier;
         this.floorNumber = floorNumber;
+        this.edges = edges;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class Node implements FirestoreConstructable<Node> {
         if (edges != null) {
             for (Map<String, Object> edgeData : edges) {
                 Edge edge = new Edge(this, edgeData);
-                this.addEdge(edge);
+                this.edges.add(edge);
             }
         }
         else {
@@ -62,24 +64,16 @@ public class Node implements FirestoreConstructable<Node> {
     }
 
     /**
-     * Add an Edge to this Node.
-     * @param edge Edge to add to this Node's List of Edges.
-     */
-    public void addEdge(Edge edge) {
-        this.edges.add(edge);
-    }
-
-    /**
      * @return List of Edges.
      */
     public List<Edge> getEdges() {
-        return edges;
+        return this.edges;
     }
 
     /**
      * Logical equality checking for Node objects, falls back to superclass for other object types.
      * @param obj Object to compare to <pre>this</pre>.
-     * @return True if Node objects are logically equivalent, or have same hash, false otherwise.
+     * @return True if Nodes are logically equivalent, or Objects have the same hash, false otherwise.
      */
     @Override
     public boolean equals(Object obj) {

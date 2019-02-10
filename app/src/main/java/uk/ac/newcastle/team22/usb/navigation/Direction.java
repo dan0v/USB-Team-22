@@ -30,7 +30,6 @@ public enum Direction {
     }
 
     /**
-     *
      * @param input String representation of a Direction from Firebase.
      * @return Direction enum.
      * @throws IllegalArgumentException
@@ -44,7 +43,7 @@ public enum Direction {
             case "ld":  return LIFTDOWN;
             case "su":  return STAIRUP;
             case "sd":  return STAIRDOWN;
-            default:    throw new IllegalArgumentException("Nonexistent Direction String provided");
+            default:    throw new IllegalArgumentException("Invalid Direction String provided");
         }
     }
 }
