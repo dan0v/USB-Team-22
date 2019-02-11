@@ -14,8 +14,8 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
  * @version 1.0
  */
 public class Navigator {
-    private int bestRouteWeight;
-    private List<Edge> bestRoute;
+    private int bestRouteWeight = Integer.MAX_VALUE;
+    private List<Edge> bestRoute = new ArrayList<Edge>();
 
     /**
      * Calculates route from start Navigable to end Navigable.
@@ -70,31 +70,31 @@ public class Navigator {
      */
     private void recursiveExplore(Node originNode, Node destinationNode, Node currentNode, Node previousNode, boolean accessibility, List<Edge> candidateRoute, int candidateWeight) {
         for (Edge currentEdge : currentNode.getEdges()) {
-            //ignore Edge if it leads to already explored Node
+            //Edge returns to previously visited Node, so ignore this Edge
             if (currentEdge.getDestination().equals(previousNode)) {
                 continue;
             }
-            //Edge leads out of between start and end Node floors, so go to next Edge
+            //Edge leads out of between start and end Node floors, so ignore this Edge
             if (destinationNode.getFloorNumber() > originNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() < originNode.getFloorNumber() || currentEdge.getDestination().getFloorNumber() > destinationNode.getFloorNumber()) {
                 continue;
             }
-            //Edge leads out of between start and end Node floors, so go to next Edge
+            //Edge leads out of between start and end Node floors, so ignore this Edge
             else if (destinationNode.getFloorNumber() < originNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() > originNode.getFloorNumber() || currentEdge.getDestination().getFloorNumber() < destinationNode.getFloorNumber()) {
                 continue;
             }
-            //Edge does not meet accessibility requirements, so go to next Edge
-            else if (currentEdge.accessible != accessibility) {
+            //Edge does not meet accessibility requirements, so ignore this Edge
+            else if (accessibility && !currentEdge.accessible) {
                 continue;
             }
-            //continuing route would be longer than current best route, so go to next Edge
+            //continuing route would be longer than current best route, so ignore this Edge
             else if (candidateWeight + currentEdge.weight >= bestRouteWeight) {
                 continue;
             }
             //current shortest route found
             else if (currentEdge.getDestination().equals(destinationNode)) {
                 candidateRoute.add(currentEdge);
-                bestRoute = new ArrayList<>(candidateRoute);
-                bestRouteWeight = candidateWeight+currentEdge.weight;
+                bestRoute = new ArrayList<Edge>(candidateRoute);
+                bestRouteWeight = candidateWeight + currentEdge.weight;
                 //after best route has been updated, remove current Edge from candidate route to move back through recursive call chain and explore along the next Edge
                 candidateRoute.remove(currentEdge);
                 continue;
