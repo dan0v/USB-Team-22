@@ -69,7 +69,7 @@ public class Navigator {
      * @param candidateWeight Weight of partially constructed route.
      */
     private void recursiveExplore(Node originNode, Node destinationNode, Node currentNode, List<Node> visitedNodes, boolean accessibility, List<Edge> candidateRoute, int candidateWeight) {
-        //Node to visited Nodes List
+        //add Node to visited Nodes List
         visitedNodes.add(currentNode);
 
         for (Edge currentEdge : currentNode.getEdges()) {
