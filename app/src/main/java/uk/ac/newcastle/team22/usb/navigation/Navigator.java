@@ -14,7 +14,14 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
  * @version 1.0
  */
 public class Navigator {
+
+    /** The shared instance of the Urban Sciences Building navigator. */
+    public static Navigator shared = new Navigator();
+
+    /** The weight of the best route between two locations in the Urban Sciences Building. */
     private int bestRouteWeight = Integer.MAX_VALUE;
+
+    /** The list of edges for the best route between two locations in the Urban Sciences Building. */
     private List<Edge> bestRoute = new ArrayList<Edge>();
 
     /**
@@ -47,7 +54,7 @@ public class Navigator {
      */
     public List<Edge> getRoute(Node origin, Node destination, boolean accessibility) {
         bestRouteWeight = Integer.MAX_VALUE;
-        bestRoute = new ArrayList<Edge>();
+        bestRoute = new ArrayList<>();
 
         //find shortest route between origin and destination Nodes using backtracking
         recursiveExplore(origin, destination, origin, new ArrayList<Node>(), accessibility, new ArrayList<Edge>(), Integer.MAX_VALUE);
@@ -69,49 +76,54 @@ public class Navigator {
      * @param candidateWeight Weight of partially constructed route.
      */
     private void recursiveExplore(Node originNode, Node destinationNode, Node currentNode, List<Node> visitedNodes, boolean accessibility, List<Edge> candidateRoute, int candidateWeight) {
-        //add Node to visited Nodes List
+        // Add node to visited nodes list.
         visitedNodes.add(currentNode);
 
         for (Edge currentEdge : currentNode.getEdges()) {
-            //Edge returns to previously visited Node, so ignore this Edge
+            // Edge returns to previously visited node, so ignore this edge.
             if (visitedNodes.contains(currentEdge.getDestination())) {
                 continue;
             }
-            //Edge leads out of between start and end Node floors, so ignore this Edge
+            // Edge leads out of between start and end node floors, so ignore this edge.
             if (destinationNode.getFloorNumber() > originNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() < originNode.getFloorNumber() || currentEdge.getDestination().getFloorNumber() > destinationNode.getFloorNumber()) {
                 continue;
             }
-            //Edge leads out of between start and end Node floors, so ignore this Edge
-            else if (destinationNode.getFloorNumber() < originNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() > originNode.getFloorNumber() || currentEdge.getDestination().getFloorNumber() < destinationNode.getFloorNumber()) {
+            // Edge leads out of between start and end node floors, so ignore this edge.
+            if (destinationNode.getFloorNumber() < originNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() > originNode.getFloorNumber() || currentEdge.getDestination().getFloorNumber() < destinationNode.getFloorNumber()) {
                 continue;
             }
-            //Edge does not meet accessibility requirements, so ignore this Edge
-            else if (accessibility && !currentEdge.accessible) {
+            // Edge does not meet accessibility requirements, so ignore this edge.
+            if (accessibility && !currentEdge.accessible) {
                 continue;
             }
-            //continuing route would be longer than current best route, so ignore this Edge
-            else if (candidateWeight + currentEdge.weight >= bestRouteWeight) {
+            // Continuing route would be longer than current best route, so ignore this edge.
+            if (candidateWeight + currentEdge.weight >= bestRouteWeight) {
                 continue;
             }
-            //current shortest route found
-            else if (currentEdge.getDestination().equals(destinationNode)) {
+
+            // Current shortest route found.
+            if (currentEdge.getDestination().equals(destinationNode)) {
                 candidateRoute.add(currentEdge);
-                bestRoute = new ArrayList<Edge>(candidateRoute);
+                bestRoute = new ArrayList<>(candidateRoute);
                 bestRouteWeight = candidateWeight + currentEdge.weight;
-                //after best route has been updated, remove current Edge from candidate route to move back through recursive call chain and explore along the next Edge
+
+                // After best route has been updated, remove current edge from candidate route to move back through recursive call chain and explore along the next edge.
                 candidateRoute.remove(currentEdge);
                 continue;
             }
-            //no backtracking possible, so add Edge to candidate route
+
+            // No backtracking possible, so add edge to candidate route.
             candidateRoute.add(currentEdge);
-            //explore along candidate route
+
+            // Explore along candidate route.
             recursiveExplore(originNode, destinationNode, currentEdge.getDestination(), visitedNodes, accessibility, candidateRoute, (candidateWeight + currentEdge.weight));
-            //remove current Edge from candidate route to move back through recursive call chain and explore along the next Edge
+
+            // Remove current edge from candidate route to move back through recursive call chain and explore along the next edge.
             candidateRoute.remove(currentEdge);
         }
-        //remove current Node from List of visited Nodes when moving back through recursive call chain
+
+        // Remove current node from list of visited nodes when moving back through recursive call chain.
+        // Move back up recursive call chain to explore next node.
         visitedNodes.remove(currentNode);
-        //move back up recursive call chain to explore next Node
-        return;
     }
 }
