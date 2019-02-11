@@ -39,7 +39,13 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
     @SuppressWarnings("unchecked")
     public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
         int number = Integer.parseInt(documentIdentifier);
-        int nodeIdentifier = (int) firestoreDictionary.get("node");
+
+        // TODO Temporary check for null node identifier while data is being finalised.
+        int nodeIdentifier = -1;
+        if (firestoreDictionary.get("node") != null) {
+            nodeIdentifier = (int) firestoreDictionary.get("node");
+        }
+
         Map<String, Long> resources = (Map<String, Long>) firestoreDictionary.get("resources");
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
 

@@ -11,21 +11,21 @@ import uk.ac.newcastle.team22.usb.R;
  * @version 1.0
  */
 public enum Direction {
-    FORWARD, LEFT, RIGHT, LIFTUP, LIFTDOWN, STAIRUP, STAIRDOWN;
+    FORWARD, LEFT, RIGHT, LIFT_UP, LIFT_DOWN, STAIR_UP, STAIR_DOWN;
 
     /**
      * @return Localised String representation of a Direction.
      */
     public @StringRes int getLocalisedDirection() {
         switch (this) {
-            case FORWARD:   return R.string.directionForward;
-            case LEFT:  return R.string.directionLeft;
-            case RIGHT: return R.string.directionRight;
-            case LIFTUP:    return R.string.directionLiftUp;
-            case LIFTDOWN:  return R.string.directionLiftDown;
-            case STAIRUP:    return R.string.directionStairUp;
-            case STAIRDOWN:  return R.string.directionStairDown;
-            default:    return 0;
+            case FORWARD:     return R.string.directionForward;
+            case LEFT:        return R.string.directionLeft;
+            case RIGHT:       return R.string.directionRight;
+            case LIFT_UP:     return R.string.directionLiftUp;
+            case LIFT_DOWN:   return R.string.directionLiftDown;
+            case STAIR_UP:    return R.string.directionStairUp;
+            case STAIR_DOWN:  return R.string.directionStairDown;
+            default:          return 0;
         }
     }
 
@@ -39,10 +39,10 @@ public enum Direction {
             case "f":   return FORWARD;
             case "l":   return RIGHT;
             case "r":   return LEFT;
-            case "lu":  return LIFTUP;
-            case "ld":  return LIFTDOWN;
-            case "su":  return STAIRUP;
-            case "sd":  return STAIRDOWN;
+            case "lu":  return LIFT_UP;
+            case "ld":  return LIFT_DOWN;
+            case "su":  return STAIR_UP;
+            case "sd":  return STAIR_DOWN;
             default:    throw new IllegalArgumentException("Invalid Direction String provided");
         }
     }

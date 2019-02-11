@@ -37,8 +37,8 @@ public class Edge {
         this.origin = origin;
         this.destinationIdentifier = destinationIdentifier;
         this.weight = weight;
-        this.directions = new ArrayList<Direction>(directions);
-        this.distances = new ArrayList<Integer>(distances);
+        this.directions = new ArrayList<>(directions);
+        this.distances = new ArrayList<>(distances);
         this.cardLocked = cardLocked;
         this.accessible = accessible;
     }
@@ -50,32 +50,32 @@ public class Edge {
      */
     public Edge(Node origin, Map<String, Object> firestoreDictionary) throws FirestoreConstructable.InitialisationFailed {
         this.origin = origin;
-        this.destinationIdentifier = (int) firestoreDictionary.get("destination");
-        this.weight = (int) firestoreDictionary.get("weight");
+        this.destinationIdentifier = ((Long) firestoreDictionary.get("destination")).intValue();
+        this.weight = ((Long) firestoreDictionary.get("weight")).intValue();
         this.cardLocked = (boolean) firestoreDictionary.get("cardLocked");
         this.accessible = (boolean) firestoreDictionary.get("accessible");
 
-        this.directions = new ArrayList<Direction>();
-        List<String> firestoreDirections = (ArrayList<String>)firestoreDictionary.get("directions");
+        // Initialise edge directions.
+        this.directions = new ArrayList<>();
+        List<String> firestoreDirections = (ArrayList<String>) firestoreDictionary.get("directions");
         if (firestoreDirections != null) {
             for (String firestoreDirection : firestoreDirections) {
                 if (firestoreDirection != null) {
                     this.directions.add(Direction.parseDirection(firestoreDirection));
                 }
             }
-        }
-        else {
+        } else {
             throw new FirestoreConstructable.InitialisationFailed("Edge could not be initialised - missing directions");
         }
 
-        this.distances = new ArrayList<Integer>();
-        List<Integer> firestoreDistances = (ArrayList<Integer>)firestoreDictionary.get("distances");
+        // Initialise edge distances.
+        this.distances = new ArrayList<>();
+        List<Long> firestoreDistances = (ArrayList<Long>) firestoreDictionary.get("distances");
         if (firestoreDirections != null) {
-            for (int firestoreDistance : firestoreDistances) {
-                    this.distances.add((int) firestoreDistance);
+            for (Long firestoreDistance : firestoreDistances) {
+                this.distances.add(firestoreDistance.intValue());
             }
-        }
-        else {
+        } else {
             throw new FirestoreConstructable.InitialisationFailed("Edge could not be initialised - missing distances");
         }
     }
@@ -101,9 +101,9 @@ public class Edge {
      */
     @Override
     public boolean equals(Object obj) {
-        if(obj.getClass().equals(Edge.class)) {
-            Edge that = (Edge)obj;
-            if(this.getOrigin().equals(that.getOrigin()) && this.getDestination().equals(that.getDestination()) && this.weight == that.weight && this.directions.equals(that.directions) && this.distances.equals(that.distances) && this.cardLocked == that.cardLocked && this.accessible == that.accessible) {
+        if (obj.getClass().equals(Edge.class)) {
+            Edge that = (Edge) obj;
+            if (this.getOrigin().equals(that.getOrigin()) && this.getDestination().equals(that.getDestination()) && this.weight == that.weight && this.directions.equals(that.directions) && this.distances.equals(that.distances) && this.cardLocked == that.cardLocked && this.accessible == that.accessible) {
                 return true;
             }
         }

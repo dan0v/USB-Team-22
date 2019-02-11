@@ -17,7 +17,7 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
 public class USBUpdateManager {
 
     /** Boolean value whether the cache is enabled. Used for debugging purposes. */
-    private static final boolean CACHED_ENABLED = true;
+    private static final boolean CACHED_ENABLED = false;
 
     /** The exception to throw when a cached version of the Urban Sciences Building is not available. */
     public class USBNoCachedVersionAvailable extends Exception {}
@@ -224,6 +224,7 @@ public class USBUpdateManager {
             @Override
             public void failed(Exception exception) {
                 Log.e("", "Unable to retrieve USB staff members", exception);
+                handler.failed(exception);
             }
         });
     }
@@ -242,12 +243,13 @@ public class USBUpdateManager {
             @Override
             public void failed(Exception exception) {
                 Log.e("", "Unable to retrieve USB café menu items", exception);
+                handler.failed(exception);
             }
         });
     }
 
     /**
-     * Loads navigation node in the Urban Sciences Building.
+     * Loads the navigation nodes in the Urban Sciences Building.
      *
      * @param handler The completion handler called once the navigation nodes have been retrieved.
      */
@@ -260,6 +262,7 @@ public class USBUpdateManager {
             @Override
             public void failed(Exception exception) {
                 Log.e("", "Unable to retrieve USB navigation nodes", exception);
+                handler.failed(exception);
             }
         });
     }

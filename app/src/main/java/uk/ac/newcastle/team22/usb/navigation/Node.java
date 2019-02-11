@@ -30,21 +30,24 @@ public class Node implements FirestoreConstructable<Node> {
         this.edges = edges;
     }
 
+    /** Empty constructor. */
+    public Node() {}
+
     @Override
     public Node initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
-        int floorNumber = (int) firestoreDictionary.get("floor");
+        int floorNumber = ((Long) firestoreDictionary.get("floor")).intValue();
         List<Map<String, Object>> edges = (ArrayList<Map<String, Object>>) firestoreDictionary.get("edges");
 
         this.nodeIdentifier = Integer.parseInt(documentIdentifier);
         this.floorNumber = floorNumber;
 
+        // Initialise node's edges.
         if (edges != null) {
             for (Map<String, Object> edgeData : edges) {
                 Edge edge = new Edge(this, edgeData);
                 this.edges.add(edge);
             }
-        }
-        else {
+        } else {
             throw new FirestoreConstructable.InitialisationFailed("Node could not be initialised - missing Edges");
         }
 
@@ -52,21 +55,21 @@ public class Node implements FirestoreConstructable<Node> {
     }
 
     /**
-     * @return Unique ID of this Node.
+     * @return Unique identifier of the node.
      */
     public int getNodeIdentifier() {
         return this.nodeIdentifier;
     }
 
     /**
-     * @return Floor number node resides on.
+     * @return Floor number which the node resides on.
      */
     public int getFloorNumber() {
         return this.floorNumber;
     }
 
     /**
-     * @return List of Edges.
+     * @return List of edges.
      */
     public List<Edge> getEdges() {
         return this.edges;
@@ -79,10 +82,10 @@ public class Node implements FirestoreConstructable<Node> {
      */
     @Override
     public boolean equals(Object obj) {
-        if(obj.getClass().equals(Node.class)) {
-            Node that = (Node)obj;
-            if(this.nodeIdentifier == that.getNodeIdentifier() && this.floorNumber == that.getFloorNumber() && this.edges.equals(that.getEdges())) {
-                    return true;
+        if (obj.getClass().equals(Node.class)) {
+            Node that = (Node) obj;
+            if (this.nodeIdentifier == that.getNodeIdentifier() && this.floorNumber == that.getFloorNumber() && this.edges.equals(that.getEdges())) {
+                return true;
             }
         }
         return super.equals(obj);
