@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import uk.ac.newcastle.team22.usb.navigation.Navigator;
 import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
@@ -30,6 +31,9 @@ public class USB {
 
     /** The map of navigation Nodes to their NodeIDs. */
     private Map<Integer, Node> navigationNodes = new HashMap<Integer, Node>();
+
+    /** The Navigator to use when planning routes in the Urban Sciences Building. */
+    private Navigator navigator = new Navigator();
 
     //times read from stored data
     private List<Calendar> oTimes; //opening times
@@ -131,6 +135,13 @@ public class USB {
      */
     public Map<Integer, Node> getNavigationNodes() {
         return this.navigationNodes;
+    }
+
+    /**
+     * @return The navigator for the Urban Sciences Building.
+     */
+    public Navigator getNavigator() {
+        return this.navigator;
     }
 
     /**
