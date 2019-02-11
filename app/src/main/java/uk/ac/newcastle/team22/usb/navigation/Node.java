@@ -8,6 +8,8 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
 /**
+ * A class that represents a Node used for navigation in the Urban Sciences Building.
+ *
  * @author Daniel Vincent
  * @version 1.0
  */
