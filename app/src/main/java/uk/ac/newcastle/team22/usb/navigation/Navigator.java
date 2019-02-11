@@ -50,7 +50,7 @@ public class Navigator {
         bestRoute = new ArrayList<Edge>();
 
         //find shortest route between origin and destination Nodes using backtracking
-        recursiveExplore(origin, destination, origin, origin, accessibility, new ArrayList<Edge>(), Integer.MAX_VALUE);
+        recursiveExplore(origin, destination, origin, new ArrayList<Node>(), accessibility, new ArrayList<Edge>(), Integer.MAX_VALUE);
         return bestRoute;
     }
 
@@ -63,15 +63,15 @@ public class Navigator {
      * @param originNode Node to navigate from.
      * @param destinationNode Node to navigate to.
      * @param currentNode Node whose Edges are being explored.
-     * @param previousNode Node whose Edge was explored to reach current Node.
+     * @param visitedNodes List of Nodes whose Edges were explored to reach current Node.
      * @param accessibility Ensure all Edges added to route meet accessibility requirements.
      * @param candidateRoute Partially constructed route.
      * @param candidateWeight Weight of partially constructed route.
      */
-    private void recursiveExplore(Node originNode, Node destinationNode, Node currentNode, Node previousNode, boolean accessibility, List<Edge> candidateRoute, int candidateWeight) {
+    private void recursiveExplore(Node originNode, Node destinationNode, Node currentNode, List<Node> visitedNodes, boolean accessibility, List<Edge> candidateRoute, int candidateWeight) {
         for (Edge currentEdge : currentNode.getEdges()) {
             //Edge returns to previously visited Node, so ignore this Edge
-            if (currentEdge.getDestination().equals(previousNode)) {
+            if (visitedNodes.contains(currentEdge.getDestination())) {
                 continue;
             }
             //Edge leads out of between start and end Node floors, so ignore this Edge
@@ -101,10 +101,14 @@ public class Navigator {
             }
             //no backtracking possible, so add Edge to candidate route
             candidateRoute.add(currentEdge);
+            //no backtracking possible, so add Node to visited Nodes List
+            visitedNodes.add(currentNode);
             //explore along candidate route
-            recursiveExplore(originNode, destinationNode, currentEdge.getDestination(), currentNode, accessibility, candidateRoute, (candidateWeight + currentEdge.weight));
+            recursiveExplore(originNode, destinationNode, currentEdge.getDestination(), visitedNodes, accessibility, candidateRoute, (candidateWeight + currentEdge.weight));
             //remove current Edge from candidate route to move back through recursive call chain and explore along the next Edge
             candidateRoute.remove(currentEdge);
+            //remove current Node from List of visited Nodes to move back through recursive call chain and explore along the next Edge
+            visitedNodes.remove(currentNode);
         }
         //move back up recursive call chain to explore next Node
         return;
