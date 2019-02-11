@@ -69,6 +69,9 @@ public class Navigator {
      * @param candidateWeight Weight of partially constructed route.
      */
     private void recursiveExplore(Node originNode, Node destinationNode, Node currentNode, List<Node> visitedNodes, boolean accessibility, List<Edge> candidateRoute, int candidateWeight) {
+        //Node to visited Nodes List
+        visitedNodes.add(currentNode);
+
         for (Edge currentEdge : currentNode.getEdges()) {
             //Edge returns to previously visited Node, so ignore this Edge
             if (visitedNodes.contains(currentEdge.getDestination())) {
@@ -101,15 +104,13 @@ public class Navigator {
             }
             //no backtracking possible, so add Edge to candidate route
             candidateRoute.add(currentEdge);
-            //no backtracking possible, so add Node to visited Nodes List
-            visitedNodes.add(currentNode);
             //explore along candidate route
             recursiveExplore(originNode, destinationNode, currentEdge.getDestination(), visitedNodes, accessibility, candidateRoute, (candidateWeight + currentEdge.weight));
             //remove current Edge from candidate route to move back through recursive call chain and explore along the next Edge
             candidateRoute.remove(currentEdge);
-            //remove current Node from List of visited Nodes to move back through recursive call chain and explore along the next Edge
-            visitedNodes.remove(currentNode);
         }
+        //remove current Node from List of visited Nodes when moving back through recursive call chain
+        visitedNodes.remove(currentNode);
         //move back up recursive call chain to explore next Node
         return;
     }
