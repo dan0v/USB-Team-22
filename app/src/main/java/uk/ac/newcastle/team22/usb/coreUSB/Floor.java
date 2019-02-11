@@ -20,15 +20,19 @@ public class Floor implements FirestoreConstructable<Floor> {
      */
     private List<Room> rooms = new ArrayList<>();
 
+    public Floor(int number) {
+        this.number = number;
+    }
+
+    /** Empty constructor. */
+    public Floor() {}
+
     @Override
     public Floor initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
         int number = Integer.parseInt(documentIdentifier);
         this.number = number;
         return this;
     }
-
-    /** Empty constructor. */
-    public Floor() {}
 
     /**
      * Helper method to place a room onto a floor.

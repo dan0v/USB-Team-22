@@ -35,6 +35,15 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
     /** The nearest Navigation Node to this Room */
     private int nodeIdentifier;
 
+    public Room(Floor floor, int number) {
+        this.floor = floor;
+        this.number = number;
+        floor.attachRoom(this);
+    }
+
+    /** Empty constructor. */
+    public Room() {}
+
     @Override
     @SuppressWarnings("unchecked")
     public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
@@ -63,9 +72,6 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
         }
         return this;
     }
-
-    /** Empty constructor. */
-    public Room() {}
 
     /**
      * Helper method to set the floor on which this room is situated.

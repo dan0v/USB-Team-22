@@ -38,4 +38,11 @@ public enum ResourceType {
         }
         throw new FirestoreConstructable.InitialisationFailed("Unknown resource type identifier '" + identifier + "'");
     }
+
+    /**
+     * @return The identifier of the resource.
+     */
+    public int getIdentifier() {
+        return identifier;
+    }
 }

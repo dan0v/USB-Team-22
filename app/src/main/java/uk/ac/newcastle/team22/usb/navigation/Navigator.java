@@ -3,7 +3,6 @@ package uk.ac.newcastle.team22.usb.navigation;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.newcastle.team22.usb.coreUSB.Room;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
 /**

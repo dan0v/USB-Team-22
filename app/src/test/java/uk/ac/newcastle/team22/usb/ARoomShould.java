@@ -15,7 +15,7 @@ public class ARoomShould {
     @Test
     public void beSituatedOnAFloor() {
         Floor firstFloor = new Floor(1);
-        new Room(32, firstFloor);
+        new Room(firstFloor, 32);
 
         assertEquals(firstFloor.getRooms().size(), 1);
     }
@@ -23,7 +23,7 @@ public class ARoomShould {
     @Test
     public void holdAValidRoomNumber() {
         Floor firstFloor = new Floor(1);
-        Room someRoom = new Room(32, firstFloor);
+        Room someRoom = new Room(firstFloor, 32);
 
         assertEquals(someRoom.getNumber(), "1.032");
     }

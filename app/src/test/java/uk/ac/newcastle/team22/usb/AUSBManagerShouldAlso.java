@@ -35,9 +35,5 @@ public class AUSBManagerShouldAlso {
             list2.add(test);
             list3.add(test);
         }
-
-        USBManager.prepareUSBManager(list1, list2, list3, list4); //first instance of USBManager
-
-        USBManager.prepareUSBManager(list1, list2, list3, list4); //attempt second instance of USBManager
     }
 }

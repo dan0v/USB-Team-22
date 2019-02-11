@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import uk.ac.newcastle.team22.usb.navigation.Navigator;
 import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**

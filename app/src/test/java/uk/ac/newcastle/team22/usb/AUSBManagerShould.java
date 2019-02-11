@@ -26,6 +26,6 @@ public class AUSBManagerShould {
 
     @Test(expected = IllegalArgumentException.class)
     public void warnIfNotInstantiated() {
-        USBManager manager = USBManager.getInstance();
+        USBManager manager = USBManager.shared;
     }
 }
