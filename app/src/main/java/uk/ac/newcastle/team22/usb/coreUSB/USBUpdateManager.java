@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.firebase.*;
+import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
  * A class which manages and maintains new and cached versions of the Urban Sciences Building.
@@ -111,7 +112,19 @@ public class USBUpdateManager {
                             @Override
                             public void completed(List<CafeMenuItem> menuItems) {
                                 update.setCafeMenuItems(menuItems);
-                                handler.completed(update);
+
+                                // Request navigation nodes.
+                                loadNavigationNodes(new FirestoreCompletionHandler<List<Node>>() {
+                                    @Override
+                                    public void completed(List<Node> nodes) {
+                                        update.setNavigationNodes(nodes);
+                                        handler.completed(update);
+                                    }
+                                    @Override
+                                    public void failed(Exception exception) {
+                                        handler.failed(exception);
+                                    }
+                                });
                             }
                             @Override
                             public void failed(Exception exception) {
@@ -234,6 +247,24 @@ public class USBUpdateManager {
     }
 
     /**
+     * Loads navigation node in the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the navigation nodes have been retrieved.
+     */
+    private void loadNavigationNodes(final FirestoreCompletionHandler<List<Node>> handler) {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.NAVIGATION_NODES, null, new FirestoreCompletionHandler<List<Node>>() {
+            @Override
+            public void completed(final List<Node> nodes) {
+                handler.completed(nodes);
+            }
+            @Override
+            public void failed(Exception exception) {
+                Log.e("", "Unable to retrieve USB navigation nodes", exception);
+            }
+        });
+    }
+
+    /**
      * An Urban Sciences Building update completion handler.
      *
      * @author Alexander MacLeod
@@ -275,6 +306,9 @@ public class USBUpdateManager {
         /** The items, food or drink, which are served at the café in the Urban Sciences Building. */
         private List<CafeMenuItem> cafeMenuItems = new ArrayList<>();
 
+        /** The navigation nodes in the Urban Sciences Building. */
+        private List<Node> navigationNodes = new ArrayList<>();
+
         /** Empty constructor. */
         USBUpdate() {}
 
@@ -288,7 +322,7 @@ public class USBUpdateManager {
 
         /**
          * Sets the new staff members in the update.
-         * @param staffMembers The updated floors.
+         * @param staffMembers The updated staff members.
          */
         public void setStaffMembers(List<StaffMember> staffMembers) {
             this.staffMembers = staffMembers;
@@ -300,6 +334,14 @@ public class USBUpdateManager {
          */
         public void setCafeMenuItems(List<CafeMenuItem> cafeMenuItems) {
             this.cafeMenuItems = cafeMenuItems;
+        }
+
+        /**
+         * Sets the new navigation nodes in the update.
+         * @param nodes The updated nodes.
+         */
+        public void setNavigationNodes(List<Node> nodes) {
+            this.navigationNodes = nodes;
         }
 
         /**
@@ -321,6 +363,13 @@ public class USBUpdateManager {
          */
         public List<CafeMenuItem> getCafeMenuItems() {
             return cafeMenuItems;
+        }
+
+        /**
+         * @return The updated navigation nodes.
+         */
+        public List<Node> getNavigationNodes() {
+            return navigationNodes;
         }
     }
 }

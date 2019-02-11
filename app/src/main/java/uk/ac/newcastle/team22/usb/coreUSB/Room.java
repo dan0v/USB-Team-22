@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
+import uk.ac.newcastle.team22.usb.navigation.Navigable;
 import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
@@ -17,7 +18,7 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
  * @author Daniel Vincet
  * @version 1.0
  */
-public class Room implements FirestoreConstructable<Room> {
+public class Room implements FirestoreConstructable<Room>, Navigable {
 
     /** The floor on which the room is situated. */
     private Floor floor;
@@ -32,15 +33,17 @@ public class Room implements FirestoreConstructable<Room> {
     private String staffResidenceIdentifier;
 
     /** The nearest Navigation Node to this Room */
-    private Node navNode;
+    private int nodeIdentifier;
 
     @Override
     @SuppressWarnings("unchecked")
     public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
         int number = Integer.parseInt(documentIdentifier);
+        int nodeIdentifier = (int) firestoreDictionary.get("node");
         Map<String, Long> resources = (Map<String, Long>) firestoreDictionary.get("resources");
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
 
+        this.nodeIdentifier = nodeIdentifier;
         this.number = number;
         this.staffResidenceIdentifier = staffResidenceIdentifier;
 
@@ -109,6 +112,11 @@ public class Room implements FirestoreConstructable<Room> {
      */
     public List<Resource> getResources() {
         return resources;
+    }
+
+    @Override
+    public Node getNavNode() {
+        return USBManager.shared.getBuilding().getNavigationNodes().get(nodeIdentifier);
     }
 
     @Override
