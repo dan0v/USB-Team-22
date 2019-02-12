@@ -57,7 +57,7 @@ public class Navigator {
         bestRoute = new ArrayList<>();
 
         //find shortest route between origin and destination Nodes using backtracking
-        recursiveExplore(origin, destination, origin, new ArrayList<Node>(), accessibility, new ArrayList<Edge>(), Integer.MAX_VALUE);
+        recursiveExplore(origin, destination, origin.getFloorNumber(), new ArrayList<Node>(), accessibility, new ArrayList<Edge>(), 0);
         return bestRoute;
     }
 
@@ -67,15 +67,15 @@ public class Navigator {
      * the shortest route from the provided origin Node to the provided destination Node which meets
      * accessibility requirements.
      *
-     * @param originNode Node to navigate from.
-     * @param destinationNode Node to navigate to.
      * @param currentNode Node whose Edges are being explored.
+     * @param finalDestinationNode Node to navigate to.
+     * @param previousFloorNumber Floor number of previous node.
      * @param visitedNodes List of Nodes whose Edges were explored to reach current Node.
      * @param accessibility Ensure all Edges added to route meet accessibility requirements.
      * @param candidateRoute Partially constructed route.
      * @param candidateWeight Weight of partially constructed route.
      */
-    private void recursiveExplore(Node originNode, Node destinationNode, Node currentNode, List<Node> visitedNodes, boolean accessibility, List<Edge> candidateRoute, int candidateWeight) {
+    private void recursiveExplore(Node currentNode, Node finalDestinationNode, int previousFloorNumber, List<Node> visitedNodes, boolean accessibility, List<Edge> candidateRoute, int candidateWeight) {
         // Add node to visited nodes list.
         visitedNodes.add(currentNode);
 
@@ -84,12 +84,12 @@ public class Navigator {
             if (visitedNodes.contains(currentEdge.getDestination())) {
                 continue;
             }
-            // Edge leads out of between start and end node floors, so ignore this edge.
-            if (destinationNode.getFloorNumber() > originNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() < originNode.getFloorNumber() || currentEdge.getDestination().getFloorNumber() > destinationNode.getFloorNumber()) {
+            // Edge leads to a floor further from the destination, so ignore this edge.
+            if (finalDestinationNode.getFloorNumber() > currentNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() < previousFloorNumber || currentEdge.getDestination().getFloorNumber() > finalDestinationNode.getFloorNumber()) {
                 continue;
             }
-            // Edge leads out of between start and end node floors, so ignore this edge.
-            if (destinationNode.getFloorNumber() < originNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() > originNode.getFloorNumber() || currentEdge.getDestination().getFloorNumber() < destinationNode.getFloorNumber()) {
+            // Edge leads to a floor further from the destination, so ignore this edge.
+            if (finalDestinationNode.getFloorNumber() < currentNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() > previousFloorNumber || currentEdge.getDestination().getFloorNumber() < finalDestinationNode.getFloorNumber()) {
                 continue;
             }
             // Edge does not meet accessibility requirements, so ignore this edge.
@@ -102,7 +102,7 @@ public class Navigator {
             }
 
             // Current shortest route found.
-            if (currentEdge.getDestination().equals(destinationNode)) {
+            if (currentEdge.getDestination().equals(finalDestinationNode)) {
                 candidateRoute.add(currentEdge);
                 bestRoute = new ArrayList<>(candidateRoute);
                 bestRouteWeight = candidateWeight + currentEdge.weight;
@@ -116,14 +116,14 @@ public class Navigator {
             candidateRoute.add(currentEdge);
 
             // Explore along candidate route.
-            recursiveExplore(originNode, destinationNode, currentEdge.getDestination(), visitedNodes, accessibility, candidateRoute, (candidateWeight + currentEdge.weight));
+            recursiveExplore(currentEdge.getDestination(), finalDestinationNode, currentNode.getFloorNumber(), visitedNodes, accessibility, candidateRoute, (candidateWeight + currentEdge.weight));
 
             // Remove current edge from candidate route to move back through recursive call chain and explore along the next edge.
             candidateRoute.remove(currentEdge);
         }
 
         // Remove current node from list of visited nodes when moving back through recursive call chain.
-        // Move back up recursive call chain to explore next node.
         visitedNodes.remove(currentNode);
+        // Move back up recursive call chain to explore next node.
     }
 }
