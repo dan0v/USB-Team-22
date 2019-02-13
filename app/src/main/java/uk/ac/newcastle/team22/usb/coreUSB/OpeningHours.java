@@ -1,16 +1,13 @@
-package uk.ac.newcastle.team22.usb.coreUSB;
+import uk.ac.newcastle.team22.usb.R;
+import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
 import android.content.Context;
 import java.time.DayOfWeek;
-
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.HashMap;
 import java.util.Map;
-
-import uk.ac.newcastle.team22.usb.R;
-import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
 /**
  * A class which represents a set of opening hours.
@@ -20,7 +17,7 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
  */
 public class OpeningHours implements FirestoreConstructable<OpeningHours> {
 
-    /** The days of the week where the service is either open or closed. */
+    /** The days of the week where the service is open. */
     private HashMap<DayOfWeek, Hours> openingHours;
 
     /** The service which has opening hours. */
@@ -154,7 +151,7 @@ public class OpeningHours implements FirestoreConstructable<OpeningHours> {
     }
 
     /**
-     * A class which represents the times in the day where a service is open.
+     * A class which describes when a service is open on a given day.
      *
      * @author Alexander MacLeod
      * @version 1.0
