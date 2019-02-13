@@ -3,7 +3,9 @@ package uk.ac.newcastle.team22.usb.coreUSB;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.firebase.*;
 import uk.ac.newcastle.team22.usb.navigation.Node;
@@ -118,7 +120,20 @@ public class USBUpdateManager {
                                     @Override
                                     public void completed(List<Node> nodes) {
                                         update.setNavigationNodes(nodes);
-                                        handler.completed(update);
+
+                                        // Request opening hours.
+                                        loadOpeningHours(new FirestoreCompletionHandler<List<OpeningHours>>() {
+                                            @Override
+                                            public void completed(List<OpeningHours> openingHours) {
+                                                update.setOpeningHours(openingHours);
+                                                handler.completed(update);
+                                            }
+
+                                            @Override
+                                            public void failed(Exception exception) {
+                                                handler.failed(exception);
+                                            }
+                                        });
                                     }
                                     @Override
                                     public void failed(Exception exception) {
@@ -268,6 +283,25 @@ public class USBUpdateManager {
     }
 
     /**
+     * Loads the opening hours in the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the opening hours have been retrieved.
+     */
+    private void loadOpeningHours(final FirestoreCompletionHandler<List<OpeningHours>> handler) {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.OPENING_HOURS, null, new FirestoreCompletionHandler<List<OpeningHours>>() {
+            @Override
+            public void completed(final List<OpeningHours> openingHours) {
+                handler.completed(openingHours);
+            }
+            @Override
+            public void failed(Exception exception) {
+                Log.e("", "Unable to retrieve USB opening hours", exception);
+                handler.failed(exception);
+            }
+        });
+    }
+
+    /**
      * An Urban Sciences Building update completion handler.
      *
      * @author Alexander MacLeod
@@ -312,6 +346,9 @@ public class USBUpdateManager {
         /** The navigation nodes in the Urban Sciences Building. */
         private List<Node> navigationNodes = new ArrayList<>();
 
+        /** The opening hours in the Urban Sciences Building. */
+        private Map<OpeningHours.Service, OpeningHours> openingHours = new HashMap<>();
+
         /** Empty constructor. */
         USBUpdate() {}
 
@@ -348,6 +385,16 @@ public class USBUpdateManager {
         }
 
         /**
+         * Sets the new opening hours in the update.
+         * @param openingHours The updated opening hours.
+         */
+        public void setOpeningHours(List<OpeningHours> openingHours) {
+            for (OpeningHours hours : openingHours) {
+                this.openingHours.put(hours.getService(), hours);
+            }
+        }
+
+        /**
          * @return The updated floors.
          */
         public List<Floor> getFloors() {
@@ -373,6 +420,13 @@ public class USBUpdateManager {
          */
         public List<Node> getNavigationNodes() {
             return navigationNodes;
+        }
+
+        /**
+         * @return The updated opening hours nodes.
+         */
+        public Map<OpeningHours.Service, OpeningHours> getOpeningHours() {
+            return openingHours;
         }
     }
 }

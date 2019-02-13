@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "uk.ac.newcastle.team22.usb"
-        minSdkVersion 15
+        minSdkVersion 26
         targetSdkVersion 28
         multiDexEnabled true
         versionCode 1

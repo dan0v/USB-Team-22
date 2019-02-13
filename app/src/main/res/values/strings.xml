@@ -47,4 +47,9 @@
     <string name="title_activity_cafe">CafeActivity</string>
     <string name="title_activity_room">RoomActivity</string>
     <!--search end-->
+
+    <!--opening hours start-->
+    <string name="open">Open</string>
+    <string name="closed">Closed</string>
+    <!--opening hours end-->
 </resources>

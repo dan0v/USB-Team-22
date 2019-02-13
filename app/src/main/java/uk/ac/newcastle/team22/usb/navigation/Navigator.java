@@ -55,7 +55,7 @@ public class Navigator {
         bestRouteWeight = Integer.MAX_VALUE;
         bestRoute = new ArrayList<>();
 
-        //find shortest route between origin and destination Nodes using backtracking
+        // Find shortest route between origin and destination nodes using backtracking.
         recursiveExplore(origin, destination, origin.getFloorNumber(), new ArrayList<Node>(), accessibility, new ArrayList<Edge>(), 0);
         return bestRoute;
     }
