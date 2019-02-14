@@ -1,3 +1,5 @@
+package uk.ac.newcastle.team22.usb.coreUSB;
+
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
