@@ -19,17 +19,17 @@ import java.util.Map;
  */
 public class OpeningHours implements FirestoreConstructable<OpeningHours> {
 
+    /** The Firestore document identifier suffix for opening times. */
+    private static String OPENS_FIRESTORE_KEY = "Open";
+
+    /** The Firestore document identifier suffix for closing times. */
+    private static String CLOSES_FIRESTORE_KEY = "Close";
+
     /** The days of the week where the service is open. */
     private HashMap<DayOfWeek, Hours> openingHours;
 
     /** The service which has opening hours. */
     private Service service;
-
-    /** The Firestore document identifier suffix for opening times. */
-    private static String opensFirestoreKey = "Open";
-
-    /** The Firestore document identifier suffix for closing times. */
-    private static String closesFirestoreKey = "Close";
 
     @Override
     public OpeningHours initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
@@ -40,8 +40,8 @@ public class OpeningHours implements FirestoreConstructable<OpeningHours> {
         for (DayOfWeek day : DayOfWeek.values()) {
             String dayName = day.name().toLowerCase();
 
-            LocalTime opens = getLocalTime(firestoreDictionary.get(dayName + opensFirestoreKey));
-            LocalTime closes = getLocalTime(firestoreDictionary.get(dayName + closesFirestoreKey));
+            LocalTime opens = getLocalTime(firestoreDictionary.get(dayName + OPENS_FIRESTORE_KEY));
+            LocalTime closes = getLocalTime(firestoreDictionary.get(dayName + CLOSES_FIRESTORE_KEY));
 
             // Check if opening times have been set.
             if (opens == null || closes == null) {
