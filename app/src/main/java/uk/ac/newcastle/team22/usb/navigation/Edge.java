@@ -18,7 +18,7 @@ public class Edge {
     private final Node origin;
     private final int destinationIdentifier;
     public final int weight;
-    public final List<Direction> directions;
+    public final List<Integer> directions;
     public final List<Integer> distances;
     public final boolean cardLocked;
     public final boolean accessible;
@@ -33,7 +33,7 @@ public class Edge {
      * @param cardLocked boolean whether card access is required.
      * @param accessible boolean whether this edge meets accessibility needs.
      */
-    public Edge(Node origin, int destinationIdentifier, int weight, List<Direction> directions, List<Integer> distances, boolean cardLocked, boolean accessible) {
+    public Edge(Node origin, int destinationIdentifier, int weight, List<Integer> directions, List<Integer> distances, boolean cardLocked, boolean accessible) {
         this.origin = origin;
         this.destinationIdentifier = destinationIdentifier;
         this.weight = weight;
@@ -57,12 +57,10 @@ public class Edge {
 
         // Initialise edge directions.
         this.directions = new ArrayList<>();
-        List<String> firestoreDirections = (ArrayList<String>) firestoreDictionary.get("directions");
+        List<Long> firestoreDirections = (ArrayList<Long>) firestoreDictionary.get("directions");
         if (firestoreDirections != null) {
-            for (String firestoreDirection : firestoreDirections) {
-                if (firestoreDirection != null) {
-                    this.directions.add(Direction.parseDirection(firestoreDirection));
-                }
+            for (Long firestoreDirection : firestoreDirections) {
+                this.directions.add(firestoreDirection.intValue());
             }
         } else {
             throw new FirestoreConstructable.InitialisationFailed("Edge could not be initialised - missing directions");

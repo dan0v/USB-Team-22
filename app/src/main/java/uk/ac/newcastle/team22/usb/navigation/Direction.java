@@ -30,20 +30,22 @@ public enum Direction {
     }
 
     /**
-     * @param input String representation of a Direction from Firebase.
+     * @param previousAngle Integer representation of the angle required to reach current location.
+     * @param currentAngle Integer representation of the angle required to reach next location.
      * @return Direction enum.
      * @throws IllegalArgumentException
      */
-    public static Direction parseDirection(String input) throws IllegalArgumentException {
-        switch (input) {
-            case "f":   return FORWARD;
-            case "l":   return RIGHT;
-            case "r":   return LEFT;
-            case "lu":  return LIFT_UP;
-            case "ld":  return LIFT_DOWN;
-            case "su":  return STAIR_UP;
-            case "sd":  return STAIR_DOWN;
-            default:    throw new IllegalArgumentException("Invalid Direction String provided");
+    public static Direction parseDirection(int previousAngle, int currentAngle) throws IllegalArgumentException {
+        switch (currentAngle) {
+            case -1:  return LIFT_UP;
+            case -2:  return LIFT_DOWN;
+            case -3:  return STAIR_UP;
+            case -4:  return STAIR_DOWN;
+            default:  break;
         }
+
+        // TODO return forward, left, or right Direction based on the difference between navigation angles provided.
+
+        throw new IllegalArgumentException("Invalid Direction value provided");
     }
 }
