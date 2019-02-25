@@ -1,5 +1,7 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +91,14 @@ public class Edge {
      * @return Node with nodeIdentifier of this Edge from <pre>USBManager.sharedNodes</pre>.
      */
     public Node getDestination() {
-        return USBManager.shared.getBuilding().getNavigationNodes().get(destinationIdentifier);
+        try {
+            if (USBManager.shared.getBuilding().getNavigationNodes().get(destinationIdentifier) == null)
+                return this.origin;
+            return USBManager.shared.getBuilding().getNavigationNodes().get(destinationIdentifier);
+        } catch (Exception exception) {
+            Log.e("Navigator", "Destination Node not in Map", exception);
+        }
+        return this.origin;
     }
 
     /**
@@ -106,5 +115,14 @@ public class Edge {
             }
         }
         return super.equals(obj);
+    }
+
+    /**
+     * @return String representation of an Edge.
+     */
+    @Override
+    public String toString() {
+        String stringRep = String.format("Origin: %s Destination: %s Directions: %s Distances: %s Accessible?: %s CardLocked?: %s\n", this.getOrigin().getNodeIdentifier(), this.getDestination().getNodeIdentifier(), this.directions, this.distances, this.accessible, this.cardLocked);
+        return stringRep;
     }
 }

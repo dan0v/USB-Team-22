@@ -84,11 +84,11 @@ public class Navigator {
                 continue;
             }
             // Edge leads to a floor further from the destination, so ignore this edge.
-            if (finalDestinationNode.getFloorNumber() > currentNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() < previousFloorNumber || currentEdge.getDestination().getFloorNumber() > finalDestinationNode.getFloorNumber()) {
+            if ((finalDestinationNode.getFloorNumber() > currentNode.getFloorNumber()) && ((currentEdge.getDestination().getFloorNumber() < previousFloorNumber) || (currentEdge.getDestination().getFloorNumber() > finalDestinationNode.getFloorNumber()))) {
                 continue;
             }
             // Edge leads to a floor further from the destination, so ignore this edge.
-            if (finalDestinationNode.getFloorNumber() < currentNode.getFloorNumber() && currentEdge.getDestination().getFloorNumber() > previousFloorNumber || currentEdge.getDestination().getFloorNumber() < finalDestinationNode.getFloorNumber()) {
+            if ((finalDestinationNode.getFloorNumber() < currentNode.getFloorNumber()) && ((currentEdge.getDestination().getFloorNumber() > previousFloorNumber) || (currentEdge.getDestination().getFloorNumber() < finalDestinationNode.getFloorNumber()))) {
                 continue;
             }
             // Edge does not meet accessibility requirements, so ignore this edge.
