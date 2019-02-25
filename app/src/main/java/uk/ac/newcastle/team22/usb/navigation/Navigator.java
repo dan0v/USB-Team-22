@@ -18,7 +18,7 @@ public class Navigator {
     public static Navigator shared = new Navigator();
 
     /** The weight of the best route between two locations in the Urban Sciences Building. */
-    private int bestRouteWeight = Integer.MAX_VALUE;
+    private double bestRouteWeight = Double.MAX_VALUE;
 
     /** The list of edges for the best route between two locations in the Urban Sciences Building. */
     private List<Edge> bestRoute = new ArrayList<Edge>();
@@ -52,7 +52,7 @@ public class Navigator {
      * @return List of Edges to be traversed to reach the destination.
      */
     public List<Edge> getRoute(Node origin, Node destination, boolean accessibility) {
-        bestRouteWeight = Integer.MAX_VALUE;
+        bestRouteWeight = Double.MAX_VALUE;
         bestRoute = new ArrayList<>();
 
         // Find shortest route between origin and destination nodes using backtracking.
@@ -74,7 +74,7 @@ public class Navigator {
      * @param candidateRoute Partially constructed route.
      * @param candidateWeight Weight of partially constructed route.
      */
-    private void recursiveExplore(Node currentNode, Node finalDestinationNode, int previousFloorNumber, List<Node> visitedNodes, boolean accessibility, List<Edge> candidateRoute, int candidateWeight) {
+    private void recursiveExplore(Node currentNode, Node finalDestinationNode, int previousFloorNumber, List<Node> visitedNodes, boolean accessibility, List<Edge> candidateRoute, double candidateWeight) {
         // Add node to visited nodes list.
         visitedNodes.add(currentNode);
 

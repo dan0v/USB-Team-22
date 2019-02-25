@@ -17,9 +17,9 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 public class Edge {
     private final Node origin;
     private final int destinationIdentifier;
-    public final int weight;
+    public final double weight;
     public final List<Integer> directions;
-    public final List<Integer> distances;
+    public final List<Double> distances;
     public final boolean cardLocked;
     public final boolean accessible;
 
@@ -33,7 +33,7 @@ public class Edge {
      * @param cardLocked boolean whether card access is required.
      * @param accessible boolean whether this edge meets accessibility needs.
      */
-    public Edge(Node origin, int destinationIdentifier, int weight, List<Integer> directions, List<Integer> distances, boolean cardLocked, boolean accessible) {
+    public Edge(Node origin, int destinationIdentifier, double weight, List<Integer> directions, List<Double> distances, boolean cardLocked, boolean accessible) {
         this.origin = origin;
         this.destinationIdentifier = destinationIdentifier;
         this.weight = weight;
@@ -51,7 +51,7 @@ public class Edge {
     public Edge(Node origin, Map<String, Object> firestoreDictionary) throws FirestoreConstructable.InitialisationFailed {
         this.origin = origin;
         this.destinationIdentifier = ((Long) firestoreDictionary.get("destination")).intValue();
-        this.weight = ((Long) firestoreDictionary.get("weight")).intValue();
+        this.weight = ((Long) firestoreDictionary.get("weight")).doubleValue();
         this.cardLocked = (boolean) firestoreDictionary.get("cardLocked");
         this.accessible = (boolean) firestoreDictionary.get("accessible");
 
@@ -71,7 +71,7 @@ public class Edge {
         List<Long> firestoreDistances = (ArrayList<Long>) firestoreDictionary.get("distances");
         if (firestoreDirections != null) {
             for (Long firestoreDistance : firestoreDistances) {
-                this.distances.add(firestoreDistance.intValue());
+                this.distances.add(firestoreDistance.doubleValue());
             }
         } else {
             throw new FirestoreConstructable.InitialisationFailed("Edge could not be initialised - missing distances");
