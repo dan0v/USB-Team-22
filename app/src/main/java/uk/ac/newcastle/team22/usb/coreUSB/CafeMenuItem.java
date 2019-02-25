@@ -28,7 +28,7 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem> {
     @Override
     public CafeMenuItem initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
         String name = (String) firestoreDictionary.get("name");
-        int price = ((Long) firestoreDictionary.get("price")).intValue();
+        int price = ((Number) firestoreDictionary.get("price")).intValue();
 
         this.identifier = documentIdentifier;
         this.name = name;

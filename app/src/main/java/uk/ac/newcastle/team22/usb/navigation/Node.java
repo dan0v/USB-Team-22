@@ -35,7 +35,7 @@ public class Node implements FirestoreConstructable<Node> {
 
     @Override
     public Node initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
-        int floorNumber = ((Long) firestoreDictionary.get("floor")).intValue();
+        int floorNumber = ((Number) firestoreDictionary.get("floor")).intValue();
         List<Map<String, Object>> edges = (ArrayList<Map<String, Object>>) firestoreDictionary.get("edges");
 
         this.nodeIdentifier = Integer.parseInt(documentIdentifier);
