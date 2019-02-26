@@ -9,6 +9,23 @@ package uk.ac.newcastle.team22.usb.search;
 
 public class SearchResult {
 
+    private Object result;
     private int priority;
+    private Enum reason;
 
+    public Object getResult() {
+        return result;
+    }
+    public int getPriority() {
+        return priority;
+    }
+    public Enum getReason() {
+        return reason;
+    }
+
+    public SearchResult(Object result, int priority, Enum reason) {
+        this.result = result;
+        this.priority = priority;
+        this.reason = reason;
+    }
 }
