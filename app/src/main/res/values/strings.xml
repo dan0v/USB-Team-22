@@ -15,13 +15,17 @@
     <!--usb update manager end-->
 
     <!--navigation start-->
-    <string name="directionForward">Forward</string>
-    <string name="directionLeft">Left</string>
-    <string name="directionRight">Right</string>
-    <string name="directionLiftUp">LiftUp</string>
-    <string name="directionLiftDown">LiftDown</string>
-    <string name="directionStairUp">StairUp</string>
-    <string name="directionStairDown">StairDown</string>
+    <string name="directionForward">Continue forward</string>
+    <string name="directionLeft">Turn left</string>
+    <string name="directionSlightLeft">Turn slightly left</string>
+    <string name="directionSharpLeft">Turn sharp left</string>
+    <string name="directionRight">Turn right</string>
+    <string name="directionSlightRight">Turn slightly right</string>
+    <string name="directionSharpRight">Turn sharp right</string>
+    <string name="directionLiftUp">Take the lift up to floor %s</string>
+    <string name="directionLiftDown">Take the lift down to floor %s</string>
+    <string name="directionStairUp">Take the stairs up to floor %s</string>
+    <string name="directionStairDown">Take the stairs down to floor %s</string>
     <!--navigation end-->
 
     <!--drawer start-->
