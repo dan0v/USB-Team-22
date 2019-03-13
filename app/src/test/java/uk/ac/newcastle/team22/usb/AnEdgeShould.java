@@ -20,7 +20,7 @@ public class AnEdgeShould {
     @Test
     public void haveAnOrigin() {
         Node testNode = new Node(10,2, new ArrayList<Edge>());
-        Edge testEdge = new Edge(testNode, 1, 0, new ArrayList<Direction>(), new ArrayList<Integer>(), false, true);
+        Edge testEdge = new Edge(testNode, 1, 0, new ArrayList<Integer>(), new ArrayList<Double>(), false, true);
 
         assertEquals(testNode, testEdge.getOrigin());
     }
@@ -29,7 +29,7 @@ public class AnEdgeShould {
     public void haveADestination() {
         Node testNode = new Node(10,2, new ArrayList<Edge>());
         Node testDestinationNode = new Node(3,2, new ArrayList<Edge>());
-        Edge testEdge = new Edge(testNode, 3, 0, new ArrayList<Direction>(), new ArrayList<Integer>(), false, true);
+        Edge testEdge = new Edge(testNode, 3, 0, new ArrayList<Integer>(), new ArrayList<Double>(), false, true);
 
         USBManager.shared.getBuilding().getNavigationNodes().put(3, testDestinationNode);
         assertEquals(testDestinationNode, testEdge.getDestination());
@@ -40,7 +40,7 @@ public class AnEdgeShould {
         int testWeight = 5;
 
         Node testNode = new Node(10,2, new ArrayList<Edge>());
-        Edge testEdge = new Edge(testNode, 1, testWeight, new ArrayList<Direction>(), new ArrayList<Integer>(), false, true);
+        Edge testEdge = new Edge(testNode, 1, 0, new ArrayList<Integer>(), new ArrayList<Double>(), false, true);
 
         assertEquals(testWeight, testEdge.weight);
     }
@@ -48,8 +48,8 @@ public class AnEdgeShould {
     @Test
     public void testEquality() {
         Node testNode = new Node(10,2, new ArrayList<Edge>());
-        Edge testEdge = new Edge(testNode, 1, 0, new ArrayList<Direction>(), new ArrayList<Integer>(), false, true);
-        Edge testEdge2 = new Edge(testNode, 1, 0, new ArrayList<Direction>(), new ArrayList<Integer>(), false, true);
+        Edge testEdge = new Edge(testNode, 1, 0, new ArrayList<Integer>(), new ArrayList<Double>(), false, true);
+        Edge testEdge2 = new Edge(testNode, 1, 0, new ArrayList<Integer>(), new ArrayList<Double>(), false, true);
 
         assertTrue(testEdge.equals(testEdge2));
     }
