@@ -3,6 +3,7 @@ package uk.ac.newcastle.team22.usb.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.*;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
@@ -26,7 +27,7 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
  * @author Alexander MacLeod
  * @version 1.0
  */
-public class CafeFragment extends USBFragment {
+public class CafeFragment extends Fragment implements USBFragment {
 
     /** The list view which displays the café menu items. */
     private ListView listView;

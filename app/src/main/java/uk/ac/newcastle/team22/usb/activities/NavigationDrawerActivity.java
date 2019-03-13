@@ -2,6 +2,7 @@ package uk.ac.newcastle.team22.usb.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -128,7 +129,7 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
     private void navigateTo(USBFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.navigation_content, fragment);
+        fragmentTransaction.replace(R.id.navigation_content, (Fragment) fragment);
         fragmentTransaction.commit();
 
         // Set the text of the drawer title bar.
