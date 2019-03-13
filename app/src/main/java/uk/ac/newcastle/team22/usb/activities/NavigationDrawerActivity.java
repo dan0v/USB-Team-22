@@ -9,10 +9,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import uk.ac.newcastle.team22.usb.fragments.CafeFragment;
 import uk.ac.newcastle.team22.usb.fragments.DashboardFragment;
 import uk.ac.newcastle.team22.usb.R;
+import uk.ac.newcastle.team22.usb.fragments.SettingsFragment;
+import uk.ac.newcastle.team22.usb.fragments.TourFragment;
 import uk.ac.newcastle.team22.usb.fragments.USBFragment;
 
 /**
@@ -49,6 +56,15 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Configure navigation drawer header view.
+        View headerView = navigationView.getHeaderView(0);
+        TextView subtitle = headerView.findViewById(R.id.navigationDrawerSubtitleTextView);
+
+        // Display current date in drawer header view.
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE d MMMM");
+        String currentDate = simpleDateFormat.format(Calendar.getInstance().getTime());
+        subtitle.setText(currentDate);
+
         // Display default fragment.
         USBFragment defaultFragment = new DashboardFragment();
         navigateTo(defaultFragment);
@@ -70,6 +86,12 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
                 break;
             case R.id.nav_cafe:
                 fragment = new CafeFragment();
+                break;
+            case R.id.nav_settings:
+                fragment = new SettingsFragment();
+                break;
+            case R.id.nav_tour:
+                fragment = new TourFragment();
                 break;
             default:
                 break;
