@@ -31,4 +31,9 @@ public class SearchResult {
         this.priority = priority;
         this.reason = reason;
     }
+
+    @Override
+    public String toString() {
+        return result.toString();
+    }
 }
