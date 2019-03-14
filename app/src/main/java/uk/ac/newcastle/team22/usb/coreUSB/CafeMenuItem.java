@@ -1,10 +1,14 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
+import uk.ac.newcastle.team22.usb.search.ResultReason;
+import uk.ac.newcastle.team22.usb.search.Searchable;
 
 /**
  * A class which represents an item on the menu at the café in the Urban Sciences Building.
@@ -14,7 +18,7 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
  * @author Alexander MacLeod
  * @version 1.0
  */
-public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem> {
+public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searchable {
 
     /** The unique identifier of the café menu item. */
     private String identifier;
@@ -68,6 +72,16 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem> {
 
         double pounds = (double) price / 100;
         return format.format(pounds);
+    }
+
+    @Override
+    public List<ResultReason> getSearchableReasons() {
+        List<ResultReason> reasons = new ArrayList();
+
+        // Add reason for matching café menu item name.
+        reasons.add(new ResultReason(name, ResultReason.Reason.CAFE_ITEM_NAME));
+
+        return reasons;
     }
 
     @Override

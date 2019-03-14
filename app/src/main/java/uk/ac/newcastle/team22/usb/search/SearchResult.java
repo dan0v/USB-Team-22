@@ -6,24 +6,27 @@ package uk.ac.newcastle.team22.usb.search;
  * @author Patrick Lindley
  * @version 1.0
  */
-
 public class SearchResult {
 
-    private Object result;
-    private int priority;
-    private Enum reason;
+    private Searchable result;
 
-    public Object getResult() {
+    private int priority;
+
+    private ResultReason reason;
+
+    public Searchable getResult() {
         return result;
     }
+
     public int getPriority() {
         return priority;
     }
-    public Enum getReason() {
+
+    public ResultReason getReason() {
         return reason;
     }
 
-    public SearchResult(Object result, int priority, Enum reason) {
+    public SearchResult(Searchable result, int priority, ResultReason reason) {
         this.result = result;
         this.priority = priority;
         this.reason = reason;
