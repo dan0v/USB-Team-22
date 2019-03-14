@@ -1,4 +1,6 @@
-package uk.ac.newcastle.team22.usb.coreUSB;
+package uk.ac.newcastle.team22.usb.search;
+
+import java.util.List;
 
 /**
  * Interface that marks objects as searchable.
@@ -8,4 +10,6 @@ package uk.ac.newcastle.team22.usb.coreUSB;
  */
 
 public interface Searchable {
+
+    List<ResultReason> getSearchableReasons();
 }
