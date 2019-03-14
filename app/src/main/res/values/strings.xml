@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">USB</string>
-    <string name="title_activity_main">USB</string>
+
+    <!--usb update manager start-->
+    <string name="urbanSciencesBuildingShorthand">USB</string>
+    <string name="urbanSciencesBuilding">Urban Sciences Building</string>
     <string name="updateUnableToInstall">Unable To Update</string>
     <string name="updateAvailable">Update Available</string>
     <string name="updateRequired">Update Required</string>
@@ -9,16 +12,60 @@
     <string name="usbUpdateUnableToInstallMessage">An error occurred when installing the Urban Sciences Building update. Please try again.</string>
     <string name="install">Install</string>
     <string name="cancel">Cancel</string>
-    <!--navigation start-->
-    <string name="directionForward">Forward</string>
-    <string name="directionLeft">Left</string>
-    <string name="directionRight">Right</string>
-    <string name="directionUp">Up</string>
-    <string name="directionDown">Down</string>
-    <!--navigation end-->
     <string name="retry">Retry</string>
+    <!--usb update manager end-->
+
+    <!--navigation start-->
+    <string name="navigation">Navigation</string>
+    <string name="directionForward">Continue forward</string>
+    <string name="directionLeft">Turn left</string>
+    <string name="directionSlightLeft">Turn slightly left</string>
+    <string name="directionSharpLeft">Turn sharp left</string>
+    <string name="directionRight">Turn right</string>
+    <string name="directionSlightRight">Turn slightly right</string>
+    <string name="directionSharpRight">Turn sharp right</string>
+    <string name="directionLiftUp">Take the lift up to floor %s</string>
+    <string name="directionLiftDown">Take the lift down to floor %s</string>
+    <string name="directionStairUp">Take the stairs up to floor %s</string>
+    <string name="directionStairDown">Take the stairs down to floor %s</string>
+    <!--navigation end-->
+
+    <!--drawer start-->
+    <string name="title_activity_navigation_drawer">NavigationDrawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="more">More</string>
+    <!--drawer end-->
+
+    <!--tour start-->
+    <string name="tour">Tour</string>
+    <!--tour end-->
+
+    <!--café start-->
+    <string name="cafe">Café</string>
+    <!--café end-->
+
+    <!--settings start-->
+    <string name="settings">Settings</string>
+    <string name="navigationRequireLifts">Accessible Route</string>
+    <string name="navigationRequireLiftsDescription">Use lifts when changing floors</string>
+    <!--settings end-->
+
+    <!--dashboard start-->
+    <string name="dashboard">Dashboard</string>
+    <!--dashboard end-->
+
     <!--search start-->
-    <string name="app_label">USB Tour App</string>
-    <string name="search_hint">Room number, staff member or cafe item</string>
-    <string name="title_activity_search">Search</string>
+    <string name="search">Search</string>
+    <string name="title_activity_cafe">CafeActivity</string>
+    <string name="title_activity_room">RoomActivity</string>
+    <!--search end-->
+
+    <!--opening hours start-->
+    <string name="open">Open</string>
+    <string name="closed">Closed</string>
 </resources>

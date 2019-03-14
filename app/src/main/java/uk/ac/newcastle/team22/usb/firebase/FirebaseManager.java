@@ -1,9 +1,13 @@
 package uk.ac.newcastle.team22.usb.firebase;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
@@ -23,10 +27,14 @@ public class FirebaseManager {
     /** The shared instance of the Firebase manager. */
     public static FirebaseManager shared = new FirebaseManager();
 
+    /** The instance of the Firebase authentication. */
+    private FirebaseAuth authentication;
+
     /** Initialises Firebase. */
     private FirebaseManager() {
         database = FirebaseFirestore.getInstance();
         initialiseFirestore();
+        authentication = FirebaseAuth.getInstance();
     }
 
     /** Configures the Firestore's Database's default settings. */
@@ -119,6 +127,31 @@ public class FirebaseManager {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 handler.completed(null);
+            }
+        });
+    }
+
+    /**
+     * Authenticates the user so that they are able to interact with Firebase.
+     *
+     * @param handler The completion handler called once the user has been authenticated.
+     */
+    public void authenticate(final FirestoreCompletionHandler<Void> handler) {
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser != null) {
+            handler.completed(null);
+            return;
+        }
+
+        // Sign into Firebase anonymously.
+        authentication.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    handler.completed(null);
+                } else {
+                    handler.failed(task.getException());
+                }
             }
         });
     }

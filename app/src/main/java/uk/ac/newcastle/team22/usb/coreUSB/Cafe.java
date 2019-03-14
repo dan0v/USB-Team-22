@@ -1,6 +1,5 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,11 +14,15 @@ public class Cafe {
      * The items, food or drink, which are served at the café.
      * See {@link CafeMenuItem} for more information.
      */
-    private List<CafeMenuItem> items = new ArrayList<>();
+    private List<CafeMenuItem> items;
+
+    /** The opening hours of the café. */
+    private OpeningHours openingHours;
 
     /** Constructor using an Urban Sciences Building update. */
     public Cafe(USBUpdateManager.USBUpdate update) {
         this.items =  update.getCafeMenuItems();
+        this.openingHours = update.getOpeningHours().get(OpeningHours.Service.CAFE);
     }
 
     /**
@@ -27,6 +30,13 @@ public class Cafe {
      */
     public List<CafeMenuItem> getItems() {
         return items;
+    }
+
+    /**
+     * @return The opening hours of the café.
+     */
+    public OpeningHours getOpeningHours() {
+        return openingHours;
     }
 
     @Override

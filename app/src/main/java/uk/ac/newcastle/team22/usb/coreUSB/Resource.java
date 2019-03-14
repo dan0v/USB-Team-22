@@ -17,6 +17,11 @@ public class Resource {
     /** The number of this resource which is available. */
     private int available;
 
+    public Resource(ResourceType resourceType, int available) {
+        this.type = resourceType;
+        this.available = available;
+    }
+
     /**
      * Constructor for {@link Resource}.
      * @param resourceTypeIdentifier The identifier of the resource type.

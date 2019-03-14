@@ -10,7 +10,7 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
  * @version 1.0
  */
 public enum ResourceType {
-    COMPUTER(1), PRINTER(2), WHITEBOARD(3), PROJECTOR(4);
+    COMPUTER(1), PRINTER(2), WHITEBOARD(3), PROJECTOR(4), WORK_SPACE(5);
 
     /** The identifier of the resource type. */
     private int identifier;
@@ -37,5 +37,12 @@ public enum ResourceType {
             }
         }
         throw new FirestoreConstructable.InitialisationFailed("Unknown resource type identifier '" + identifier + "'");
+    }
+
+    /**
+     * @return The identifier of the resource.
+     */
+    public int getIdentifier() {
+        return identifier;
     }
 }

@@ -1,86 +1,91 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import uk.ac.newcastle.team22.usb.coreUSB.Resource;
+import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
 /**
- * A class that represents a node in the Urban Sciences Building.
+ * A class that represents a Node used for navigation in the Urban Sciences Building.
  *
  * @author Daniel Vincent
  * @version 1.0
  */
-public class Node implements Cloneable, FirestoreConstructable<Node> {
-
-    /** The unique identifier of the node. */
+public class Node implements FirestoreConstructable<Node> {
     private int nodeIdentifier;
+    private int floorNumber;
+    private List<Edge> edges = new ArrayList<Edge>();
 
-    /** The adjacent edges to the node. */
-    private List<Edge> adjacentEdges = new ArrayList<>();
+    /**
+     * Public constructor.
+     * @param nodeIdentifier Identifier of Node in <pre>USBManager.sharedNodes</>.
+     * @param floorNumber The floor this Node resides on.
+     * @param edges A List of Edges adjacent to this Node.
+     */
+    public Node(int nodeIdentifier, int floorNumber, List<Edge> edges) {
+        this.nodeIdentifier = nodeIdentifier;
+        this.floorNumber = floorNumber;
+        this.edges = edges;
+    }
+
+    /** Empty constructor. */
+    public Node() {}
 
     @Override
-    public Node initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
-        List<> edges = (ArrayList<>) firestoreDictionary.get("edges");
+    public Node initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
+        int floorNumber = ((Number) firestoreDictionary.get("floor")).intValue();
+        List<Map<String, Object>> edges = (ArrayList<Map<String, Object>>) firestoreDictionary.get("edges");
 
         this.nodeIdentifier = Integer.parseInt(documentIdentifier);
+        this.floorNumber = floorNumber;
 
-        // Initialise edges.
-        edges = edges == null ? ArrayList<>() : edges;
-        for (String entry : edges) {
-            Edge newEdge = new Edge(entry);
-            if (newEdge != null) {
-                this.adjacent.add(newEdge);
+        // Initialise node's edges.
+        if (edges != null) {
+            for (Map<String, Object> edgeData : edges) {
+                Edge edge = new Edge(this, edgeData);
+                this.edges.add(edge);
             }
+        } else {
+            throw new FirestoreConstructable.InitialisationFailed("Node could not be initialised - missing Edges");
         }
 
-    }
-
-    public Node(int nodeIdentifier) {
-        this.nodeIdentifier = nodeIdentifier;
-    }
-
-    private Node(int nodeIdentifier, List<Edge> adjacent) {
-        this.nodeIdentifier = nodeIdentifier;
-        this.adjacent = new ArrayList<>(adjacent);
+        return this;
     }
 
     /**
-     * @return The unique identifier of the node.
+     * @return Unique identifier of the node.
      */
     public int getNodeIdentifier() {
-        return nodeIdentifier;
+        return this.nodeIdentifier;
     }
 
     /**
-     * @return The adjacent edges to the node.
+     * @return Floor number which the node resides on.
      */
-    public List<Edge> getAdjacentEdges() {
-        return adjacentEdges;
+    public int getFloorNumber() {
+        return this.floorNumber;
     }
 
     /**
-     * @return Logically equal copy of this Node
+     * @return List of edges.
      */
-    @Override
-    public Node clone() {
-        return new Node(this.nodeID, new ArrayList<Edge>(this.adjacent));
+    public List<Edge> getEdges() {
+        return this.edges;
     }
 
     /**
-     * Logical equality checking for Node objects, falls back to superclass for other object types
-     * @param obj
-     * @return
+     * Logical equality checking for Node objects, falls back to superclass for other object types.
+     * @param obj Object to compare to <pre>this</pre>.
+     * @return True if Nodes are logically equivalent, or Objects have the same hash, false otherwise.
      */
     @Override
     public boolean equals(Object obj) {
-        if(obj.getClass().equals(Node.class)) {
-            if(this.nodeID == ((Node)obj).getNodeID()) {
-                if(this.adjacent.equals(((Node) obj).getAdjacents()));
-                    return true;
+        if (obj.getClass().equals(Node.class)) {
+            Node that = (Node) obj;
+            if (this.nodeIdentifier == that.getNodeIdentifier() && this.floorNumber == that.getFloorNumber() && this.edges.equals(that.getEdges())) {
+                return true;
             }
         }
         return super.equals(obj);

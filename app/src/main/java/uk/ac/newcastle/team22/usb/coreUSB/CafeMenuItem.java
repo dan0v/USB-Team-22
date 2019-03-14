@@ -1,7 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
@@ -32,7 +32,7 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
     @Override
     public CafeMenuItem initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
         String name = (String) firestoreDictionary.get("name");
-        int price = ((Long) firestoreDictionary.get("price")).intValue();
+        int price = ((Number) firestoreDictionary.get("price")).intValue();
 
         this.identifier = documentIdentifier;
         this.name = name;
@@ -72,6 +72,20 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
 
         double pounds = (double) price / 100;
         return format.format(pounds);
+    }
+
+    /**
+     * @return The result of the name comparison between two {@code CafeMenuItem}s.
+     */
+    public int compareAlphabeticallyTo(CafeMenuItem item) {
+        return getName().compareToIgnoreCase(item.getName());
+    }
+
+    /**
+     * @return The result of the price comparison between two {@code CafeMenuItem}s.
+     */
+    public int comparePriceTo(CafeMenuItem item) {
+        return Integer.valueOf(getPrice()).compareTo(Integer.valueOf(item.getPrice()));
     }
 
     @Override

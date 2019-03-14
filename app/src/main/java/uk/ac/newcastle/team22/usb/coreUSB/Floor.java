@@ -1,6 +1,10 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import android.graphics.Color;
+
 import java.util.*;
+
+import uk.ac.newcastle.team22.usb.coreApp.ColorUtility;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
 /**
@@ -20,15 +24,25 @@ public class Floor implements FirestoreConstructable<Floor> {
      */
     private List<Room> rooms = new ArrayList<>();
 
-    @Override
-    public Floor initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
-        int number = Integer.parseInt(documentIdentifier);
+    /** The color which represents the floor. */
+    private Color color;
+
+    public Floor(int number) {
         this.number = number;
-        return this;
     }
 
     /** Empty constructor. */
     public Floor() {}
+
+    @Override
+    public Floor initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
+        int number = Integer.parseInt(documentIdentifier);
+        Map<String, Long> color = (Map<String, Long>) firestoreDictionary.get("color");
+
+        this.number = number;
+        this.color = ColorUtility.valueOf(color);
+        return this;
+    }
 
     /**
      * Helper method to place a room onto a floor.
@@ -40,6 +54,13 @@ public class Floor implements FirestoreConstructable<Floor> {
     }
 
     /**
+     * @return The floor number.
+     */
+    public int getNumber() {
+        return number;
+    }
+
+    /**
      * @return The rooms which are situated on the floor.
      */
     public List<Room> getRooms() {
@@ -47,10 +68,10 @@ public class Floor implements FirestoreConstructable<Floor> {
     }
 
     /**
-     * @return The floor number.
+     * @return The color which represents the floor.
      */
-    public int getNumber() {
-        return number;
+    public Color getColor() {
+        return color;
     }
 
     @Override

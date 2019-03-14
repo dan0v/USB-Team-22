@@ -1,8 +1,12 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.newcastle.team22.usb.coreUSB.Room;
+import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
 /**
@@ -14,38 +18,115 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
  */
 public class Navigator {
 
+    /** The shared instance of the Urban Sciences Building navigator. */
+    public static Navigator shared = new Navigator();
+
+    /** The weight of the best route between two locations in the Urban Sciences Building. */
+    private double bestRouteWeight = Double.MAX_VALUE;
+
+    /** The list of edges for the best route between two locations in the Urban Sciences Building. */
+    private List<Edge> bestRoute = new ArrayList<Edge>();
+
     /**
-     * Calculates a route between two locations in the Urban Sciences Building.
+     * Calculates route from start Navigable to end Navigable.
      * @param origin The origin of the journey.
      * @param destination The destination of the journey.
-     * @param accessibility Boolean value whether the journey needs to include an accessible route.
-     * @return The collection of edges to be traversed to reach the destination.
+     * @param accessibility Boolean value whether the journey needs to be accessible.
+     * @return List of Edges to be traversed to reach destination.
      */
-    public List<Edge> getRoute(Room origin, Room destination, boolean accessibility) {
+    public List<Edge> getRoute(Navigable origin, Navigable destination, boolean accessibility) {
         return getRoute(origin.getNavNode(), destination.getNavNode(), accessibility);
     }
 
     /**
-     * Calculates a route between the entrance of the Urban Sciences Building and another location.
-     * @param destination The destination of the journey.
-     * @param accessibility Boolean value whether the journey needs to include an accessible route.
-     * @return The collection of edges to be traversed to reach the destination.
+     * Calculate route from building entrance if no start position provided.
+     * @param destination The origin of the journey.
+     * @param accessibility Boolean value whether the journey needs to be accessible.
+     * @return List of Edges to be traversed to reach destination.
      */
-    public List<Edge> getRoute(Room destination, boolean accessibility) {
-        return getRoute(USBManager.shared.getBuilding().getFloors().get(0).getRooms().get(0).getNavNode(), end.getNavNode(), accessibility);
+    public List<Edge> getRoute(Navigable destination, boolean accessibility) {
+        return getRoute(USBManager.shared.getBuilding().getNavigationNodes().get(0), destination.getNavNode(), accessibility);
     }
 
     /**
-     * Calculates a route between between two nodes.
-     * @param origin The origin node.
-     * @param destination The destination node.
-     * @param accessibility Boolean value whether the journey needs to include an accessible route.
-     * @return The collection of edges to be traversed to reach the destination.
+     * Calculate route from start Node to end Node.
+     * @param origin The origin of the journey.
+     * @param destination The destination of the journey.
+     * @param accessibility Boolean value whether the journey needs to be accessible.
+     * @return List of Edges to be traversed to reach the destination.
      */
     public List<Edge> getRoute(Node origin, Node destination, boolean accessibility) {
+        bestRouteWeight = Double.MAX_VALUE;
+        bestRoute = new ArrayList<>();
 
-        //TODO add sharedNavNodes field to USB to be pulled from firebase
-        //use bruteforce with backtracking
-        return null;
+        // Find shortest route between origin and destination nodes using backtracking.
+        recursiveExplore(origin, destination, origin.getFloorNumber(), new ArrayList<Node>(), accessibility, new ArrayList<Edge>(), 0);
+        return bestRoute;
+    }
+
+    /**
+     * Recursively explore all Edges of adjacent Nodes, backtracking if the current Edge does not
+     * meet requirements. <pre>bestRoute</pre> and <pre>bestRouteWeight</pre> will be updated with
+     * the shortest route from the provided origin Node to the provided destination Node which meets
+     * accessibility requirements.
+     *
+     * @param currentNode Node whose Edges are being explored.
+     * @param finalDestinationNode Node to navigate to.
+     * @param previousFloorNumber Floor number of previous node.
+     * @param visitedNodes List of Nodes whose Edges were explored to reach current Node.
+     * @param accessibility Ensure all Edges added to route meet accessibility requirements.
+     * @param candidateRoute Partially constructed route.
+     * @param candidateWeight Weight of partially constructed route.
+     */
+    private void recursiveExplore(Node currentNode, Node finalDestinationNode, int previousFloorNumber, List<Node> visitedNodes, boolean accessibility, List<Edge> candidateRoute, double candidateWeight) {
+        // Add node to visited nodes list.
+        visitedNodes.add(currentNode);
+
+        for (Edge currentEdge : currentNode.getEdges()) {
+            // Edge returns to previously visited node, so ignore this edge.
+            if (visitedNodes.contains(currentEdge.getDestination())) {
+                continue;
+            }
+            // Edge leads to a floor further from the destination, so ignore this edge.
+            if ((finalDestinationNode.getFloorNumber() > currentNode.getFloorNumber()) && ((currentEdge.getDestination().getFloorNumber() < previousFloorNumber) || (currentEdge.getDestination().getFloorNumber() > finalDestinationNode.getFloorNumber()))) {
+                continue;
+            }
+            // Edge leads to a floor further from the destination, so ignore this edge.
+            if ((finalDestinationNode.getFloorNumber() < currentNode.getFloorNumber()) && ((currentEdge.getDestination().getFloorNumber() > previousFloorNumber) || (currentEdge.getDestination().getFloorNumber() < finalDestinationNode.getFloorNumber()))) {
+                continue;
+            }
+            // Edge does not meet accessibility requirements, so ignore this edge.
+            if (accessibility && !currentEdge.accessible) {
+                continue;
+            }
+            // Continuing route would be longer than current best route, so ignore this edge.
+            if (candidateWeight + currentEdge.weight >= bestRouteWeight) {
+                continue;
+            }
+
+            // Current shortest route found.
+            if (currentEdge.getDestination().equals(finalDestinationNode)) {
+                candidateRoute.add(currentEdge);
+                bestRoute = new ArrayList<>(candidateRoute);
+                bestRouteWeight = candidateWeight + currentEdge.weight;
+
+                // After best route has been updated, remove current edge from candidate route to move back through recursive call chain and explore along the next edge.
+                candidateRoute.remove(currentEdge);
+                continue;
+            }
+
+            // No backtracking possible, so add edge to candidate route.
+            candidateRoute.add(currentEdge);
+
+            // Explore along candidate route.
+            recursiveExplore(currentEdge.getDestination(), finalDestinationNode, currentNode.getFloorNumber(), visitedNodes, accessibility, candidateRoute, (candidateWeight + currentEdge.weight));
+
+            // Remove current edge from candidate route to move back through recursive call chain and explore along the next edge.
+            candidateRoute.remove(currentEdge);
+        }
+
+        // Remove current node from list of visited nodes when moving back through recursive call chain.
+        visitedNodes.remove(currentNode);
+        // Move back up recursive call chain to explore next node.
     }
 }

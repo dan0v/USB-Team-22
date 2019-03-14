@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/dashboard"
+            android:title="@string/dashboard" />
+        <item
+            android:id="@+id/nav_cafe"
+            android:icon="@drawable/ic_cafe"
+            android:title="@string/cafe" />
+        <item
+            android:id="@+id/nav_tour"
+            android:icon="@drawable/tour"
+            android:title="@string/tour" />
+    </group>
+    <group android:id="@+id/settingsGroup" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/settings"
+            android:title="@string/action_settings" />
+    </group>
+</menu>

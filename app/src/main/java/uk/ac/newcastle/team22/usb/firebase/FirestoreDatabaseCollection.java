@@ -13,7 +13,7 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
  * @version 1.0
  */
 public enum FirestoreDatabaseCollection {
-    FLOORS, ROOMS, STAFF, CAFE_MENU, NAVIGATION_NODES;
+    FLOORS, ROOMS, STAFF, CAFE_MENU, NAVIGATION_NODES, OPENING_HOURS;
 
     /** Returns the identifier of the collection. */
     @NotNull
@@ -24,6 +24,7 @@ public enum FirestoreDatabaseCollection {
             case STAFF: return "staffMembers";
             case CAFE_MENU: return "cafeMenu";
             case NAVIGATION_NODES: return "nodes";
+            case OPENING_HOURS: return  "openingTimes";
             default: return null;
         }
     }
@@ -36,6 +37,7 @@ public enum FirestoreDatabaseCollection {
             case STAFF: return StaffMember.class;
             case CAFE_MENU: return CafeMenuItem.class;
             case NAVIGATION_NODES: return Node.class;
+            case OPENING_HOURS: return OpeningHours.class;
             default: return null;
         }
     }

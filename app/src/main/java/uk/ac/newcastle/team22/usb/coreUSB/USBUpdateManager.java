@@ -2,10 +2,15 @@ package uk.ac.newcastle.team22.usb.coreUSB;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.firebase.*;
+import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
  * A class which manages and maintains new and cached versions of the Urban Sciences Building.
@@ -16,7 +21,7 @@ import uk.ac.newcastle.team22.usb.firebase.*;
 public class USBUpdateManager {
 
     /** Boolean value whether the cache is enabled. Used for debugging purposes. */
-    private static final boolean CACHED_ENABLED = true;
+    private static final boolean CACHED_ENABLED = false;
 
     /** The exception to throw when a cached version of the Urban Sciences Building is not available. */
     public class USBNoCachedVersionAvailable extends Exception {}
@@ -87,11 +92,47 @@ public class USBUpdateManager {
     }
 
     /**
-     * Updates the floors and rooms in the Urban Sciences Building.
+     * Requests an update to the Urban Sciences Building.
+     * Ensures that the user is authenticated to receive an update.
      *
      * @param handler The completion handler called once the Urban Sciences Building has been updated.
      */
     public void update(final FirestoreCompletionHandler<USBUpdate> handler) {
+        // Authenticate user before attempting to download update.
+        FirebaseManager.shared.authenticate(new FirestoreCompletionHandler<Void>() {
+            @Override
+            public void completed(Void aVoid) {
+                super.completed(aVoid);
+
+                // Start Urban Sciences Building update.
+                loadBuilding(new FirestoreCompletionHandler<USBUpdate>() {
+                    @Override
+                    public void completed(USBUpdate usbUpdate) {
+                        super.completed(usbUpdate);
+                        handler.completed(usbUpdate);
+                    }
+                    @Override
+                    public void failed(Exception exception) {
+                        super.failed(exception);
+                        handler.failed(exception);
+                    }
+                });
+            }
+            @Override
+            public void failed(Exception exception) {
+                super.failed(exception);
+                handler.failed(exception);
+            }
+        });
+    }
+
+    /**
+     * Updates the floors, rooms, staff members, café menu, opening hours and navigation nodes
+     * in the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the Urban Sciences Building has been updated.
+     */
+    private void loadBuilding(final FirestoreCompletionHandler<USBUpdate> handler) {
         final USBUpdate update = new USBUpdate();
 
         // Request updated floors and rooms.
@@ -111,7 +152,32 @@ public class USBUpdateManager {
                             @Override
                             public void completed(List<CafeMenuItem> menuItems) {
                                 update.setCafeMenuItems(menuItems);
-                                handler.completed(update);
+
+                                // Request navigation nodes.
+                                loadNavigationNodes(new FirestoreCompletionHandler<List<Node>>() {
+                                    @Override
+                                    public void completed(List<Node> nodes) {
+                                        update.setNavigationNodes(nodes);
+
+                                        // Request opening hours.
+                                        loadOpeningHours(new FirestoreCompletionHandler<List<OpeningHours>>() {
+                                            @Override
+                                            public void completed(List<OpeningHours> openingHours) {
+                                                update.setOpeningHours(openingHours);
+                                                handler.completed(update);
+                                            }
+
+                                            @Override
+                                            public void failed(Exception exception) {
+                                                handler.failed(exception);
+                                            }
+                                        });
+                                    }
+                                    @Override
+                                    public void failed(Exception exception) {
+                                        handler.failed(exception);
+                                    }
+                                });
                             }
                             @Override
                             public void failed(Exception exception) {
@@ -211,6 +277,7 @@ public class USBUpdateManager {
             @Override
             public void failed(Exception exception) {
                 Log.e("", "Unable to retrieve USB staff members", exception);
+                handler.failed(exception);
             }
         });
     }
@@ -229,6 +296,45 @@ public class USBUpdateManager {
             @Override
             public void failed(Exception exception) {
                 Log.e("", "Unable to retrieve USB café menu items", exception);
+                handler.failed(exception);
+            }
+        });
+    }
+
+    /**
+     * Loads the navigation nodes in the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the navigation nodes have been retrieved.
+     */
+    private void loadNavigationNodes(final FirestoreCompletionHandler<List<Node>> handler) {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.NAVIGATION_NODES, null, new FirestoreCompletionHandler<List<Node>>() {
+            @Override
+            public void completed(final List<Node> nodes) {
+                handler.completed(nodes);
+            }
+            @Override
+            public void failed(Exception exception) {
+                Log.e("", "Unable to retrieve USB navigation nodes", exception);
+                handler.failed(exception);
+            }
+        });
+    }
+
+    /**
+     * Loads the opening hours in the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the opening hours have been retrieved.
+     */
+    private void loadOpeningHours(final FirestoreCompletionHandler<List<OpeningHours>> handler) {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.OPENING_HOURS, null, new FirestoreCompletionHandler<List<OpeningHours>>() {
+            @Override
+            public void completed(final List<OpeningHours> openingHours) {
+                handler.completed(openingHours);
+            }
+            @Override
+            public void failed(Exception exception) {
+                Log.e("", "Unable to retrieve USB opening hours", exception);
+                handler.failed(exception);
             }
         });
     }
@@ -275,6 +381,12 @@ public class USBUpdateManager {
         /** The items, food or drink, which are served at the café in the Urban Sciences Building. */
         private List<CafeMenuItem> cafeMenuItems = new ArrayList<>();
 
+        /** The navigation nodes in the Urban Sciences Building. */
+        private List<Node> navigationNodes = new ArrayList<>();
+
+        /** The opening hours in the Urban Sciences Building. */
+        private Map<OpeningHours.Service, OpeningHours> openingHours = new HashMap<>();
+
         /** Empty constructor. */
         USBUpdate() {}
 
@@ -288,7 +400,7 @@ public class USBUpdateManager {
 
         /**
          * Sets the new staff members in the update.
-         * @param staffMembers The updated floors.
+         * @param staffMembers The updated staff members.
          */
         public void setStaffMembers(List<StaffMember> staffMembers) {
             this.staffMembers = staffMembers;
@@ -300,6 +412,24 @@ public class USBUpdateManager {
          */
         public void setCafeMenuItems(List<CafeMenuItem> cafeMenuItems) {
             this.cafeMenuItems = cafeMenuItems;
+        }
+
+        /**
+         * Sets the new navigation nodes in the update.
+         * @param nodes The updated nodes.
+         */
+        public void setNavigationNodes(List<Node> nodes) {
+            this.navigationNodes = nodes;
+        }
+
+        /**
+         * Sets the new opening hours in the update.
+         * @param openingHours The updated opening hours.
+         */
+        public void setOpeningHours(List<OpeningHours> openingHours) {
+            for (OpeningHours hours : openingHours) {
+                this.openingHours.put(hours.getService(), hours);
+            }
         }
 
         /**
@@ -321,6 +451,20 @@ public class USBUpdateManager {
          */
         public List<CafeMenuItem> getCafeMenuItems() {
             return cafeMenuItems;
+        }
+
+        /**
+         * @return The updated navigation nodes.
+         */
+        public List<Node> getNavigationNodes() {
+            return navigationNodes;
+        }
+
+        /**
+         * @return The updated opening hours nodes.
+         */
+        public Map<OpeningHours.Service, OpeningHours> getOpeningHours() {
+            return openingHours;
         }
     }
 }
