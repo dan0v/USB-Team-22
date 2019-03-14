@@ -45,7 +45,7 @@ public class Search {
 
     //% string match algorithm called in search function
     private SearchResult determineWhetherSearchResult(Searchable potentialResult) {
-        SearchResult result;
+        SearchResult result = null;
 
         for (ResultReason reason : potentialResult.getSearchableReasons()) {
             if (reason.getAttribute().startsWith(query)) {

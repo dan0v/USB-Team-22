@@ -1,7 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
 import java.text.NumberFormat;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
