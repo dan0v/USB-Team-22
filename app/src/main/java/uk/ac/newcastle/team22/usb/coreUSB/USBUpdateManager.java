@@ -2,6 +2,8 @@ package uk.ac.newcastle.team22.usb.coreUSB;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +21,7 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
 public class USBUpdateManager {
 
     /** Boolean value whether the cache is enabled. Used for debugging purposes. */
-    private static final boolean CACHED_ENABLED = true;
+    private static final boolean CACHED_ENABLED = false;
 
     /** The exception to throw when a cached version of the Urban Sciences Building is not available. */
     public class USBNoCachedVersionAvailable extends Exception {}
@@ -90,11 +92,47 @@ public class USBUpdateManager {
     }
 
     /**
-     * Updates the floors and rooms in the Urban Sciences Building.
+     * Requests an update to the Urban Sciences Building.
+     * Ensures that the user is authenticated to receive an update.
      *
      * @param handler The completion handler called once the Urban Sciences Building has been updated.
      */
     public void update(final FirestoreCompletionHandler<USBUpdate> handler) {
+        // Authenticate user before attempting to download update.
+        FirebaseManager.shared.authenticate(new FirestoreCompletionHandler<Void>() {
+            @Override
+            public void completed(Void aVoid) {
+                super.completed(aVoid);
+
+                // Start Urban Sciences Building update.
+                loadBuilding(new FirestoreCompletionHandler<USBUpdate>() {
+                    @Override
+                    public void completed(USBUpdate usbUpdate) {
+                        super.completed(usbUpdate);
+                        handler.completed(usbUpdate);
+                    }
+                    @Override
+                    public void failed(Exception exception) {
+                        super.failed(exception);
+                        handler.failed(exception);
+                    }
+                });
+            }
+            @Override
+            public void failed(Exception exception) {
+                super.failed(exception);
+                handler.failed(exception);
+            }
+        });
+    }
+
+    /**
+     * Updates the floors, rooms, staff members, café menu, opening hours and navigation nodes
+     * in the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the Urban Sciences Building has been updated.
+     */
+    private void loadBuilding(final FirestoreCompletionHandler<USBUpdate> handler) {
         final USBUpdate update = new USBUpdate();
 
         // Request updated floors and rooms.
