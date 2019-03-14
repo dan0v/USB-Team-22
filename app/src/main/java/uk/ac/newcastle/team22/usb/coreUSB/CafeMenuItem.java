@@ -14,8 +14,8 @@ import uk.ac.newcastle.team22.usb.search.Searchable;
  * A class which represents an item on the menu at the café in the Urban Sciences Building.
  * See {@link Cafe} for more information.
  *
- * @author Patrick Lindley
  * @author Alexander MacLeod
+ * @author Patrick Lindley
  * @version 1.0
  */
 public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searchable {
@@ -29,14 +29,30 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
     /** The price of the café menu item in pence. */
     private int price;
 
+    /** The category of the café menu item. */
+    private CafeMenuItemCategory category;
+
+    /** The subcategory of the café menu item. */
+    private CafeMenuItemCategory subcategory;
+
+    /** Boolean value whether the café menu item is part of the meal deal. */
+    private boolean mealDeal;
+
     @Override
     public CafeMenuItem initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
         String name = (String) firestoreDictionary.get("name");
         int price = ((Number) firestoreDictionary.get("price")).intValue();
+        String category = (String) firestoreDictionary.get("category");
+        String subcategory = (String) firestoreDictionary.get("subcategory");
+        boolean mealDeal = (boolean) firestoreDictionary.get("mealDeal");
 
         this.identifier = documentIdentifier;
-        this.name = name;
         this.price = price;
+        this.name = name;
+        this.category = new CafeMenuItemCategory(category);
+        this.subcategory = new CafeMenuItemCategory(subcategory);
+        this.mealDeal = mealDeal;
+
         return this;
     }
 
@@ -60,6 +76,27 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
      */
     public int getPrice() {
         return price;
+    }
+
+    /**
+     * @return The category of the café menu item.
+     */
+    public CafeMenuItemCategory getCategory() {
+        return category;
+    }
+
+    /**
+     * @return The subcategory of the café menu item.
+     */
+    public CafeMenuItemCategory getSubcategory() {
+        return subcategory;
+    }
+
+    /**
+     * @return Boolean value whether the café menu item is part of the meal deal.
+     */
+    public boolean getIsOnMealDeal() {
+        return mealDeal;
     }
 
     /**

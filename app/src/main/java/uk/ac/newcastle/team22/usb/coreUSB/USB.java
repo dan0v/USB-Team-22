@@ -33,6 +33,8 @@ public class USB {
     /** The out of hours of the Urban Sciences Building. */
     private OpeningHours outOfHours;
 
+    private int version;
+
     /**
      * Constructor using a {@link USBUpdateManager.USBUpdate}.
      * This constructor is used to initialise a {@link USB} from either a cached version of the
@@ -99,6 +101,10 @@ public class USB {
      */
     public OpeningHours getOutOfHours() {
         return outOfHours;
+    }
+
+    public int getVersion() {
+        return version;
     }
 
     @Override

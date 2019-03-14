@@ -21,7 +21,7 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
 public class USBUpdateManager {
 
     /** Boolean value whether the cache is enabled. Used for debugging purposes. */
-    private static final boolean CACHED_ENABLED = false;
+    private static final boolean CACHED_ENABLED = true;
 
     /** The exception to throw when a cached version of the Urban Sciences Building is not available. */
     public class USBNoCachedVersionAvailable extends Exception {}
@@ -89,6 +89,10 @@ public class USBUpdateManager {
                 });
             }
         });
+    }
+
+    public void checkForUpdate(int currentVersion, final FirestoreCompletionHandler<Boolean> handler) {
+
     }
 
     /**

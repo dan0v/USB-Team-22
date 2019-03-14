@@ -30,8 +30,15 @@ public class USBManager {
             @Override
             public void completed(USBUpdateManager.USBUpdate cached) {
                 building = new USB(cached);
+
+                // Check for updates to the Urban Sciences Building.
+                //updateManager.checkForUpdate(building.getVersion(), );
+
+
+                // NO update.
                 handler.loadedFromCache();
             }
+
             @Override
             public void failed(Exception exception) {
                 boolean forceUpdate = (exception instanceof USBUpdateManager.USBNoCachedVersionAvailable);
