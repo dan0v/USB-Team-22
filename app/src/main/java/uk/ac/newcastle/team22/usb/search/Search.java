@@ -36,6 +36,7 @@ public class Search {
         // Determine objects to search.
         toSearch.addAll(building.getCafe().getItems());
 
+
         for (Searchable potentialResult : toSearch) {
             determineWhetherSearchResult(potentialResult);
         }
@@ -43,7 +44,7 @@ public class Search {
         return results;
     }
 
-    //% string match algorithm called in search function
+
     private SearchResult determineWhetherSearchResult(Searchable potentialResult) {
         SearchResult result = null;
 
