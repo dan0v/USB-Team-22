@@ -2,6 +2,7 @@ package uk.ac.newcastle.team22.usb.navigation;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,9 @@ public class Navigator {
 
     /** The list of edges for the best route between two locations in the Urban Sciences Building. */
     private List<Edge> bestRoute = new ArrayList<Edge>();
+
+    /** The nodes to traverse when presenting a tour route in the Urban Sciences Building to a user. */
+    private final int[] tourRouteNodes = {1000, 1001, 1002, };//1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014};
 
     /**
      * Calculates route from start Navigable to end Navigable.
@@ -62,6 +66,27 @@ public class Navigator {
         // Find shortest route between origin and destination nodes using backtracking.
         recursiveExplore(origin, destination, origin.getFloorNumber(), new ArrayList<Node>(), accessibility, new ArrayList<Edge>(), 0);
         return bestRoute;
+    }
+
+    /**
+     * @return The List of Edges to traverse for the Urban Sciences Building guided tour.
+     */
+    public List<Edge> getTourRoute() {
+        List<Edge> tourRoute = new ArrayList<Edge>();
+        for (int tourNodeID : tourRouteNodes) {
+            try {
+                Node currentNode = USBManager.shared.getBuilding().getNavigationNodes().get(tourNodeID);
+                if (currentNode.getClass().equals(TourNode.class)) {
+                    for (Edge tourEdge : currentNode.getEdges()) {
+                        tourRoute.add(tourEdge);
+                    }
+                }
+            } catch (Exception e) {
+                String msg = String.format("Missing TourNode: %s", tourNodeID);
+                Log.e("Navigation", msg, e);
+            }
+        }
+        return tourRoute;
     }
 
     /**
