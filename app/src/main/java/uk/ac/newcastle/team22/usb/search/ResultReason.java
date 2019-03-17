@@ -19,7 +19,7 @@ public class ResultReason {
     }
 
     public enum Reason {
-        PHONE_NUMBER, STAFF, ROOM, CAFE_ITEM_NAME, RESOURCE;
+        PHONE_NUMBER, STAFF, ROOM, CAFE_ITEM_NAME, RESOURCE, EMAIL;
 
         public String getReason(){
             switch(this) {
@@ -28,6 +28,7 @@ public class ResultReason {
                 case ROOM:          return "Room";
                 case CAFE_ITEM_NAME:     return "Cafe Menu Item Name";
                 case RESOURCE:      return "Room Resource";
+                case EMAIL:         return "email address";
                 default:            return "";
             }
         }

@@ -1,6 +1,11 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
+import uk.ac.newcastle.team22.usb.search.ResultReason;
+import uk.ac.newcastle.team22.usb.search.Searchable;
 
 /**
  * A class which represents a resource in a {@link Room}.
@@ -9,7 +14,7 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
  * @author Alexander MacLeod
  * @version 1.0
  */
-public class Resource {
+public class Resource implements Searchable {
 
     /** The type of resource. */
     private ResourceType type;
@@ -47,5 +52,14 @@ public class Resource {
      */
     public int getAvailable() {
         return available;
+    }
+
+    @Override
+    public List<ResultReason> getSearchableReasons() {
+        List<ResultReason> reasons = new ArrayList();
+
+        reasons.add(new ResultReason(type.name(), ResultReason.Reason.RESOURCE));
+
+        return reasons;
     }
 }
