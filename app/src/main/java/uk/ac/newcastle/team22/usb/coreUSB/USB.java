@@ -1,5 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +26,11 @@ public class USB {
     /** The café in the Urban Sciences Building. */
     private Cafe cafe;
 
-    /** The map of navigation nodes to their node identifiers. */
+    /** The Map of navigation Nodes to their Node identifiers. */
     private Map<Integer, Node> navigationNodes;
+
+    /** The list of Nodes identifiers of Nodes along the guided tour route. */
+    private List<Integer> tourNodeIndentifiers;
 
     /** The opening hours of the Urban Sciences Building. */
     private OpeningHours openingHours;
@@ -54,9 +59,15 @@ public class USB {
 
         // Populate map of nodes to their identifiers for faster access during navigation.
         this.navigationNodes = new HashMap<>();
+        this.tourNodeIndentifiers = new ArrayList<Integer>();
         for (Node node : update.getNavigationNodes()) {
             this.navigationNodes.put(node.getNodeIdentifier(), node);
+            if (node.isTourNode()) {
+                tourNodeIndentifiers.add(node.getNodeIdentifier());
+            }
         }
+        // Ensure tour nodes are ordered correctly.
+        Collections.sort(this.tourNodeIndentifiers);
     }
 
     /**
@@ -85,6 +96,13 @@ public class USB {
      */
     public Map<Integer, Node> getNavigationNodes() {
         return this.navigationNodes;
+    }
+
+    /**
+     * @return The identifiers of tour nodes in the Urban Sciences Building.
+     */
+    public List<Integer> getTourNodeIdentifiers() {
+        return this.tourNodeIndentifiers;
     }
 
     /**

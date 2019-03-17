@@ -26,11 +26,11 @@ public class Edge {
     public final boolean accessible;
 
     /**
-     * Construct an Edge between nodes.
-     * @param origin Origin Node of this Edge.
-     * @param destinationIdentifier Identifier of destination Node of this Edge.
-     * @param weight Total weight of the path this Edge represents.
-     * @param directions List of Direction - Copy is made.
+     * Construct an edge between nodes.
+     * @param origin Origin node of this edge.
+     * @param destinationIdentifier Identifier of destination node of this edge.
+     * @param weight Total weight of the path this edge represents.
+     * @param directions List of direction - Copy is made.
      * @param distances List of distances for each direction - Copy is made.
      * @param cardLocked boolean whether card access is required.
      * @param accessible boolean whether this edge meets accessibility needs.
@@ -46,9 +46,9 @@ public class Edge {
     }
 
     /**
-     * Initialise an Edge from Firebase.
-     * @param origin Origin Node of this Edge.
-     * @param firestoreDictionary Map representation of this Edge in Firebase.
+     * Initialise an edge from Firebase.
+     * @param origin Origin node of this edge.
+     * @param firestoreDictionary Map representation of this edge in Firebase.
      */
     public Edge(Node origin, Map<String, Object> firestoreDictionary) throws FirestoreConstructable.InitialisationFailed {
         this.origin = origin;
@@ -81,14 +81,14 @@ public class Edge {
     }
 
     /**
-     * @return Origin Node of this Edge.
+     * @return Origin node of this edge.
      */
     public Node getOrigin() {
         return this.origin;
     }
 
     /**
-     * @return Node with nodeIdentifier of this Edge from <pre>USBManager.sharedNodes</pre>.
+     * @return Node with <pre>nodeIdentifier</pre> of this edge from <pre>USB.navigationNodes</pre>.
      */
     public Node getDestination() {
         try {
@@ -96,7 +96,8 @@ public class Edge {
                 return this.origin;
             return USBManager.shared.getBuilding().getNavigationNodes().get(destinationIdentifier);
         } catch (Exception exception) {
-            Log.e("Navigator", "Destination Node not in Map", exception);
+            String msg = String.format("A destination node of node: %s is not in map", this.origin.getNodeIdentifier());
+            Log.e("Navigator", msg, exception);
         }
         return this.origin;
     }
