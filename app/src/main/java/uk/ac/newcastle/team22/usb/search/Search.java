@@ -34,6 +34,7 @@ public class Search {
         List<Searchable> toSearch = new ArrayList<>();
 
         // Determine objects to search.
+        //add all objects (staff, floors, resources)
         toSearch.addAll(building.getCafe().getItems());
 
 
@@ -48,11 +49,22 @@ public class Search {
     private SearchResult determineWhetherSearchResult(Searchable potentialResult) {
         SearchResult result = null;
 
+
         for (ResultReason reason : potentialResult.getSearchableReasons()) {
+            //checks if result starts with value
             if (reason.getAttribute().startsWith(query)) {
                 result = new SearchResult(potentialResult, 0, reason);
+            } else if (reason.getAttribute().endsWith(query)) {
+                result = new SearchResult(potentialResult, 2,reason);
+            } else if (reason.getAttribute().contains(query)) {
+                result = new SearchResult(potentialResult, 1, reason);
             }
+
+
+
         }
+
+
 
         return result;
     }
