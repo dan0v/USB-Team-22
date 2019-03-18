@@ -34,9 +34,11 @@ public class Search {
         List<Searchable> toSearch = new ArrayList<>();
 
         // Determine objects to search.
-        //add all objects (staff, floors, resources)
+        //add all objects (staff, rooms, cafeItems, resources)
         toSearch.addAll(building.getCafe().getItems());
-
+        toSearch.addAll(building.getStaffMembers());
+        //toSearch.addAll(building.getFloors().getRooms());
+        //toSearch.addAll(building.getFloors().getRooms().getResources());
 
         for (Searchable potentialResult : toSearch) {
             determineWhetherSearchResult(potentialResult);
@@ -59,13 +61,7 @@ public class Search {
             } else if (reason.getAttribute().contains(query)) {
                 result = new SearchResult(potentialResult, 1, reason);
             }
-
-
-
         }
-
-
-
         return result;
     }
 }
