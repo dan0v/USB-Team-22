@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
@@ -138,18 +139,23 @@ public class FirebaseManager {
      */
     public void authenticate(final FirestoreCompletionHandler<Void> handler) {
         FirebaseUser currentUser = authentication.getCurrentUser();
+        /*
         if (currentUser != null) {
             handler.completed(null);
             return;
         }
+        */
 
         // Sign into Firebase anonymously.
         authentication.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    Log.i("", "Successful");
                     handler.completed(null);
                 } else {
+                    Log.i("", "Failed");
+                    Log.i("", task.getException().getLocalizedMessage());
                     handler.failed(task.getException());
                 }
             }
