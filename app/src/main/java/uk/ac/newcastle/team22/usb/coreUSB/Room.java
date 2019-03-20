@@ -94,10 +94,17 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
      * The formatted room number includes the floor number.
      */
     @SuppressLint("DefaultLocale")
-    public String getNumber() {
+    public String getFormattedNumber() {
         String floorNumber = String.valueOf(floor.getNumber());
         String roomNumber = String.format("%03d", number);
         return floorNumber + "." + roomNumber;
+    }
+
+    /**
+     * @return The room number of this room.
+     */
+    public int getNumber() {
+        return number;
     }
 
     /**
@@ -120,6 +127,31 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
     }
 
     /**
+     * Update the number of available computers from Json file.
+     * @param newComputers
+     */
+    public void updateComputerAvailability(Resource newComputers) {
+        for (Resource resource : this.resources) {
+            if (resource.getType().equals(ResourceType.COMPUTER)) {
+                this.resources.remove(resource);
+                this.resources.add(newComputers);
+            }
+        }
+    }
+
+    /**
+     * @return The computer resource of this room. Throws exception if no computers present.
+     */
+    public Resource getComputers() throws IllegalArgumentException {
+        for (Resource resource : this.resources) {
+            if (resource.getType().equals(ResourceType.COMPUTER)) {
+                return resource;
+            }
+        }
+        return null;
+    }
+
+    /**
      * @return The resources which are available in the room.
      */
     public List<Resource> getResources() {
@@ -133,6 +165,6 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
 
     @Override
     public String toString() {
-        return getNumber();
+        return getFormattedNumber();
     }
 }

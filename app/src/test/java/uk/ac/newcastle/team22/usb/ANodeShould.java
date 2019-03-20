@@ -33,18 +33,18 @@ public class ANodeShould {
         assertEquals(2, testNode.getFloorNumber());
     }
 
-    @Test
-    public void haveEdges() {
-        Edge edge1 = new Edge(new Node(0, 0, new ArrayList<Edge>()), 1, 2, new ArrayList<Direction>(), new ArrayList<Integer>(), false, true);
-        Edge edge2 = new Edge(new Node(1, 0, new ArrayList<Edge>()), 0, 2, new ArrayList<Direction>(), new ArrayList<Integer>(), false, true);
-        List<Edge> testEdges = new ArrayList<>();
-        testEdges.add(edge1);
-        testEdges.add(edge2);
-
-        Node testNode = new Node(10,2, testEdges);
-
-        assertEquals(testEdges, testNode.getEdges());
-    }
+//    @Test
+//    public void haveEdges() {
+//        Edge edge1 = new Edge(new Node(0, 0, new ArrayList<Edge>()), 1, 2, new ArrayList<Direction>(), new ArrayList<Integer>(), false, true);
+//        Edge edge2 = new Edge(new Node(1, 0, new ArrayList<Edge>()), 0, 2, new ArrayList<Direction>(), new ArrayList<Integer>(), false, true);
+//        List<Edge> testEdges = new ArrayList<>();
+//        testEdges.add(edge1);
+//        testEdges.add(edge2);
+//
+//        Node testNode = new Node(10,2, testEdges);
+//
+//        assertEquals(testEdges, testNode.getEdges());
+//    }
 
     @Test
     public void testEquality() {

@@ -98,8 +98,8 @@ public class StaffMember implements FirestoreConstructable<StaffMember> {
      * @return The room of the staff member.
      */
     public Room getRoom() {
-        for (Floor floor : USBManager.shared.getBuilding().getFloors()) {
-            for (Room room : floor.getRooms()) {
+        for (Floor floor : USBManager.shared.getBuilding().getFloors().values()) {
+            for (Room room : floor.getRooms().values()) {
                 if (room.getStaffResidenceIdentifier() == identifier) {
                     return room;
                 }

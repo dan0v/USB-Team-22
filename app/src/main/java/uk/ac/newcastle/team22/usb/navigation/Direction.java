@@ -17,7 +17,7 @@ public enum Direction {
     FORWARD, LEFT, SLIGHT_LEFT, SHARP_LEFT, RIGHT, SLIGHT_RIGHT, SHARP_RIGHT, LIFT_UP, LIFT_DOWN, STAIR_UP, STAIR_DOWN;
 
     /**
-     * @return Localised String representation of a Direction.
+     * @return Localised string representation of a direction.
      */
     public @StringRes int getLocalisedDirection() {
         switch (this) {

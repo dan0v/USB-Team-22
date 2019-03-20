@@ -18,7 +18,7 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
 public class USB {
 
     /** The floors in the Urban Sciences Building. */
-    private List<Floor> floors;
+    private Map<Integer, Floor> floors;
 
     /** The staff members in the Urban Sciences Building. */
     private List<StaffMember> staffMembers;
@@ -51,11 +51,15 @@ public class USB {
      * @param update The Urban Sciences Building update.
      */
     USB(USBUpdateManager.USBUpdate update) {
-        this.floors = update.getFloors();
         this.staffMembers = update.getStaffMembers();
         this.cafe = new Cafe(update);
         this.openingHours = update.getOpeningHours().get(OpeningHours.Service.NORMAL);
         this.outOfHours = update.getOpeningHours().get(OpeningHours.Service.OUT_OF_HOURS);
+
+        // Populate map of floors to their floor numbers for faster.
+        for (Floor floor : update.getFloors()) {
+            this.floors.put(floor.getNumber(), floor);
+        }
 
         // Populate map of nodes to their identifiers for faster access during navigation.
         this.navigationNodes = new HashMap<>();
@@ -73,7 +77,7 @@ public class USB {
     /**
      * @return The floors in the Urban Sciences Building.
      */
-    public List<Floor> getFloors() {
+    public Map<Integer, Floor> getFloors() {
         return this.floors;
     }
 
@@ -122,7 +126,7 @@ public class USB {
     @Override
     public String toString() {
         int roomsCount = 0;
-        for (Floor floor : floors) {
+        for (Floor floor : floors.values()) {
             roomsCount += floor.getRooms().size();
         }
         return "USB (floors: " + floors.size() + ", rooms: " + roomsCount + ")";

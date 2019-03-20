@@ -17,9 +17,18 @@ public class Resource {
     /** The number of this resource which is available. */
     private int available;
 
+    /** The number of this resource which is available in this location. */
+    private int total = 0;
+
     public Resource(ResourceType resourceType, int available) {
         this.type = resourceType;
         this.available = available;
+    }
+
+    public Resource(ResourceType resourceType, int available, int total) {
+        this.type = resourceType;
+        this.available = available;
+        this.total = total;
     }
 
     /**
@@ -47,5 +56,12 @@ public class Resource {
      */
     public int getAvailable() {
         return available;
+    }
+
+    /**
+     * @return The number of this resource which is available at this location.
+     */
+    public int getTotal() {
+        return total;
     }
 }
