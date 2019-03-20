@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
     private int number;
 
     /** The resources which are available in the room. */
-    private List<Resource> resources = new ArrayList<>();
+    private List<Resource> resources;
 
     /** The identifier of the staff member who occupies the room. */
     private String staffResidenceIdentifier;
@@ -63,7 +64,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
         this.staffResidenceIdentifier = staffResidenceIdentifier;
 
         // Initialise room resources.
-        resources = resources == null ? Collections.<String, Long>emptyMap() : resources;
+        resources = resources == null ? Collections.<String, Long>emptyMap() : new HashMap();
         for (Map.Entry<String, Long> entry : resources.entrySet()) {
             Resource newResource = new Resource(entry.getKey(), entry.getValue().intValue());
             if (newResource != null) {

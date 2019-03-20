@@ -72,7 +72,7 @@ public class FirebaseManager {
                 QuerySnapshot result = task.getResult();
 
                 // Check whether the Firestore operation was successful.
-                if (!task.isSuccessful() || result == null || result.isEmpty()) {
+                if (!task.isSuccessful() || result == null) {
                     handler.failed(task.getException());
                     return;
                 }

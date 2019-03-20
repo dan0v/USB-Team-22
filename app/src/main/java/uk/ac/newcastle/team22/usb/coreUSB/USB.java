@@ -30,7 +30,7 @@ public class USB {
     private Map<Integer, Node> navigationNodes;
 
     /** The list of Nodes identifiers of Nodes along the guided tour route. */
-    private List<Integer> tourNodeIndentifiers;
+    private List<Integer> tourNodeIdentifiers;
 
     /** The opening hours of the Urban Sciences Building. */
     private OpeningHours openingHours;
@@ -57,21 +57,23 @@ public class USB {
         this.outOfHours = update.getOpeningHours().get(OpeningHours.Service.OUT_OF_HOURS);
 
         // Populate map of floors to their floor numbers for faster.
+        this.floors = new HashMap<>();
         for (Floor floor : update.getFloors()) {
             this.floors.put(floor.getNumber(), floor);
         }
 
         // Populate map of nodes to their identifiers for faster access during navigation.
         this.navigationNodes = new HashMap<>();
-        this.tourNodeIndentifiers = new ArrayList<Integer>();
+        this.tourNodeIdentifiers = new ArrayList<>();
+
         for (Node node : update.getNavigationNodes()) {
             this.navigationNodes.put(node.getNodeIdentifier(), node);
             if (node.isTourNode()) {
-                tourNodeIndentifiers.add(node.getNodeIdentifier());
+                tourNodeIdentifiers.add(node.getNodeIdentifier());
             }
         }
         // Ensure tour nodes are ordered correctly.
-        Collections.sort(this.tourNodeIndentifiers);
+        Collections.sort(this.tourNodeIdentifiers);
     }
 
     /**
@@ -106,7 +108,7 @@ public class USB {
      * @return The identifiers of tour nodes in the Urban Sciences Building.
      */
     public List<Integer> getTourNodeIdentifiers() {
-        return this.tourNodeIndentifiers;
+        return this.tourNodeIdentifiers;
     }
 
     /**

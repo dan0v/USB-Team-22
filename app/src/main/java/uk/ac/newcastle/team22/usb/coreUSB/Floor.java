@@ -22,7 +22,7 @@ public class Floor implements FirestoreConstructable<Floor> {
      * The rooms which are situated on the floor.
      * See {@link Room} for more information.
      */
-    private Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+    private Map<Integer, Room> rooms;
 
     /** The color which represents the floor. */
     private Color color;
@@ -41,6 +41,7 @@ public class Floor implements FirestoreConstructable<Floor> {
 
         this.number = number;
         this.color = ColorUtility.valueOf(color);
+        this.rooms = new HashMap();
         return this;
     }
 
