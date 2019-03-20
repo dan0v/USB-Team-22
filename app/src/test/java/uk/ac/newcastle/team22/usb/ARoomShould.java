@@ -25,6 +25,6 @@ public class ARoomShould {
         Floor firstFloor = new Floor(1);
         Room someRoom = new Room(firstFloor, 32);
 
-        assertEquals(someRoom.getNumber(), "1.032");
+        assertEquals(someRoom.getFormattedNumber(), "1.032");
     }
 }
