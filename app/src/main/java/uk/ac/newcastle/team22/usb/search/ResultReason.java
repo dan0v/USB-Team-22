@@ -1,5 +1,9 @@
 package uk.ac.newcastle.team22.usb.search;
 
+import android.support.annotation.StringRes;
+
+import uk.ac.newcastle.team22.usb.R;
+
 /**
  * A class to define search result reasons i.e. why this result has been returned
  *
@@ -21,10 +25,13 @@ public class ResultReason {
     public enum Reason {
         PHONE_NUMBER, STAFF, ROOM, CAFE_ITEM_NAME, RESOURCE, EMAIL;
 
-        public String getReason(){
+        /**
+         * @return Localised String representation of a Direction.
+         */
+        public @StringRes int getLocalisedDirection() {
             switch(this) {
-                case PHONE_NUMBER:  return "Phone number";
-                case STAFF:         return "Staff member";
+                case PHONE_NUMBER:  return R.string.reasonPhoneNumber;
+                case STAFF:         return R.string.reasonStaffMember;
                 case ROOM:          return "Room";
                 case CAFE_ITEM_NAME:     return "Cafe Menu Item Name";
                 case RESOURCE:      return "Room Resource";

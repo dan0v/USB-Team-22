@@ -60,7 +60,7 @@ public abstract class USBActivity extends AppCompatActivity {
     private void testSearch() {
         Log.i("", "Testing search");
 
-        Search search = new Search("test");
+        Search search = new Search("1");
         List<SearchResult> results = search.search();
 
         Log.i("", "Finished search (results: " + results.size() + ")");

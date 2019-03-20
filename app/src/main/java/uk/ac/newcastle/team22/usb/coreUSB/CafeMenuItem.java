@@ -93,7 +93,9 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
         List<ResultReason> reasons = new ArrayList();
 
         // Add reason for matching café menu item name.
-        reasons.add(new ResultReason(name, ResultReason.Reason.CAFE_ITEM_NAME));
+        if (name != null) {
+            reasons.add(new ResultReason(name, ResultReason.Reason.CAFE_ITEM_NAME));
+        }
 
         return reasons;
     }

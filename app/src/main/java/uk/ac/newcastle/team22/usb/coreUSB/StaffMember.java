@@ -116,9 +116,15 @@ public class StaffMember implements FirestoreConstructable<StaffMember>, Searcha
     public List<ResultReason> getSearchableReasons() {
         List<ResultReason> reasons = new ArrayList();
 
-        reasons.add(new ResultReason(firstName + " " + lastName, ResultReason.Reason.STAFF));
-        reasons.add(new ResultReason(phoneNumber, ResultReason.Reason.PHONE_NUMBER));
-        reasons.add(new ResultReason(emailAddress, ResultReason.Reason.EMAIL));
+        if (firstName != null && lastName != null) {
+            reasons.add(new ResultReason(firstName + " " + lastName, ResultReason.Reason.STAFF));
+        }
+        if (phoneNumber != null) {
+            reasons.add(new ResultReason(phoneNumber, ResultReason.Reason.PHONE_NUMBER));
+        }
+        if (emailAddress != null) {
+            reasons.add(new ResultReason(emailAddress, ResultReason.Reason.EMAIL));
+        }
 
         return reasons;
     }
