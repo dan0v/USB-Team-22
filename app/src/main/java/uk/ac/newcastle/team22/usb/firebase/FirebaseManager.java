@@ -1,14 +1,17 @@
 package uk.ac.newcastle.team22.usb.firebase;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +74,7 @@ public class FirebaseManager {
                 QuerySnapshot result = task.getResult();
 
                 // Check whether the Firestore operation was successful.
-                if (!task.isSuccessful() || result == null || result.isEmpty()) {
+                if (!task.isSuccessful() || result == null) {
                     handler.failed(task.getException());
                     return;
                 }

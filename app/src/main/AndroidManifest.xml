@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uk.ac.newcastle.team22.usb">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name=".coreApp.AppDelegate"
         android:allowBackup="false"

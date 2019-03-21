@@ -17,7 +17,7 @@ public enum Direction {
     FORWARD, LEFT, SLIGHT_LEFT, SHARP_LEFT, RIGHT, SLIGHT_RIGHT, SHARP_RIGHT, LIFT_UP, LIFT_DOWN, STAIR_UP, STAIR_DOWN;
 
     /**
-     * @return Localised String representation of a Direction.
+     * @return Localised string representation of a direction.
      */
     public @StringRes int getLocalisedDirection() {
         switch (this) {
@@ -37,9 +37,9 @@ public enum Direction {
     }
 
     /**
-     * Given a List of Edges, returns a List of Directions for turn by turn navigation between Nodes.
-     * @param edges List of Edges whose directions should be parsed.
-     * @return List of Direction enums.
+     * Given a list of Edges, returns a list of directions for turn by turn navigation between nodes.
+     * @param edges list of edges whose directions should be parsed.
+     * @return List of direction enums.
      * @throws IllegalArgumentException
      */
     public static List<Direction> parseDirections(List<Edge> edges) throws IllegalArgumentException {

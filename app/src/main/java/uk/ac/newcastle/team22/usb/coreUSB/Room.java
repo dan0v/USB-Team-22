@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     private int number;
 
     /** The resources which are available in the room. */
-    private List<Resource> resources = new ArrayList<>();
+    private List<Resource> resources = new ArrayList<Resource>();
 
     /** The identifier of the staff member who occupies the room. */
     private String staffResidenceIdentifier;
@@ -65,7 +66,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
         this.staffResidenceIdentifier = staffResidenceIdentifier;
 
         // Initialise room resources.
-        resources = resources == null ? Collections.<String, Long>emptyMap() : resources;
+        resources = resources == null ? Collections.<String, Long>emptyMap() : new HashMap();
         for (Map.Entry<String, Long> entry : resources.entrySet()) {
             Resource newResource = new Resource(entry.getKey(), entry.getValue().intValue());
             if (newResource != null) {
@@ -96,10 +97,17 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
      * The formatted room number includes the floor number.
      */
     @SuppressLint("DefaultLocale")
-    public String getNumber() {
+    public String getFormattedNumber() {
         String floorNumber = String.valueOf(floor.getNumber());
         String roomNumber = String.format("%03d", number);
         return floorNumber + "." + roomNumber;
+    }
+
+    /**
+     * @return The room number of this room.
+     */
+    public int getNumber() {
+        return number;
     }
 
     /**
@@ -122,6 +130,33 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     }
 
     /**
+     * Update the number of available computers from JSON file.
+     * @param newComputers
+     */
+    public void updateComputerAvailability(Resource newComputers) {
+        for (Resource resource : this.resources) {
+            if (resource.getType().equals(ResourceType.COMPUTER)) {
+                this.resources.remove(resource);
+            }
+        }
+        this.resources.add(newComputers);
+    }
+
+    /**
+     * @return The computer resource of this room.
+     * Returns a new resource with 0 total and 0 available computers if this room has none.
+     */
+    public Resource getComputers() {
+        for (Resource resource : this.resources) {
+            if (resource.getType().equals(ResourceType.COMPUTER)) {
+                return resource;
+            }
+            return new Resource(ResourceType.COMPUTER, 0, 0);
+        }
+        return null;
+    }
+
+    /**
      * @return The resources which are available in the room.
      */
     public List<Resource> getResources() {
@@ -129,7 +164,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     }
 
     @Override
-    public Node getNavNode() {
+    public Node getNavigationNode() {
         return USBManager.shared.getBuilding().getNavigationNodes().get(nodeIdentifier);
     }
 
@@ -144,7 +179,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
 
     @Override
     public String toString() {
-        return getNumber();
+        return getFormattedNumber();
     }
 
 
