@@ -18,19 +18,20 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
  */
 public class Search {
 
-    /** The string query being searched for. */
+    /** The query string. */
     private String query;
 
-    /** Constructor for Search */
     public Search(String query) {
-        this.query = query;
+        // Lowercase query string to avoid missing results.
+        // Trim whitespace on either side of the query string.
+        this.query = query.toLowerCase().trim();
     }
 
     /**
-     * Adds all Searchable objects to a list, each assigned a Reason.
-     * Searches all rooms, staff, cafe items and resources for the query.
-     * Orders results based on priority, 0 being highest and 2 being lowest.
-     * @return List of SearchResults
+     * Gathers all objects conforming to {@link Searchable} to a list, each assigned a reason.
+     * Searches all rooms, staff members, café items and resources for the query.
+     * Orders results based on priority.
+     * @return List of search results.
      */
     public List<SearchResult> search() {
         List<SearchResult> results = new ArrayList<>();
@@ -55,11 +56,10 @@ public class Search {
             }
         }
 
-        Collections.sort(results, new Comparator<SearchResult>(){
-            public int compare(SearchResult o1, SearchResult o2){
-                if(o1.getPriority() == o2.getPriority())
-                    return 0;
-                return o1.getPriority() < o2.getPriority() ? -1 : 1;
+        // Sort search results by priority.
+        Collections.sort(results, new Comparator<SearchResult>() {
+            public int compare(SearchResult o1, SearchResult o2) {
+                return o1.getPriority().compareTo(o2.getPriority());
             }
         });
 
@@ -68,19 +68,19 @@ public class Search {
 
 
     /**
-     * Compares the object filed to the search query to determine if a result.
-     * @param potentialResult Object filed to be searched.
-     * @return SearchResult found.
+     * Determines whether an object conforming to {@link Searchable} is a valid search result.
+     * @param potentialResult The object to be tested for a search result.
+     * @return The search result.
      */
     private SearchResult determineWhetherSearchResult(Searchable potentialResult) {
         SearchResult result = null;
 
         for (ResultReason reason : potentialResult.getSearchableReasons()) {
-            //checks if result starts with value
-            if (reason.getAttribute().startsWith(query)) {
-                result = new SearchResult(potentialResult, 0, reason);
-            } else if (reason.getAttribute().contains(query)) {
-                result = new SearchResult(potentialResult, 1, reason);
+            // Checks if result starts with value.
+            if (reason.getAttribute().toLowerCase().startsWith(query)) {
+                result = new SearchResult(potentialResult, Priority.HIGH, reason);
+            } else if (reason.getAttribute().toLowerCase().contains(query)) {
+                result = new SearchResult(potentialResult, Priority.LOW, reason);
             }
         }
         return result;

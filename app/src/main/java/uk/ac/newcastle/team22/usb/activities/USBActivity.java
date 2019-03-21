@@ -4,14 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
-import java.util.List;
-
 import uk.ac.newcastle.team22.usb.R;
-import uk.ac.newcastle.team22.usb.search.Search;
-import uk.ac.newcastle.team22.usb.search.SearchResult;
 
 /**
  * A class which manages an Urban Sciences Building activity.
@@ -28,8 +23,6 @@ public abstract class USBActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         configureView();
-
-        testSearch();
     }
 
     /** Configures the view displayed by the activity. */
@@ -52,24 +45,5 @@ public abstract class USBActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    // TODO
-    // Remove once finished testing
-
-    private void testSearch() {
-        Log.i("", "Testing search");
-
-        Search search = new Search("1");
-        List<SearchResult> results = search.search();
-
-        Log.i("", "Finished search (results: " + results.size() + ")");
-        Log.i("", "\n***\n");
-
-        for (SearchResult result : results) {
-            Log.i("", result.toString());
-        }
-
-        Log.i("", "\n***\n");
     }
 }
