@@ -65,6 +65,12 @@
     <string name="search">Search</string>
     <string name="title_activity_cafe">CafeActivity</string>
     <string name="title_activity_room">RoomActivity</string>
+    <string name="reasonPhoneNumber">Phone number</string>
+    <string name="reasonStaffMember">Staff member</string>
+    <string name="reasonRoom">Room</string>
+    <string name="reasonCafeMenuItem">Cafe menu item</string>
+    <string name="reasonResource">Resource</string>
+    <string name="reasonEmail">Email address</string>
     <!--search end-->
 
     <!--opening hours start-->

@@ -11,6 +11,8 @@ import java.util.Map;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 import uk.ac.newcastle.team22.usb.navigation.Navigable;
 import uk.ac.newcastle.team22.usb.navigation.Node;
+import uk.ac.newcastle.team22.usb.search.ResultReason;
+import uk.ac.newcastle.team22.usb.search.Searchable;
 
 /**
  * A class which represents a room in Urban Sciences Building.
@@ -19,7 +21,7 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
  * @author Daniel Vincet
  * @version 1.0
  */
-public class Room implements FirestoreConstructable<Room>, Navigable {
+public class Room implements FirestoreConstructable<Room>, Navigable, Searchable {
 
     /** The floor on which the room is situated. */
     private Floor floor;
@@ -167,7 +169,18 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
     }
 
     @Override
+    public List<ResultReason> getSearchableReasons() {
+        List<ResultReason> reasons = new ArrayList();
+
+        reasons.add(new ResultReason(Integer.toString(number), ResultReason.Reason.ROOM));
+
+        return reasons;
+    }
+
+    @Override
     public String toString() {
         return getFormattedNumber();
     }
+
+
 }
