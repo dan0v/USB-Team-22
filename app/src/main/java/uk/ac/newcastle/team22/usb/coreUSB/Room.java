@@ -28,7 +28,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
     private int number;
 
     /** The resources which are available in the room. */
-    private List<Resource> resources;
+    private List<Resource> resources = new ArrayList<Resource>();
 
     /** The identifier of the staff member who occupies the room. */
     private String staffResidenceIdentifier;
@@ -128,26 +128,28 @@ public class Room implements FirestoreConstructable<Room>, Navigable {
     }
 
     /**
-     * Update the number of available computers from Json file.
+     * Update the number of available computers from JSON file.
      * @param newComputers
      */
     public void updateComputerAvailability(Resource newComputers) {
         for (Resource resource : this.resources) {
             if (resource.getType().equals(ResourceType.COMPUTER)) {
                 this.resources.remove(resource);
-                this.resources.add(newComputers);
             }
         }
+        this.resources.add(newComputers);
     }
 
     /**
-     * @return The computer resource of this room. Throws exception if no computers present.
+     * @return The computer resource of this room.
+     * Returns a new resource with 0 total and 0 available computers if this room has none.
      */
-    public Resource getComputers() throws IllegalArgumentException {
+    public Resource getComputers() {
         for (Resource resource : this.resources) {
             if (resource.getType().equals(ResourceType.COMPUTER)) {
                 return resource;
             }
+            return new Resource(ResourceType.COMPUTER, 0, 0);
         }
         return null;
     }
