@@ -42,8 +42,8 @@ public class Search {
         toSearch.addAll(building.getCafe().getItems());
         toSearch.addAll(building.getStaffMembers());
 
-        for (Floor floor : building.getFloors()) {
-            for (Room room : floor.getRooms()) {
+        for (Floor floor : building.getFloors().values()) {
+            for (Room room : floor.getRooms().values()) {
                 toSearch.add(room);
                 toSearch.addAll(room.getResources());
             }
