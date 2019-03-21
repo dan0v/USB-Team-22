@@ -1,14 +1,10 @@
 package uk.ac.newcastle.team22.usb.search;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
-import uk.ac.newcastle.team22.usb.R;
-import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItem;
 import uk.ac.newcastle.team22.usb.coreUSB.Floor;
 import uk.ac.newcastle.team22.usb.coreUSB.Room;
 import uk.ac.newcastle.team22.usb.coreUSB.USB;
@@ -16,31 +12,35 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
 /**
  * The class from which the search algorithm is called.
- * Searches through all fields in staff, rooms, cafe menu, room resources
- * Each object that is found to match will have a copy created, assigned an enum for reason, and a priority based on % string match to the field
- * This SearchResult object will be placed in Search class map, which will be returned to display the results.
+ *
+ * @author Patrick Lindley
+ * @version 1.0
  */
 public class Search {
 
+    /** The string query being searched for. */
     private String query;
 
+    /** Constructor for Search */
     public Search(String query) {
         this.query = query;
     }
 
-    //actual search algorithm
+    /**
+     * Adds all Searchable objects to a list, each assigned a Reason.
+     * Searches all rooms, staff, cafe items and resources for the query.
+     * Orders results based on priority, 0 being highest and 2 being lowest.
+     * @return List of SearchResults
+     */
     public List<SearchResult> search() {
         List<SearchResult> results = new ArrayList<>();
 
         USB building = USBManager.shared.getBuilding();
         List<Searchable> toSearch = new ArrayList<>();
 
-        // Determine objects to search.
-        // Add staff members, cafe items.
         toSearch.addAll(building.getCafe().getItems());
         toSearch.addAll(building.getStaffMembers());
 
-        // Add all floors, rooms and resources.
         for (Floor floor : building.getFloors()) {
             for (Room room : floor.getRooms()) {
                 toSearch.add(room);
@@ -55,10 +55,23 @@ public class Search {
             }
         }
 
+        Collections.sort(results, new Comparator<SearchResult>(){
+            public int compare(SearchResult o1, SearchResult o2){
+                if(o1.getPriority() == o2.getPriority())
+                    return 0;
+                return o1.getPriority() < o2.getPriority() ? -1 : 1;
+            }
+        });
+
         return results;
     }
 
 
+    /**
+     * Compares the object filed to the search query to determine if a result.
+     * @param potentialResult Object filed to be searched.
+     * @return SearchResult found.
+     */
     private SearchResult determineWhetherSearchResult(Searchable potentialResult) {
         SearchResult result = null;
 
