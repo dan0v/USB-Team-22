@@ -1,5 +1,6 @@
 package uk.ac.newcastle.team22.usb.activities;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -16,9 +17,9 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.fragments.CafeFragment;
 import uk.ac.newcastle.team22.usb.fragments.DashboardFragment;
-import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.fragments.SettingsFragment;
 import uk.ac.newcastle.team22.usb.fragments.TourFragment;
 import uk.ac.newcastle.team22.usb.fragments.USBFragment;
@@ -62,7 +63,7 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
         TextView subtitle = headerView.findViewById(R.id.navigationDrawerSubtitleTextView);
 
         // Display current date in drawer header view.
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE d MMMM");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE d MMMM");
         String currentDate = simpleDateFormat.format(Calendar.getInstance().getTime());
         subtitle.setText(currentDate);
 
@@ -72,19 +73,15 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
         navigationView.setCheckedItem(R.id.nav_dashboard);
     }
 
-    @Override
     /**
      * Navigates to the {@link USBFragment} represented by the selected menu item.
      * @param item The selected menu item.
      */
+    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        USBFragment fragment = null;
-
+        USBFragment fragment = new DashboardFragment();
         switch (id) {
-            case R.id.nav_dashboard:
-                fragment = new DashboardFragment();
-                break;
             case R.id.nav_cafe:
                 fragment = new CafeFragment();
                 break;
@@ -96,11 +93,6 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
                 break;
             default:
                 break;
-        }
-
-        // Check whether a new fragment has been selected.
-        if (fragment == null) {
-            return false;
         }
 
         // Navigate to selected fragment.
