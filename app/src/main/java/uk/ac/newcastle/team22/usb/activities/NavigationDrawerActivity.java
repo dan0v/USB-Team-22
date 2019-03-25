@@ -38,39 +38,6 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_navigation_drawer);
         super.onCreate(savedInstanceState);
-        configureView();
-    }
-
-    /** Configures the view. */
-    private void configureView() {
-        // Initialise the toolbar.
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Initialise navigation drawer button.
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        // Set the navigation listener.
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        // Configure navigation drawer header view.
-        View headerView = navigationView.getHeaderView(0);
-        TextView subtitle = headerView.findViewById(R.id.navigationDrawerSubtitleTextView);
-
-        // Display current date in drawer header view.
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE d MMMM");
-        String currentDate = simpleDateFormat.format(Calendar.getInstance().getTime());
-        subtitle.setText(currentDate);
-
-        // Display default fragment.
-        USBFragment defaultFragment = new DashboardFragment();
-        navigateTo(defaultFragment);
-        navigationView.setCheckedItem(R.id.nav_dashboard);
     }
 
     /**
@@ -126,5 +93,39 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
 
         // Set the text of the drawer title bar.
         setTitle(fragment.getTitle());
+    }
+
+    @Override
+    void configureView() {
+        super.configureView();
+
+        // Initialise the toolbar.
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Initialise navigation drawer button.
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        // Set the navigation listener.
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Configure navigation drawer header view.
+        View headerView = navigationView.getHeaderView(0);
+        TextView subtitle = headerView.findViewById(R.id.navigationDrawerSubtitleTextView);
+
+        // Display current date in drawer header view.
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE d MMMM");
+        String currentDate = simpleDateFormat.format(Calendar.getInstance().getTime());
+        subtitle.setText(currentDate);
+
+        // Display default fragment.
+        USBFragment defaultFragment = new DashboardFragment();
+        navigateTo(defaultFragment);
+        navigationView.setCheckedItem(R.id.nav_dashboard);
     }
 }

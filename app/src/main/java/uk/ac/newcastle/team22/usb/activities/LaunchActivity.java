@@ -82,7 +82,7 @@ public class LaunchActivity extends AppCompatActivity {
 
     /** Presents an alert stating that an update is available for the Urban Sciences Building. */
     private void presentUSBUpdateAvailableAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         builder.setCancelable(false);
         builder.setTitle(R.string.updateAvailable);
         builder.setMessage(R.string.usbUpdateAvailableInstallMessage);
@@ -104,7 +104,7 @@ public class LaunchActivity extends AppCompatActivity {
 
     /** Presents an alert stating that an update for the Urban Sciences Building was unable to be installed. */
     private void presentUSBUpdateErrorAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         builder.setCancelable(false);
         builder.setTitle(R.string.updateUnableToInstall);
         builder.setMessage(R.string.usbUpdateUnableToInstallMessage);
@@ -132,7 +132,7 @@ public class LaunchActivity extends AppCompatActivity {
     /** Requests an update to the Urban Sciences Building. */
     @SuppressWarnings("deprecation")
     private void startUSBBuildingUpdate() {
-        final ProgressDialog dialog = new ProgressDialog(LaunchActivity.this);
+        final ProgressDialog dialog = new ProgressDialog(LaunchActivity.this, R.style.AlertDialogStyle);
         dialog.setCancelable(false);
         dialog.setTitle(R.string.updateInProgress);
         dialog.setMessage(getString(R.string.pleaseWait));

@@ -63,14 +63,14 @@
 
     <!--search start-->
     <string name="search">Search</string>
-    <string name="title_activity_cafe">CafeActivity</string>
-    <string name="title_activity_room">RoomActivity</string>
-    <string name="reasonPhoneNumber">Phone number</string>
-    <string name="reasonStaffMember">Staff member</string>
+    <string name="reasonPhoneNumber">Phone Number</string>
+    <string name="reasonStaffMember">Staff Member</string>
     <string name="reasonRoom">Room</string>
-    <string name="reasonCafeMenuItem">Cafe menu item</string>
+    <string name="reasonCafeMenuItem">Café</string>
     <string name="reasonResource">Resource</string>
-    <string name="reasonEmail">Email address</string>
+    <string name="reasonEmail">Email Address</string>
+    <string name="floor">Floor</string>
+    <string name="room">Room</string>
     <!--search end-->
 
     <!--opening hours start-->

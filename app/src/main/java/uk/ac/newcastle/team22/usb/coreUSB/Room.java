@@ -68,7 +68,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
         // Initialise room resources.
         resources = resources == null ? Collections.<String, Long>emptyMap() : new HashMap();
         for (Map.Entry<String, Long> entry : resources.entrySet()) {
-            Resource newResource = new Resource(entry.getKey(), entry.getValue().intValue());
+            Resource newResource = new Resource(entry.getKey(), entry.getValue().intValue(), this);
             if (newResource != null) {
                 this.resources.add(newResource);
             }

@@ -26,7 +26,7 @@ public abstract class USBActivity extends AppCompatActivity {
     }
 
     /** Configures the view displayed by the activity. */
-    private void configureView() {
+    void configureView() {
         configureSearchFab();
     }
 

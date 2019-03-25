@@ -25,6 +25,9 @@ public class Resource implements Searchable {
     /** The number of this resource which is available in this location. */
     private int total = 0;
 
+    /** The room in which this resource is situated. */
+    private Room room;
+
     public Resource(ResourceType resourceType, int available) {
         this.type = resourceType;
         this.available = available;
@@ -38,15 +41,18 @@ public class Resource implements Searchable {
 
     /**
      * Constructor for {@link Resource}.
+     *
      * @param resourceTypeIdentifier The identifier of the resource type.
      * @param available The number of this resource which is available.
+     * @param room The room in which this resource is situated.
      * @throws FirestoreConstructable.InitialisationFailed
      */
-    public Resource(String resourceTypeIdentifier, int available) throws FirestoreConstructable.InitialisationFailed {
+    public Resource(String resourceTypeIdentifier, int available, Room room) throws FirestoreConstructable.InitialisationFailed {
         ResourceType type = ResourceType.valueFor(resourceTypeIdentifier);
 
         this.type = type;
         this.available = available;
+        this.room = room;
     }
 
     /**
@@ -70,12 +76,17 @@ public class Resource implements Searchable {
         return total;
     }
 
+    /**
+     * @return The room in which this resource is situated.
+     */
+    public Room getRoom() {
+        return room;
+    }
+
     @Override
     public List<ResultReason> getSearchableReasons() {
         List<ResultReason> reasons = new ArrayList();
-
         reasons.add(new ResultReason(type.name(), ResultReason.Reason.RESOURCE));
-
         return reasons;
     }
 }

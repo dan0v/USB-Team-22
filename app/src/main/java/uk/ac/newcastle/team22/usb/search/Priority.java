@@ -11,7 +11,9 @@ import java.util.Comparator;
 public enum Priority implements Comparator<Priority> {
     LOW, HIGH;
 
-    /** The integer value of the priority. */
+    /**
+     * @return The integer value of the priority.
+     */
     private int getIntegerValue() {
         switch (this) {
             case LOW:   return 0;

@@ -31,10 +31,16 @@ public class Search {
      * Gathers all objects conforming to {@link Searchable} to a list, each assigned a reason.
      * Searches all rooms, staff members, café items and resources for the query.
      * Orders results based on priority.
+     *
      * @return List of search results.
      */
     public List<SearchResult> search() {
         List<SearchResult> results = new ArrayList<>();
+
+        // Check for an empty query.
+        if (query.isEmpty()) {
+            return results;
+        }
 
         USB building = USBManager.shared.getBuilding();
         List<Searchable> toSearch = new ArrayList<>();
@@ -69,12 +75,12 @@ public class Search {
 
     /**
      * Determines whether an object conforming to {@link Searchable} is a valid search result.
+     *
      * @param potentialResult The object to be tested for a search result.
      * @return The search result.
      */
     private SearchResult determineWhetherSearchResult(Searchable potentialResult) {
         SearchResult result = null;
-
         for (ResultReason reason : potentialResult.getSearchableReasons()) {
             // Checks if result starts with value.
             if (reason.getAttribute().toLowerCase().startsWith(query)) {

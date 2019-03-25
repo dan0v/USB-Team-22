@@ -85,6 +85,13 @@ public class StaffMember implements FirestoreConstructable<StaffMember>, Searcha
     }
 
     /**
+     * @return The full title of the staff member.
+     */
+    public String getFullTitle() {
+        return title + " " + firstName + " " + lastName;
+    }
+
+    /**
      * @return The phone number of the staff member.
      */
     public String getPhoneNumber() {

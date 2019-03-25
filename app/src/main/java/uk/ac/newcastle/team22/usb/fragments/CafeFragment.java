@@ -2,17 +2,19 @@ package uk.ac.newcastle.team22.usb.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.*;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -50,7 +52,7 @@ public class CafeFragment extends Fragment implements USBFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listView = view.findViewById(R.id.listView);
+        listView = view.findViewById(R.id.cafe_list_view);
 
         // Load and sort café menu items alphabetically.
         List<CafeMenuItem> cafeMenuItems = USBManager.shared.getBuilding().getCafe().getItems();
@@ -99,7 +101,7 @@ public class CafeFragment extends Fragment implements USBFragment {
         /** The cell layout resource identifier. */
         int resource;
 
-        /** The café menu items to display/ */
+        /** The café menu items to display. */
         List<CafeMenuItem> menuItems;
 
         public CafeMenuItemAdapter(Context context, int resource, List<CafeMenuItem> menuItems) {
@@ -115,12 +117,12 @@ public class CafeFragment extends Fragment implements USBFragment {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             View view = layoutInflater.inflate(resource, null, false);
 
-            TextView textViewName = view.findViewById(R.id.cafeMenuItemNameTextView);
-            TextView textViewTeam = view.findViewById(R.id.cafeMenuItemPriceTextView);
+            TextView title = view.findViewById(R.id.cafeMenuItemNameTextView);
+            TextView detail = view.findViewById(R.id.cafeMenuItemPriceTextView);
 
             final CafeMenuItem menuItem = menuItems.get(position);
-            textViewName.setText(menuItem.getName());
-            textViewTeam.setText(menuItem.getFormattedPrice());
+            title.setText(menuItem.getName());
+            detail.setText(menuItem.getFormattedPrice());
 
             return view;
         }

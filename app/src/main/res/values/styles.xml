@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="preferenceTheme">@style/PreferenceScreen</item>
+        <item name="colorControlActivated">#FFffffff</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -20,6 +21,12 @@
 
     <style name="PreferenceScreen" parent="PreferenceThemeOverlay.v14.Material">
         <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
 </resources>
