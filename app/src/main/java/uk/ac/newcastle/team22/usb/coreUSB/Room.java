@@ -101,7 +101,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     @SuppressLint("DefaultLocale")
     public String getFormattedNumber() {
         String floorNumber = String.valueOf(floor.getNumber());
-        String roomNumber = String.format("%03d", number);
+        String roomNumber = String.format("%03d", Integer.getInteger(number));
         return floorNumber + "." + roomNumber;
     }
 
