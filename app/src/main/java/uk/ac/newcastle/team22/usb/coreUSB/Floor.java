@@ -2,7 +2,8 @@ package uk.ac.newcastle.team22.usb.coreUSB;
 
 import android.graphics.Color;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.coreApp.ColorUtility;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
@@ -22,7 +23,7 @@ public class Floor implements FirestoreConstructable<Floor> {
      * The rooms which are situated on the floor.
      * See {@link Room} for more information.
      */
-    private Map<Integer, Room> rooms;
+    private Map<String, Room> rooms;
 
     /** The color which represents the floor. */
     private Color color;
@@ -64,7 +65,7 @@ public class Floor implements FirestoreConstructable<Floor> {
     /**
      * @return The rooms which are situated on the floor.
      */
-    public Map<Integer, Room> getRooms() {
+    public Map<String, Room> getRooms() {
         return rooms;
     }
 

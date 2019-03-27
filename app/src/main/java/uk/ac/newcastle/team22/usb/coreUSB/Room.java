@@ -27,7 +27,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     private Floor floor;
 
     /** The room number on a given floor. */
-    private int number;
+    private String number;
 
     /** The resources which are available in the room. */
     private List<Resource> resources = new ArrayList<Resource>();
@@ -35,10 +35,13 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     /** The identifier of the staff member who occupies the room. */
     private String staffResidenceIdentifier;
 
-    /** The nearest Navigation Node to this Room */
+    /** The nearest navigation node to the room. */
     private int nodeIdentifier;
 
-    public Room(Floor floor, int number) {
+    /** The alternate name of the room. */
+    private String alternateName;
+
+    public Room(Floor floor, String number) {
         this.floor = floor;
         this.number = number;
         floor.attachRoom(this);
@@ -50,8 +53,6 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     @Override
     @SuppressWarnings("unchecked")
     public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
-        int number = Integer.parseInt(documentIdentifier);
-
         // TODO Temporary check for null node identifier while data is being finalised.
         int nodeIdentifier = -1;
         if (firestoreDictionary.get("node") != null) {
@@ -60,10 +61,12 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
 
         Map<String, Long> resources = (Map<String, Long>) firestoreDictionary.get("resources");
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
+        String alternateName = (String) firestoreDictionary.get("alternateName");
 
         this.nodeIdentifier = nodeIdentifier;
-        this.number = number;
+        this.number = documentIdentifier;
         this.staffResidenceIdentifier = staffResidenceIdentifier;
+        this.alternateName = alternateName;
 
         // Initialise room resources.
         resources = resources == null ? Collections.<String, Long>emptyMap() : new HashMap();
@@ -93,8 +96,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     }
 
     /**
-     * Returns the formatted room number.
-     * The formatted room number includes the floor number.
+     * @return The formatted room number includes the floor number.
      */
     @SuppressLint("DefaultLocale")
     public String getFormattedNumber() {
@@ -104,9 +106,9 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     }
 
     /**
-     * @return The room number of this room.
+     * @return The room number on a given floor.
      */
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
@@ -131,6 +133,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
 
     /**
      * Update the number of available computers from JSON file.
+     *
      * @param newComputers
      */
     public void updateComputerAvailability(Resource newComputers) {
@@ -168,11 +171,19 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
         return USBManager.shared.getBuilding().getNavigationNodes().get(nodeIdentifier);
     }
 
+    /**
+     * @return The alternate name of the room.
+     */
+    public String getAlternateName() {
+        return alternateName;
+    }
+
     @Override
     public List<ResultReason> getSearchableReasons() {
         List<ResultReason> reasons = new ArrayList();
 
-        reasons.add(new ResultReason(Integer.toString(number), ResultReason.Reason.ROOM));
+        reasons.add(new ResultReason(number, ResultReason.Reason.ROOM));
+        reasons.add(new ResultReason(getFormattedNumber(), ResultReason.Reason.ROOM));
 
         return reasons;
     }

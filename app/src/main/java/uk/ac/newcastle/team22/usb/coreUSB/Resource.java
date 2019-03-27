@@ -23,7 +23,7 @@ public class Resource implements Searchable {
     private int available;
 
     /** The number of this resource which is available in this location. */
-    private int total = 0;
+    private int total;
 
     /** The room in which this resource is situated. */
     private Room room;
@@ -31,6 +31,7 @@ public class Resource implements Searchable {
     public Resource(ResourceType resourceType, int available) {
         this.type = resourceType;
         this.available = available;
+        this.total = 0;
     }
 
     public Resource(ResourceType resourceType, int available, int total) {

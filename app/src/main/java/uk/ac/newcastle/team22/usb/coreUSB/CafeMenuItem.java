@@ -6,6 +6,7 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 import uk.ac.newcastle.team22.usb.search.ResultReason;
 import uk.ac.newcastle.team22.usb.search.Searchable;
@@ -29,14 +30,25 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
     /** The price of the café menu item in pence. */
     private int price;
 
+    /** The category of the café menu item. */
+    private CafeMenuItemCategory category;
+
+    /** Boolean value whether the café menu item is part of the meal deal. */
+    private boolean isMealDeal;
+
     @Override
     public CafeMenuItem initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
         String name = (String) firestoreDictionary.get("name");
         int price = ((Number) firestoreDictionary.get("price")).intValue();
+        String categoryName = (String) firestoreDictionary.get("category");
+        int categoryIconIdentifier = ((Number) firestoreDictionary.get("iconCategoryIdentifier")).intValue();
+        boolean isMealDeal = (boolean) firestoreDictionary.get("mealDeal");
 
         this.identifier = documentIdentifier;
         this.name = name;
         this.price = price;
+        this.category = new CafeMenuItemCategory(categoryName, categoryIconIdentifier);
+        this.isMealDeal = isMealDeal;
         return this;
     }
 
@@ -60,6 +72,20 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
      */
     public int getPrice() {
         return price;
+    }
+
+    /**
+     * @return The category of the café menu item.
+     */
+    public CafeMenuItemCategory getCategory() {
+        return category;
+    }
+
+    /**
+     * @return Boolean value whether the café menu item is part of the meal deal.
+     */
+    public boolean isMealDeal() {
+        return isMealDeal;
     }
 
     /**
