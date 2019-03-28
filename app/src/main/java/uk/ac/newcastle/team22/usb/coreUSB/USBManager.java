@@ -32,11 +32,35 @@ public class USBManager {
                 building = new USB(cached);
 
                 // Check for updates to the Urban Sciences Building.
-                //updateManager.checkForUpdate(building.getVersion(), );
+                updateManager.checkForUpdate(building.getVersion(),new FirestoreCompletionHandler<Boolean>() {
+                    @Override
+                    public void completed(Boolean updateRequired) {
+                        super.completed(updateRequired);
+                        if (updateRequired) {
+                            updateManager.update(new FirestoreCompletionHandler<USBUpdateManager.USBUpdate>() {
+                                @Override
+                                public void completed(USBUpdateManager.USBUpdate usbUpdate) {
+                                    super.completed(usbUpdate);
+                                    building = new USB(usbUpdate);
+                                    handler.loadedFromCache();
+                                }
+                                @Override
+                                public void failed(Exception exception) {
+                                    super.failed(exception);
+                                    handler.loadedFromCache();
+                                }
+                            });
+                        } else {
+                            handler.loadedFromCache();
+                        }
+                    }
 
-
-                // NO update.
-                handler.loadedFromCache();
+                    @Override
+                    public void failed(Exception exception) {
+                        super.failed(exception);
+                        handler.loadedFromCache();
+                    }
+                });
             }
 
             @Override

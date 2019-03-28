@@ -33,7 +33,7 @@ public class USB {
     /** The out of hours of the Urban Sciences Building. */
     private OpeningHours outOfHours;
 
-    private int version;
+    private USBConfiguration configuration;
 
     /**
      * Constructor using a {@link USBUpdateManager.USBUpdate}.
@@ -53,6 +53,7 @@ public class USB {
         this.cafe = new Cafe(update);
         this.openingHours = update.getOpeningHours().get(OpeningHours.Service.NORMAL);
         this.outOfHours = update.getOpeningHours().get(OpeningHours.Service.OUT_OF_HOURS);
+        this.configuration = update.getConfiguration();
 
         // Populate map of nodes to their identifiers for faster access during navigation.
         this.navigationNodes = new HashMap<>();

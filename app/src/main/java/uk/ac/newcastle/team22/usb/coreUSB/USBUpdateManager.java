@@ -91,8 +91,26 @@ public class USBUpdateManager {
         });
     }
 
-    public void checkForUpdate(int currentVersion, final FirestoreCompletionHandler<Boolean> handler) {
+    public void checkForUpdate(final int currentVersion, final FirestoreCompletionHandler<Boolean> handler) {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.ADMIN, null, new FirestoreCompletionHandler<List<USBConfiguration>>() {
 
+            @Override
+            public void completed(List<USBConfiguration> usbConfigurations) {
+                super.completed(usbConfigurations);
+                if (usbConfigurations.size() == 1) {
+                    USBConfiguration config = usbConfigurations.get(0);
+                    handler.completed(currentVersion < config.getVersion());
+                    return;
+                }
+                handler.failed(new Exception("A single configuration file was not found"));
+            }
+
+            @Override
+            public void failed(Exception exception) {
+                Log.e("", "Unable to retrieve USB Configuration", exception);
+                handler.failed(exception);
+            }
+        });
     }
 
     /**
@@ -391,6 +409,8 @@ public class USBUpdateManager {
         /** The opening hours in the Urban Sciences Building. */
         private Map<OpeningHours.Service, OpeningHours> openingHours = new HashMap<>();
 
+        private USBConfiguration configuration;
+
         /** Empty constructor. */
         USBUpdate() {}
 
@@ -436,6 +456,10 @@ public class USBUpdateManager {
             }
         }
 
+        public void setConfiguration(USBConfiguration configuration) {
+            this.configuration = configuration;
+        }
+
         /**
          * @return The updated floors.
          */
@@ -470,5 +494,8 @@ public class USBUpdateManager {
         public Map<OpeningHours.Service, OpeningHours> getOpeningHours() {
             return openingHours;
         }
+
+        public USBConfiguration getConfiguration() { return configuration; }
+
     }
 }
