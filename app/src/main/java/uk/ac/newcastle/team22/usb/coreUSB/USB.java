@@ -128,8 +128,8 @@ public class USB {
         return outOfHours;
     }
 
-    public int getVersion() {
-        return version;
+    public USBConfiguration getConfiguration() {
+        return configuration;
     }
 
     @Override

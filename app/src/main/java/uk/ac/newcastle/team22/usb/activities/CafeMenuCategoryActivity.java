@@ -38,7 +38,7 @@ public class CafeMenuCategoryActivity extends USBActivity {
         setContentView(R.layout.activity_cafe_menu_category);
 
         listView = findViewById(R.id.listView);
-
+/*
         String categoryName = getIntent().getStringExtra("categoryName");
         CafeMenuItemCategory category = new CafeMenuItemCategory(categoryName);
 
@@ -53,6 +53,7 @@ public class CafeMenuCategoryActivity extends USBActivity {
             }
         });
 
+
         // Initialise the adapter.
         adapter = new CafeMenuItemAdapter(this, R.layout.cafe_menu_item_list, menuItems);
         listView.setAdapter(adapter);
@@ -65,6 +66,7 @@ public class CafeMenuCategoryActivity extends USBActivity {
                 Log.i("", value.toString());
             }
         });
+        */
     }
 
     /**

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;

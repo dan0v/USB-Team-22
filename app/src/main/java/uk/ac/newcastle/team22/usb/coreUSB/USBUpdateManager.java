@@ -92,6 +92,7 @@ public class USBUpdateManager {
     }
 
     public void checkForUpdate(final int currentVersion, final FirestoreCompletionHandler<Boolean> handler) {
+
         FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.ADMIN, null, new FirestoreCompletionHandler<List<USBConfiguration>>() {
 
             @Override
@@ -186,7 +187,21 @@ public class USBUpdateManager {
                                             @Override
                                             public void completed(List<OpeningHours> openingHours) {
                                                 update.setOpeningHours(openingHours);
-                                                handler.completed(update);
+
+                                                // Request building configuration document.
+                                                loadBuildingConfiguration(new FirestoreCompletionHandler<USBConfiguration>() {
+                                                    @Override
+                                                    public void completed(USBConfiguration usbConfiguration) {
+                                                        super.completed(usbConfiguration);
+                                                        update.setConfiguration(usbConfiguration);
+                                                        handler.completed(update);
+                                                    }
+
+                                                    @Override
+                                                    public void failed(Exception exception) {
+                                                        handler.failed(exception);
+                                                    }
+                                                });
                                             }
 
                                             @Override
@@ -246,6 +261,12 @@ public class USBUpdateManager {
                         }
                     }
                 };
+
+                // Check whether there are floors to download rooms.
+                if (floors.size() == 0) {
+                    handler.failed(new Exception("No floors retrieved"));
+                    return;
+                }
 
                 // Load rooms on each floor.
                 for (final Floor floor : floors) {
@@ -356,6 +377,32 @@ public class USBUpdateManager {
             @Override
             public void failed(Exception exception) {
                 Log.e("", "Unable to retrieve USB opening hours", exception);
+                handler.failed(exception);
+            }
+        });
+    }
+
+    /**
+     * Loads the opening hours in the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the opening hours have been retrieved.
+     */
+    private void loadBuildingConfiguration(final FirestoreCompletionHandler<USBConfiguration> handler) {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.ADMIN, null, new FirestoreCompletionHandler<List<USBConfiguration>>() {
+            @Override
+            public void completed(List<USBConfiguration> usbConfigurations) {
+                super.completed(usbConfigurations);
+                if (usbConfigurations.size() == 1) {
+                    USBConfiguration config = usbConfigurations.get(0);
+                    handler.completed(config);
+                    return;
+                }
+                handler.failed(new Exception("A single configuration file was not found"));
+            }
+
+            @Override
+            public void failed(Exception exception) {
+                Log.e("", "Unable to retrieve USB Configuration", exception);
                 handler.failed(exception);
             }
         });

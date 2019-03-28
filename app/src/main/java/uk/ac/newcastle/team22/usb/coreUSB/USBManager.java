@@ -1,5 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import android.util.Log;
+
 import uk.ac.newcastle.team22.usb.coreApp.JSONDataFetcher;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreCompletionHandler;
 
@@ -36,7 +38,7 @@ public class USBManager {
                 building = new USB(cached);
 
                 // Check for updates to the Urban Sciences Building.
-                updateManager.checkForUpdate(building.getVersion(),new FirestoreCompletionHandler<Boolean>() {
+                updateManager.checkForUpdate(building.getConfiguration().getVersion(),new FirestoreCompletionHandler<Boolean>() {
                     @Override
                     public void completed(Boolean updateRequired) {
                         super.completed(updateRequired);
