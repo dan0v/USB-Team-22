@@ -38,6 +38,9 @@ public class USB {
     /** The out of hours of the Urban Sciences Building. */
     private OpeningHours outOfHours;
 
+    /** The configuration of the Urban Sciences Building. */
+    private USBConfiguration configuration;
+
     /**
      * Constructor using a {@link USBUpdateManager.USBUpdate}.
      * This constructor is used to initialise a {@link USB} from either a cached version of the
@@ -55,6 +58,7 @@ public class USB {
         this.cafe = new Cafe(update);
         this.openingHours = update.getOpeningHours().get(OpeningHours.Service.NORMAL);
         this.outOfHours = update.getOpeningHours().get(OpeningHours.Service.OUT_OF_HOURS);
+        this.configuration = update.getConfiguration();
 
         // Populate map of floors to their floor numbers for faster.
         this.floors = new HashMap<>();
@@ -123,6 +127,13 @@ public class USB {
      */
     public OpeningHours getOutOfHours() {
         return outOfHours;
+    }
+
+    /**
+     * @return The configuration of the Urban Sciences Building.
+     */
+    public USBConfiguration getConfiguration() {
+        return configuration;
     }
 
     @Override

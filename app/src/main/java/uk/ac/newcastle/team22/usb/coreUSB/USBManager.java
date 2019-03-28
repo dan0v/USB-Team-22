@@ -34,8 +34,40 @@ public class USBManager {
             @Override
             public void completed(USBUpdateManager.USBUpdate cached) {
                 building = new USB(cached);
-                handler.loadedFromCache();
+
+                // Check for updates to the Urban Sciences Building.
+                updateManager.checkForUpdate(building.getConfiguration().getVersion(),new FirestoreCompletionHandler<Boolean>() {
+                    @Override
+                    public void completed(Boolean updateRequired) {
+                        super.completed(updateRequired);
+
+                        // Determine whether an update is required.
+                        if (updateRequired) {
+                            updateManager.update(new FirestoreCompletionHandler<USBUpdateManager.USBUpdate>() {
+                                @Override
+                                public void completed(USBUpdateManager.USBUpdate usbUpdate) {
+                                    super.completed(usbUpdate);
+                                    building = new USB(usbUpdate);
+                                    handler.loadedFromCache();
+                                }
+                                @Override
+                                public void failed(Exception exception) {
+                                    super.failed(exception);
+                                    handler.loadedFromCache();
+                                }
+                            });
+                        } else {
+                            handler.loadedFromCache();
+                        }
+                    }
+                    @Override
+                    public void failed(Exception exception) {
+                        super.failed(exception);
+                        handler.loadedFromCache();
+                    }
+                });
             }
+
             @Override
             public void failed(Exception exception) {
                 boolean forceUpdate = (exception instanceof USBUpdateManager.USBNoCachedVersionAvailable);

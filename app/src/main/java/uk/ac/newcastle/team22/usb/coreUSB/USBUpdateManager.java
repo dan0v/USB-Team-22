@@ -92,6 +92,34 @@ public class USBUpdateManager {
     }
 
     /**
+     * Checks whether an update is available for the Urban Sciences Building.
+     *
+     * @param currentVersion The current version of the Urban Sciences Building.
+     * @param handler The completion handler called once the Urban Sciences Building has been checked
+     *                for an update.
+     */
+    public void checkForUpdate(final int currentVersion, final FirestoreCompletionHandler<Boolean> handler) {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.CONFIGURATION, null, new FirestoreCompletionHandler<List<USBConfiguration>>() {
+            @Override
+            public void completed(List<USBConfiguration> usbConfigurations) {
+                super.completed(usbConfigurations);
+                if (usbConfigurations.size() == 1) {
+                    USBConfiguration config = usbConfigurations.get(0);
+                    handler.completed(currentVersion < config.getVersion());
+                    return;
+                }
+                handler.failed(new Exception("A single configuration file was not found"));
+            }
+
+            @Override
+            public void failed(Exception exception) {
+                Log.e("", "Unable to retrieve USB Configuration", exception);
+                handler.failed(exception);
+            }
+        });
+    }
+
+    /**
      * Requests an update to the Urban Sciences Building.
      * Ensures that the user is authenticated to receive an update.
      *
@@ -164,7 +192,21 @@ public class USBUpdateManager {
                                             @Override
                                             public void completed(List<OpeningHours> openingHours) {
                                                 update.setOpeningHours(openingHours);
-                                                handler.completed(update);
+
+                                                // Request building configuration document.
+                                                loadBuildingConfiguration(new FirestoreCompletionHandler<USBConfiguration>() {
+                                                    @Override
+                                                    public void completed(USBConfiguration usbConfiguration) {
+                                                        super.completed(usbConfiguration);
+                                                        update.setConfiguration(usbConfiguration);
+                                                        handler.completed(update);
+                                                    }
+
+                                                    @Override
+                                                    public void failed(Exception exception) {
+                                                        handler.failed(exception);
+                                                    }
+                                                });
                                             }
 
                                             @Override
@@ -224,6 +266,12 @@ public class USBUpdateManager {
                         }
                     }
                 };
+
+                // Check whether there are floors to download rooms.
+                if (floors.size() == 0) {
+                    handler.failed(new Exception("No floors retrieved"));
+                    return;
+                }
 
                 // Load rooms on each floor.
                 for (final Floor floor : floors) {
@@ -340,6 +388,32 @@ public class USBUpdateManager {
     }
 
     /**
+     * Loads the opening hours in the Urban Sciences Building.
+     *
+     * @param handler The completion handler called once the opening hours have been retrieved.
+     */
+    private void loadBuildingConfiguration(final FirestoreCompletionHandler<USBConfiguration> handler) {
+        FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.CONFIGURATION, null, new FirestoreCompletionHandler<List<USBConfiguration>>() {
+            @Override
+            public void completed(List<USBConfiguration> usbConfigurations) {
+                super.completed(usbConfigurations);
+                if (usbConfigurations.size() == 1) {
+                    USBConfiguration config = usbConfigurations.get(0);
+                    handler.completed(config);
+                    return;
+                }
+                handler.failed(new Exception("A single configuration file was not found"));
+            }
+
+            @Override
+            public void failed(Exception exception) {
+                Log.e("", "Unable to retrieve USB Configuration", exception);
+                handler.failed(exception);
+            }
+        });
+    }
+
+    /**
      * An Urban Sciences Building update completion handler.
      *
      * @author Alexander MacLeod
@@ -387,11 +461,15 @@ public class USBUpdateManager {
         /** The opening hours in the Urban Sciences Building. */
         private Map<OpeningHours.Service, OpeningHours> openingHours = new HashMap<>();
 
+        /** The configuration of the Urban Sciences Building. */
+        private USBConfiguration configuration;
+
         /** Empty constructor. */
         USBUpdate() {}
 
         /**
          * Sets the new floors in the update.
+         *
          * @param floors The updated floors.
          */
         public void setFloors(List<Floor> floors) {
@@ -400,6 +478,7 @@ public class USBUpdateManager {
 
         /**
          * Sets the new staff members in the update.
+         *
          * @param staffMembers The updated staff members.
          */
         public void setStaffMembers(List<StaffMember> staffMembers) {
@@ -408,6 +487,7 @@ public class USBUpdateManager {
 
         /**
          * Sets the new café menu items in the update.
+         *
          * @param cafeMenuItems The updated café menu items.
          */
         public void setCafeMenuItems(List<CafeMenuItem> cafeMenuItems) {
@@ -416,6 +496,7 @@ public class USBUpdateManager {
 
         /**
          * Sets the new navigation nodes in the update.
+         *
          * @param nodes The updated nodes.
          */
         public void setNavigationNodes(List<Node> nodes) {
@@ -424,12 +505,22 @@ public class USBUpdateManager {
 
         /**
          * Sets the new opening hours in the update.
+         *
          * @param openingHours The updated opening hours.
          */
         public void setOpeningHours(List<OpeningHours> openingHours) {
             for (OpeningHours hours : openingHours) {
                 this.openingHours.put(hours.getService(), hours);
             }
+        }
+
+        /**
+         * Sets the new configuration in the update.
+         *
+         * @param configuration The updated configuration.
+         */
+        public void setConfiguration(USBConfiguration configuration) {
+            this.configuration = configuration;
         }
 
         /**
@@ -466,5 +557,11 @@ public class USBUpdateManager {
         public Map<OpeningHours.Service, OpeningHours> getOpeningHours() {
             return openingHours;
         }
+
+        /**
+         * @return The updated building configuration.
+         */
+        public USBConfiguration getConfiguration() { return configuration; }
+
     }
 }
