@@ -1,6 +1,7 @@
 package uk.ac.newcastle.team22.usb.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,15 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItem;
+import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItemCategory;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
 /**
@@ -35,7 +39,7 @@ public class CafeFragment extends Fragment implements USBFragment {
     private ListView listView;
 
     /** The adapter of the list view. */
-    private CafeMenuItemAdapter adapter;
+    private CafeMenuItemCategoryAdapter adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,8 +58,16 @@ public class CafeFragment extends Fragment implements USBFragment {
 
         listView = view.findViewById(R.id.cafe_list_view);
 
-        // Load and sort café menu items alphabetically.
+        // Load and sort café menu items into categories alphabetically.
         List<CafeMenuItem> cafeMenuItems = USBManager.shared.getBuilding().getCafe().getItems();
+        List<CafeMenuItemCategory> categories = new ArrayList<>();
+
+        for (CafeMenuItem item : cafeMenuItems) {
+            if (!categories.contains(item.getCategory())) {
+                categories.add(item.getCategory());
+            }
+        }
+
         Collections.sort(cafeMenuItems, new Comparator<CafeMenuItem>() {
             @Override
             public int compare(CafeMenuItem o1, CafeMenuItem o2) {
@@ -64,7 +76,7 @@ public class CafeFragment extends Fragment implements USBFragment {
         });
 
         // Initialise the adapter.
-        adapter = new CafeMenuItemAdapter(getContext(), R.layout.cafe_menu_item_list, cafeMenuItems);
+        adapter = new CafeMenuItemCategoryAdapter(getContext(), R.layout.cafe_menu_item_list, categories);
         listView.setAdapter(adapter);
 
         // Set the on click listener.
@@ -88,12 +100,12 @@ public class CafeFragment extends Fragment implements USBFragment {
     }
 
     /**
-     * A class which represents the array adapter for café menu items.
+     * A class which represents the array adapter for café menu item categories.
      *
      * @author Alexander MacLeod
      * @version 1.0
      */
-    public class CafeMenuItemAdapter extends ArrayAdapter<CafeMenuItem> {
+    public class CafeMenuItemCategoryAdapter extends ArrayAdapter<CafeMenuItemCategory> {
 
         /** The activity context. */
         Context context;
@@ -101,14 +113,14 @@ public class CafeFragment extends Fragment implements USBFragment {
         /** The cell layout resource identifier. */
         int resource;
 
-        /** The café menu items to display. */
-        List<CafeMenuItem> menuItems;
+        /** The café menu item categories to display. */
+        List<CafeMenuItemCategory> categories;
 
-        public CafeMenuItemAdapter(Context context, int resource, List<CafeMenuItem> menuItems) {
-            super(context, resource, menuItems);
+        public CafeMenuItemCategoryAdapter(Context context, int resource, List<CafeMenuItemCategory> categories) {
+            super(context, resource, categories);
             this.context = context;
             this.resource = resource;
-            this.menuItems = menuItems;
+            this.categories = categories;
         }
 
         @NonNull
@@ -117,12 +129,14 @@ public class CafeFragment extends Fragment implements USBFragment {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             View view = layoutInflater.inflate(resource, null, false);
 
-            TextView title = view.findViewById(R.id.cafeMenuItemNameTextView);
-            TextView detail = view.findViewById(R.id.cafeMenuItemPriceTextView);
+            TextView title = view.findViewById(R.id.cafeMenuCategoryTitleTextView);
+            TextView detail = view.findViewById(R.id.cafeMenuCategoryDetailTextView);
+            ImageView imageView = view.findViewById(R.id.cafeMenuCategoryImageView);
 
-            final CafeMenuItem menuItem = menuItems.get(position);
-            title.setText(menuItem.getName());
-            detail.setText(menuItem.getFormattedPrice());
+            final CafeMenuItemCategory category = categories.get(position);
+            Icon icon = Icon.createWithResource(getContext(), category.getIcon());
+            title.setText(category.getName());
+            imageView.setImageIcon(icon);
 
             return view;
         }

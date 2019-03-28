@@ -21,7 +21,7 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
 public class USBUpdateManager {
 
     /** Boolean value whether the cache is enabled. Used for debugging purposes. */
-    private static final boolean CACHED_ENABLED = true;
+    private static final boolean CACHED_ENABLED = false;
 
     /** The exception to throw when a cached version of the Urban Sciences Building is not available. */
     public class USBNoCachedVersionAvailable extends Exception {}
@@ -224,6 +224,12 @@ public class USBUpdateManager {
                         }
                     }
                 };
+
+                // Check whether there are floors to retrieve.
+                if (floors.size() == 0) {
+                    handler.failed(new Exception("No floors were retrieved"));
+                    return;
+                }
 
                 // Load rooms on each floor.
                 for (final Floor floor : floors) {

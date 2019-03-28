@@ -1,5 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import uk.ac.newcastle.team22.usb.R;
+
 /**
  * A class which represents a category of items at the café.
  * See {@link Cafe} for more information.
@@ -30,7 +32,41 @@ public class CafeMenuItemCategory {
     /**
      * @return The icon of the category.
      */
-    public void getIcon() {
+    public int getIcon() {
+        switch (iconIdentifier) {
+            case 1:
+                return R.drawable.food_category_1;
+            case 2:
+                return R.drawable.food_category_2;
+            case 3:
+                return R.drawable.food_category_3;
+            case 4:
+                return R.drawable.food_category_4;
+            case 5:
+                return R.drawable.food_category_5;
+            case 6:
+                return R.drawable.food_category_6;
+            case 7:
+                return R.drawable.food_category_7;
+            case 8:
+                return R.drawable.food_category_8;
+            case 9:
+                return R.drawable.food_category_9;
+            case 10:
+                return R.drawable.food_category_10;
+            case 11:
+                return R.drawable.food_category_11;
+                default:
+                    return 0;
 
+        }
+    }
+
+    @Override
+    public boolean equals(Object rhs) {
+        if (this == rhs) return true;
+        if (!(rhs instanceof CafeMenuItemCategory)) return false;
+        CafeMenuItemCategory c = (CafeMenuItemCategory) rhs;
+        return name.equals(c.name);
     }
 }
