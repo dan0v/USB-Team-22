@@ -1,7 +1,5 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
-import android.util.Log;
-
 import uk.ac.newcastle.team22.usb.coreApp.JSONDataFetcher;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreCompletionHandler;
 
@@ -42,6 +40,8 @@ public class USBManager {
                     @Override
                     public void completed(Boolean updateRequired) {
                         super.completed(updateRequired);
+
+                        // Determine whether an update is required.
                         if (updateRequired) {
                             updateManager.update(new FirestoreCompletionHandler<USBUpdateManager.USBUpdate>() {
                                 @Override
@@ -60,7 +60,6 @@ public class USBManager {
                             handler.loadedFromCache();
                         }
                     }
-
                     @Override
                     public void failed(Exception exception) {
                         super.failed(exception);

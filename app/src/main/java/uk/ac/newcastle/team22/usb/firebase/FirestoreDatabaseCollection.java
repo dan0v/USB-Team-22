@@ -1,7 +1,13 @@
 package uk.ac.newcastle.team22.usb.firebase;
 
 import org.jetbrains.annotations.NotNull;
-import uk.ac.newcastle.team22.usb.coreUSB.*;
+
+import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItem;
+import uk.ac.newcastle.team22.usb.coreUSB.Floor;
+import uk.ac.newcastle.team22.usb.coreUSB.OpeningHours;
+import uk.ac.newcastle.team22.usb.coreUSB.Room;
+import uk.ac.newcastle.team22.usb.coreUSB.StaffMember;
+import uk.ac.newcastle.team22.usb.coreUSB.USBConfiguration;
 import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
@@ -13,7 +19,7 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
  * @version 1.0
  */
 public enum FirestoreDatabaseCollection {
-    FLOORS, ROOMS, STAFF, CAFE_MENU, NAVIGATION_NODES, OPENING_HOURS, ADMIN;
+    FLOORS, ROOMS, STAFF, CAFE_MENU, NAVIGATION_NODES, OPENING_HOURS, CONFIGURATION;
 
     /** Returns the identifier of the collection. */
     @NotNull
@@ -25,7 +31,7 @@ public enum FirestoreDatabaseCollection {
             case CAFE_MENU: return "cafeMenu";
             case NAVIGATION_NODES: return "nodes";
             case OPENING_HOURS: return  "openingTimes";
-            case ADMIN: return "admin";
+            case CONFIGURATION: return "admin";
             default: return null;
         }
     }
@@ -39,7 +45,7 @@ public enum FirestoreDatabaseCollection {
             case CAFE_MENU: return CafeMenuItem.class;
             case NAVIGATION_NODES: return Node.class;
             case OPENING_HOURS: return OpeningHours.class;
-            case ADMIN: return USBConfiguration.class;
+            case CONFIGURATION: return USBConfiguration.class;
             default: return null;
         }
     }

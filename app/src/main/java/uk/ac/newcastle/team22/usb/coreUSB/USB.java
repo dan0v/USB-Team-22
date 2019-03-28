@@ -38,6 +38,7 @@ public class USB {
     /** The out of hours of the Urban Sciences Building. */
     private OpeningHours outOfHours;
 
+    /** The configuration of the Urban Sciences Building. */
     private USBConfiguration configuration;
 
     /**
@@ -128,6 +129,9 @@ public class USB {
         return outOfHours;
     }
 
+    /**
+     * @return The configuration of the Urban Sciences Building.
+     */
     public USBConfiguration getConfiguration() {
         return configuration;
     }

@@ -1,27 +1,33 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
-import android.util.Log;
-
 import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
+/**
+ * A class which manages the configuration of the Urban Sciences Building.
+ *
+ * @author Alex Beeching
+ * @author Alexander MacLeod
+ * @version 1.0
+ */
 public class USBConfiguration implements FirestoreConstructable<USBConfiguration> {
 
-    private int version = 0;
+    /** The version of the Urban Sciences Building. */
+    private int version;
 
-    public int getVersion() {
-        return version;
+    public USBConfiguration initFromFirebase(Map<String, Object> firestoreDictionary,String documentIdentifier) {
+        int version = ((Number) firestoreDictionary.get("version")).intValue();
+        this.version = version;
+        return this;
     }
 
     public USBConfiguration() {}
 
-    public USBConfiguration initFromFirebase(Map<String, Object> firestoreDictionary,String documentIdentifier) {
-        Log.i("", firestoreDictionary.toString());
-        int version = ((Number) firestoreDictionary.get("version")).intValue();
-        this.version = version;
-        return this;
-
+    /**
+     * @return The version of the Urban Sciences Building.
+     */
+    public int getVersion() {
+        return version;
     }
-
 }
