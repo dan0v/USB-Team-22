@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import uk.ac.newcastle.team22.usb.coreApp.JSONDataFetcher;
 import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
@@ -38,9 +37,6 @@ public class USB {
 
     /** The out of hours of the Urban Sciences Building. */
     private OpeningHours outOfHours;
-
-    /** The data fetcher for NUIT JSON data. */
-    private JSONDataFetcher dataFetcher = new JSONDataFetcher();
 
     /**
      * Constructor using a {@link USBUpdateManager.USBUpdate}.
@@ -78,13 +74,6 @@ public class USB {
         }
         // Ensure tour nodes are ordered correctly.
         Collections.sort(this.tourNodeIdentifiers);
-    }
-
-    /**
-     * Download and update local data using the Urban Sciences Building computer availability JSON provided by NUIT.
-     */
-    public void updateComputerAvailability() {
-        dataFetcher.execute();
     }
 
     /**
