@@ -6,6 +6,7 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 import uk.ac.newcastle.team22.usb.search.ResultReason;
 import uk.ac.newcastle.team22.usb.search.Searchable;
@@ -14,8 +15,8 @@ import uk.ac.newcastle.team22.usb.search.Searchable;
  * A class which represents an item on the menu at the café in the Urban Sciences Building.
  * See {@link Cafe} for more information.
  *
- * @author Alexander MacLeod
  * @author Patrick Lindley
+ * @author Alexander MacLeod
  * @version 1.0
  */
 public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searchable {
@@ -32,27 +33,22 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
     /** The category of the café menu item. */
     private CafeMenuItemCategory category;
 
-    /** The subcategory of the café menu item. */
-    private CafeMenuItemCategory subcategory;
-
     /** Boolean value whether the café menu item is part of the meal deal. */
-    private boolean mealDeal;
+    private boolean isMealDeal;
 
     @Override
     public CafeMenuItem initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) {
         String name = (String) firestoreDictionary.get("name");
         int price = ((Number) firestoreDictionary.get("price")).intValue();
-        String category = (String) firestoreDictionary.get("category");
-        String subcategory = (String) firestoreDictionary.get("subcategory");
-        boolean mealDeal = (boolean) firestoreDictionary.get("mealDeal");
+        String categoryName = (String) firestoreDictionary.get("category");
+        int categoryIconIdentifier = ((Number) firestoreDictionary.get("iconCategoryIdentifier")).intValue();
+        boolean isMealDeal = (boolean) firestoreDictionary.get("mealDeal");
 
         this.identifier = documentIdentifier;
-        this.price = price;
         this.name = name;
-        this.category = new CafeMenuItemCategory(category);
-        this.subcategory = new CafeMenuItemCategory(subcategory);
-        this.mealDeal = mealDeal;
-
+        this.price = price;
+        this.category = new CafeMenuItemCategory(categoryName, categoryIconIdentifier);
+        this.isMealDeal = isMealDeal;
         return this;
     }
 
@@ -86,17 +82,10 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
     }
 
     /**
-     * @return The subcategory of the café menu item.
-     */
-    public CafeMenuItemCategory getSubcategory() {
-        return subcategory;
-    }
-
-    /**
      * @return Boolean value whether the café menu item is part of the meal deal.
      */
-    public boolean getIsOnMealDeal() {
-        return mealDeal;
+    public boolean isMealDeal() {
+        return isMealDeal;
     }
 
     /**
@@ -130,7 +119,9 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
         List<ResultReason> reasons = new ArrayList();
 
         // Add reason for matching café menu item name.
-        reasons.add(new ResultReason(name, ResultReason.Reason.CAFE_ITEM_NAME));
+        if (name != null) {
+            reasons.add(new ResultReason(name, ResultReason.Reason.CAFE_ITEM_NAME));
+        }
 
         return reasons;
     }

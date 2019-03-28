@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uk.ac.newcastle.team22.usb">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name=".coreApp.AppDelegate"
         android:allowBackup="false"
@@ -10,8 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.CafeMenuCategoryActivity"></activity>
-        <activity android:name=".activities.NavigationActivity" />
         <activity
             android:name=".activities.LaunchActivity"
             android:noHistory="true">
@@ -28,7 +27,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.SearchActivity"
-            android:label="@string/search" />
+            android:label="@string/search">
+        <intent-filter>
+            <action android:name="android.intent.action.SEARCH" />
+        </intent-filter>
+        </activity>
     </application>
 
 </manifest>

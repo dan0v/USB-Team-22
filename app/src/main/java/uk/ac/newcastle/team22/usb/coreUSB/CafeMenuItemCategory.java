@@ -1,10 +1,8 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * A class which defines a café menu item category.
+ * A class which represents a category of items at the café.
+ * See {@link Cafe} for more information.
  *
  * @author Alexander MacLeod
  * @version 1.0
@@ -14,63 +12,25 @@ public class CafeMenuItemCategory {
     /** The name of the category. */
     private String name;
 
-    public CafeMenuItemCategory(String name) {
+    /** The identifier of the icon. */
+    private int iconIdentifier;
+
+    CafeMenuItemCategory(String name, int iconIdentifier) {
         this.name = name;
+        this.iconIdentifier = iconIdentifier;
     }
 
     /**
-     * Gathers the food and drink categories on the café menu.
-     *
-     * @param menuItems The café menu items.
-     * @return The food and drink categories on the café menu.
-     */
-    public static List<CafeMenuItemCategory> getCategoriesFrom(List<CafeMenuItem> menuItems) {
-        List<CafeMenuItemCategory> categories = new ArrayList<>();
-        for (CafeMenuItem item : menuItems) {
-            if (!categories.contains(item.getCategory())) {
-                categories.add(item.getCategory());
-            }
-        }
-        return categories;
-    }
-
-    /**
-     * Gathers the café menu items in a given category.
-     *
-     * @param category The café menu item category to filter.
-     * @param menuItems The café menu items to filter.
-     * @return The filtered café menu items.
-     */
-    public static List<CafeMenuItem> getItemsInCategory(CafeMenuItemCategory category, List<CafeMenuItem> menuItems) {
-        List<CafeMenuItem> items = new ArrayList<>();
-        for (CafeMenuItem item : menuItems) {
-            if (item.getCategory().equals(category)) {
-                items.add(item);
-            }
-        }
-        return items;
-    }
-
-    /**
-     * @return The name of the café menu item category.
+     * @return The name of the category.
      */
     public String getName() {
         return name;
     }
 
-    @Override
-    public boolean equals(Object rhs) {
-        if (this == rhs) return true;
-        if (!(rhs instanceof CafeMenuItemCategory)) return false;
+    /**
+     * @return The icon of the category.
+     */
+    public void getIcon() {
 
-        CafeMenuItemCategory c = (CafeMenuItemCategory) rhs;
-        return name.equals(c.name);
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 17;
-        hash = 37 * hash + (name == null ? 0 : name.hashCode());
-        return 37 * hash;
     }
 }

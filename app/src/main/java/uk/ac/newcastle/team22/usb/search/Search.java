@@ -1,58 +1,94 @@
 package uk.ac.newcastle.team22.usb.search;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
-import uk.ac.newcastle.team22.usb.R;
-import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItem;
+import uk.ac.newcastle.team22.usb.coreUSB.Floor;
+import uk.ac.newcastle.team22.usb.coreUSB.Room;
 import uk.ac.newcastle.team22.usb.coreUSB.USB;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
 /**
  * The class from which the search algorithm is called.
- * Searches through all fields in staff, rooms, cafe menu, room resources
- * Each object that is found to match will have a copy created, assigned an enum for reason, and a priority based on % string match to the field
- * This SearchResult object will be placed in Search class map, which will be returned to display the results.
+ *
+ * @author Patrick Lindley
+ * @version 1.0
  */
 public class Search {
 
+    /** The query string. */
     private String query;
 
     public Search(String query) {
-        this.query = query;
+        // Lowercase query string to avoid missing results.
+        // Trim whitespace on either side of the query string.
+        this.query = query.toLowerCase().trim();
     }
 
-    //actual search algorithm
+    /**
+     * Gathers all objects conforming to {@link Searchable} to a list, each assigned a reason.
+     * Searches all rooms, staff members, café items and resources for the query.
+     * Orders results based on priority.
+     *
+     * @return List of search results.
+     */
     public List<SearchResult> search() {
         List<SearchResult> results = new ArrayList<>();
+
+        // Check for an empty query.
+        if (query.isEmpty()) {
+            return results;
+        }
 
         USB building = USBManager.shared.getBuilding();
         List<Searchable> toSearch = new ArrayList<>();
 
-        // Determine objects to search.
         toSearch.addAll(building.getCafe().getItems());
+        toSearch.addAll(building.getStaffMembers());
+
+        for (Floor floor : building.getFloors().values()) {
+            for (Room room : floor.getRooms().values()) {
+                toSearch.add(room);
+                toSearch.addAll(room.getResources());
+            }
+        }
 
         for (Searchable potentialResult : toSearch) {
-            determineWhetherSearchResult(potentialResult);
+            SearchResult result = determineWhetherSearchResult(potentialResult);
+            if (result != null) {
+                results.add(result);
+            }
         }
+
+        // Sort search results by priority.
+        Collections.sort(results, new Comparator<SearchResult>() {
+            public int compare(SearchResult o1, SearchResult o2) {
+                return o1.getPriority().compareTo(o2.getPriority());
+            }
+        });
 
         return results;
     }
 
-    //% string match algorithm called in search function
+
+    /**
+     * Determines whether an object conforming to {@link Searchable} is a valid search result.
+     *
+     * @param potentialResult The object to be tested for a search result.
+     * @return The search result.
+     */
     private SearchResult determineWhetherSearchResult(Searchable potentialResult) {
         SearchResult result = null;
-
         for (ResultReason reason : potentialResult.getSearchableReasons()) {
-            if (reason.getAttribute().startsWith(query)) {
-                result = new SearchResult(potentialResult, 0, reason);
+            // Checks if result starts with value.
+            if (reason.getAttribute().toLowerCase().startsWith(query)) {
+                result = new SearchResult(potentialResult, Priority.HIGH, reason);
+            } else if (reason.getAttribute().toLowerCase().contains(query)) {
+                result = new SearchResult(potentialResult, Priority.LOW, reason);
             }
         }
-
         return result;
     }
 }

@@ -3,9 +3,11 @@ package uk.ac.newcastle.team22.usb.activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.*;
-import android.support.v7.app.*;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
@@ -31,7 +33,7 @@ public class LaunchActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        // Initialise floors, rooms and other USB Building details.
+        // Initialise floors, rooms and other Urban Sciences Building details.
         initialiseUSB();
     }
 
@@ -61,7 +63,7 @@ public class LaunchActivity extends AppCompatActivity {
         });
     }
 
-    /** Presents an alert stating that an update is required for the applcation function. */
+    /** Presents an alert stating that an update is required for the application function. */
     private void presentUSBUpdateRequiredAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
@@ -78,9 +80,9 @@ public class LaunchActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    /** Presents an alert stating that an update is available for USB. */
+    /** Presents an alert stating that an update is available for the Urban Sciences Building. */
     private void presentUSBUpdateAvailableAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         builder.setCancelable(false);
         builder.setTitle(R.string.updateAvailable);
         builder.setMessage(R.string.usbUpdateAvailableInstallMessage);
@@ -100,9 +102,9 @@ public class LaunchActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    /** Presents an alert stating that an update for USB was unable to be installed. */
+    /** Presents an alert stating that an update for the Urban Sciences Building was unable to be installed. */
     private void presentUSBUpdateErrorAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         builder.setCancelable(false);
         builder.setTitle(R.string.updateUnableToInstall);
         builder.setMessage(R.string.usbUpdateUnableToInstallMessage);
@@ -127,28 +129,27 @@ public class LaunchActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    /** Requests an update of the Urban Sciences Building. */
+    /** Requests an update to the Urban Sciences Building. */
+    @SuppressWarnings("deprecation")
     private void startUSBBuildingUpdate() {
-        // Present loading dialog.
-        final ProgressDialog nDialog;
-        nDialog = new ProgressDialog(LaunchActivity.this);
-        nDialog.setCancelable(false);
-        nDialog.setTitle("Updating Urban Sciences Building");
-        nDialog.setMessage("Please wait");
-        nDialog.setIndeterminate(false);
-        nDialog.setCancelable(false);
-        nDialog.show();
+        final ProgressDialog dialog = new ProgressDialog(LaunchActivity.this, R.style.AlertDialogStyle);
+        dialog.setCancelable(false);
+        dialog.setTitle(R.string.updateInProgress);
+        dialog.setMessage(getString(R.string.pleaseWait));
+        dialog.setIndeterminate(false);
+        dialog.setCancelable(false);
+        dialog.show();
 
-        // Request update of USB.
+        // Request update of Urban Sciences Building.
         USBManager.shared.updateBuilding(new USBUpdateManager.UpdateCompletionHandler() {
             @Override
             public void requiresUpdate(boolean force) {
-                nDialog.dismiss();
+                dialog.dismiss();
                 presentUSBUpdateErrorAlert();
             }
             @Override
             public void loadedFromCache() {
-                nDialog.dismiss();
+                dialog.dismiss();
                 didInitialiseUSB();
             }
         });

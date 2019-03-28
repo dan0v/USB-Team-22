@@ -8,27 +8,44 @@ package uk.ac.newcastle.team22.usb.search;
  */
 public class SearchResult {
 
+    /** The object that is being searched. */
     private Searchable result;
 
-    private int priority;
+    /** Priority of the search result. */
+    private Priority priority;
 
+    /** The reason for why the search result has been returned. */
     private ResultReason reason;
 
+    public SearchResult(Searchable result, Priority priority, ResultReason reason) {
+        this.result = result;
+        this.priority = priority;
+        this.reason = reason;
+    }
+
+    /**
+     * @return The object which was returned.
+     */
     public Searchable getResult() {
         return result;
     }
 
-    public int getPriority() {
+    /**
+     * @return The priority of the search result.
+     */
+    public Priority getPriority() {
         return priority;
     }
 
+    /**
+     * @return The reason for why the search result has been returned.
+     */
     public ResultReason getReason() {
         return reason;
     }
 
-    public SearchResult(Searchable result, int priority, ResultReason reason) {
-        this.result = result;
-        this.priority = priority;
-        this.reason = reason;
+    @Override
+    public String toString() {
+        return result.toString();
     }
 }

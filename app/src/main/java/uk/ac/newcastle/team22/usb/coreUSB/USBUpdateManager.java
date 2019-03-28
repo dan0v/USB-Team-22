@@ -2,14 +2,14 @@ package uk.ac.newcastle.team22.usb.coreUSB;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseUser;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import uk.ac.newcastle.team22.usb.firebase.*;
+import uk.ac.newcastle.team22.usb.firebase.FirebaseManager;
+import uk.ac.newcastle.team22.usb.firebase.FirestoreCompletionHandler;
+import uk.ac.newcastle.team22.usb.firebase.FirestoreDatabaseCollection;
 import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**

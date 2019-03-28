@@ -7,6 +7,8 @@
     <string name="updateUnableToInstall">Unable To Update</string>
     <string name="updateAvailable">Update Available</string>
     <string name="updateRequired">Update Required</string>
+    <string name="updateInProgress">Updating Urban Sciences Building</string>
+    <string name="pleaseWait">Please wait</string>
     <string name="usbUpdateAvailableInstallMessage">An update for the Urban Sciences Building is available. Do you want to install this update now?</string>
     <string name="usbUpdateRequiredInstallMessage">An update for the Urban Sciences Building is required.</string>
     <string name="usbUpdateUnableToInstallMessage">An error occurred when installing the Urban Sciences Building update. Please try again.</string>
@@ -61,8 +63,14 @@
 
     <!--search start-->
     <string name="search">Search</string>
-    <string name="title_activity_cafe">CafeActivity</string>
-    <string name="title_activity_room">RoomActivity</string>
+    <string name="reasonPhoneNumber">Phone Number</string>
+    <string name="reasonStaffMember">Staff Member</string>
+    <string name="reasonRoom">Room</string>
+    <string name="reasonCafeMenuItem">Café</string>
+    <string name="reasonResource">Resource</string>
+    <string name="reasonEmail">Email Address</string>
+    <string name="floor">Floor</string>
+    <string name="room">Room</string>
     <!--search end-->
 
     <!--opening hours start-->

@@ -1,8 +1,12 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
+import uk.ac.newcastle.team22.usb.search.ResultReason;
+import uk.ac.newcastle.team22.usb.search.Searchable;
 
 /**
  * A class which represents a member of staff.
@@ -11,7 +15,7 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
  * @author Alexander MacLeod
  * @version 1.0
  */
-public class StaffMember implements FirestoreConstructable<StaffMember> {
+public class StaffMember implements FirestoreConstructable<StaffMember>, Searchable {
 
     /** The unique identifier of the staff member. */
     private String identifier;
@@ -81,6 +85,13 @@ public class StaffMember implements FirestoreConstructable<StaffMember> {
     }
 
     /**
+     * @return The full title of the staff member.
+     */
+    public String getFullTitle() {
+        return title + " " + firstName + " " + lastName;
+    }
+
+    /**
      * @return The phone number of the staff member.
      */
     public String getPhoneNumber() {
@@ -98,14 +109,31 @@ public class StaffMember implements FirestoreConstructable<StaffMember> {
      * @return The room of the staff member.
      */
     public Room getRoom() {
-        for (Floor floor : USBManager.shared.getBuilding().getFloors()) {
-            for (Room room : floor.getRooms()) {
+        for (Floor floor : USBManager.shared.getBuilding().getFloors().values()) {
+            for (Room room : floor.getRooms().values()) {
                 if (room.getStaffResidenceIdentifier() == identifier) {
                     return room;
                 }
             }
         }
         return null;
+    }
+
+    @Override
+    public List<ResultReason> getSearchableReasons() {
+        List<ResultReason> reasons = new ArrayList();
+
+        if (firstName != null && lastName != null) {
+            reasons.add(new ResultReason(firstName + " " + lastName, ResultReason.Reason.STAFF));
+        }
+        if (phoneNumber != null) {
+            reasons.add(new ResultReason(phoneNumber, ResultReason.Reason.PHONE_NUMBER));
+        }
+        if (emailAddress != null) {
+            reasons.add(new ResultReason(emailAddress, ResultReason.Reason.EMAIL));
+        }
+
+        return reasons;
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.List;
 import uk.ac.newcastle.team22.usb.R;
 
 /**
- * An enum which defines a direction in the navigation.
+ * A class to define navigation directions.
  *
  * @author Daniel Vincent
  * @version 1.0
@@ -17,7 +17,7 @@ public enum Direction {
     FORWARD, LEFT, SLIGHT_LEFT, SHARP_LEFT, RIGHT, SLIGHT_RIGHT, SHARP_RIGHT, LIFT_UP, LIFT_DOWN, STAIR_UP, STAIR_DOWN;
 
     /**
-     * @return Localised string representation of the direction.
+     * @return Localised string representation of a direction.
      */
     public @StringRes int getLocalisedDirection() {
         switch (this) {
@@ -37,8 +37,8 @@ public enum Direction {
     }
 
     /**
-     * Given a list of edges, returns a List of directions for turn by turn navigation between nodes.
-     * @param edges List of edges whose directions should be parsed.
+     * Given a list of Edges, returns a list of directions for turn by turn navigation between nodes.
+     * @param edges list of edges whose directions should be parsed.
      * @return List of direction enums.
      * @throws IllegalArgumentException
      */

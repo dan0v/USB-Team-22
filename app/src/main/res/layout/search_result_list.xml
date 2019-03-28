@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/cafeMenuItemNameTextView"
+        android:id="@+id/searchResultTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -16,11 +16,12 @@
         android:textSize="17sp"/>
 
     <TextView
-        android:id="@+id/cafeMenuItemPriceTextView"
+        android:id="@+id/searchResultDetailTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cafeMenuItemNameTextView"
+        android:layout_below="@+id/searchResultTitleTextView"
+        android:layout_marginTop="0dp"
         android:text="£1.00"
-        android:textSize="15sp"/>
+        android:textSize="15sp" />
 
 </RelativeLayout>
