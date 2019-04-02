@@ -95,8 +95,8 @@ public class USBUpdateManager {
      * Checks whether an update is available for the Urban Sciences Building.
      *
      * @param currentVersion The current version of the Urban Sciences Building.
-     * @param handler The completion handler called once the Urban Sciences Building has been checked
-     *                for an update.
+     * @param handler The completion handler called once the Urban Sciences Building has been
+     *                checked for an update.
      */
     public void checkForUpdate(final int currentVersion, final FirestoreCompletionHandler<Boolean> handler) {
         FirebaseManager.shared.getDocuments(FirestoreDatabaseCollection.CONFIGURATION, null, new FirestoreCompletionHandler<List<USBConfiguration>>() {
@@ -208,7 +208,6 @@ public class USBUpdateManager {
                                                     }
                                                 });
                                             }
-
                                             @Override
                                             public void failed(Exception exception) {
                                                 handler.failed(exception);
@@ -404,7 +403,6 @@ public class USBUpdateManager {
                 }
                 handler.failed(new Exception("A single configuration file was not found"));
             }
-
             @Override
             public void failed(Exception exception) {
                 Log.e("", "Unable to retrieve USB Configuration", exception);
@@ -562,6 +560,5 @@ public class USBUpdateManager {
          * @return The updated building configuration.
          */
         public USBConfiguration getConfiguration() { return configuration; }
-
     }
 }

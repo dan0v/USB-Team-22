@@ -101,6 +101,7 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
     }
 
     /**
+     * @param item The café menu item.
      * @return The result of the name comparison between two {@code CafeMenuItem}s.
      */
     public int compareAlphabeticallyTo(CafeMenuItem item) {
@@ -108,6 +109,7 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
     }
 
     /**
+     * @param item The café menu item.
      * @return The result of the price comparison between two {@code CafeMenuItem}s.
      */
     public int comparePriceTo(CafeMenuItem item) {

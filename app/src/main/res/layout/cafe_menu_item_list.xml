@@ -6,22 +6,22 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/searchResultTitleTextView"
+        android:id="@+id/cafeMenuItemTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:paddingBottom="10dp"
         android:text="Name"
         android:textColor="@android:color/black"
-        android:textSize="17sp"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <TextView
-        android:id="@+id/searchResultDetailTextView"
+        android:id="@+id/cafeMenuItemDetailTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/searchResultTitleTextView"
+        android:layout_below="@+id/cafeMenuItemTitleTextView"
         android:layout_marginTop="0dp"
         android:text="£1.00"
-        android:textSize="15sp" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
 </RelativeLayout>

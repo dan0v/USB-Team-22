@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.CafeItemCategoryActivity"></activity>
+        <activity android:name=".activities.CafeMenuItemActivity"></activity>
         <activity
             android:name=".activities.LaunchActivity"
             android:noHistory="true">

@@ -49,6 +49,10 @@
 
     <!--café start-->
     <string name="cafe">Café</string>
+    <string name="alphabetically">Alphabetically</string>
+    <string name="leastExpensive">Least Expensive</string>
+    <string name="mostExpensive">Most Expensive</string>
+    <string name="mealDeal">Meal Deal</string>
     <!--café end-->
 
     <!--settings start-->

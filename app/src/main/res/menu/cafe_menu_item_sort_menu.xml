@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-</LinearLayout>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/cafe_menu_item_sort_alphabetically"
+        android:title="@string/alphabetically" />
+    <item android:id="@+id/cafe_menu_item_sort_least_expensive"
+        android:title="@string/leastExpensive" />
+    <item android:id="@+id/cafe_menu_item_sort_most_expensive"
+        android:title="@string/mostExpensive" />
+</menu>

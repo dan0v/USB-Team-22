@@ -3,10 +3,8 @@ package uk.ac.newcastle.team22.usb.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import uk.ac.newcastle.team22.usb.R;
-import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
 /**
  * A class which prepares navigation between two locations in the Urban Sciences Building.

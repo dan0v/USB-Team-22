@@ -1,12 +1,12 @@
 package uk.ac.newcastle.team22.usb.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
+import uk.ac.newcastle.team22.usb.activities.CafeMenuItemActivity;
 import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItem;
 import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItemCategory;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
@@ -56,18 +57,47 @@ public class CafeFragment extends Fragment implements USBFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listView = view.findViewById(R.id.cafe_list_view);
+        listView = view.findViewById(R.id.cafe_menu_category_list_view);
 
+        // Initialise the adapter.
+        List<CafeMenuItemCategory> categories = buildCafeMenu();
+        adapter = new CafeMenuItemCategoryAdapter(getContext(), R.layout.cafe_menu_category_list, categories);
+        listView.setAdapter(adapter);
+
+        // Set the on click listener.
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
+                CafeMenuItemCategory category = (CafeMenuItemCategory) adapter.getItemAtPosition(position);
+                Intent intent = new Intent(getActivity(), CafeMenuItemActivity.class);
+                intent.putExtra("categoryName", category.getName());
+                startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * Filters café menu items into categories and a special meal deal collection.
+     *
+     * @return The café menu item categories.
+     */
+    private List<CafeMenuItemCategory> buildCafeMenu() {
         // Load and sort café menu items into categories alphabetically.
         List<CafeMenuItem> cafeMenuItems = USBManager.shared.getBuilding().getCafe().getItems();
         List<CafeMenuItemCategory> categories = new ArrayList<>();
 
+        // Filter items into categories.
         for (CafeMenuItem item : cafeMenuItems) {
             if (!categories.contains(item.getCategory())) {
                 categories.add(item.getCategory());
             }
         }
 
+        // Add meal deal category.
+        CafeMenuItemCategory mealDeal = CafeMenuItemCategory.getMealDealCategory(getContext());
+        categories.add(mealDeal);
+
+        // Sort categories alphabetically.
         Collections.sort(cafeMenuItems, new Comparator<CafeMenuItem>() {
             @Override
             public int compare(CafeMenuItem o1, CafeMenuItem o2) {
@@ -75,18 +105,7 @@ public class CafeFragment extends Fragment implements USBFragment {
             }
         });
 
-        // Initialise the adapter.
-        adapter = new CafeMenuItemCategoryAdapter(getContext(), R.layout.cafe_menu_item_list, categories);
-        listView.setAdapter(adapter);
-
-        // Set the on click listener.
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
-                CafeMenuItem value = (CafeMenuItem) adapter.getItemAtPosition(position);
-                Log.i("", value.toString());
-            }
-        });
+        return categories;
     }
 
     @Override
@@ -130,7 +149,6 @@ public class CafeFragment extends Fragment implements USBFragment {
             View view = layoutInflater.inflate(resource, null, false);
 
             TextView title = view.findViewById(R.id.cafeMenuCategoryTitleTextView);
-            TextView detail = view.findViewById(R.id.cafeMenuCategoryDetailTextView);
             ImageView imageView = view.findViewById(R.id.cafeMenuCategoryImageView);
 
             final CafeMenuItemCategory category = categories.get(position);

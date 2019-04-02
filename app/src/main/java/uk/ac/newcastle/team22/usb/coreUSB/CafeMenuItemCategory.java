@@ -1,5 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import android.content.Context;
+
 import uk.ac.newcastle.team22.usb.R;
 
 /**
@@ -17,7 +19,7 @@ public class CafeMenuItemCategory {
     /** The identifier of the icon. */
     private int iconIdentifier;
 
-    CafeMenuItemCategory(String name, int iconIdentifier) {
+    public CafeMenuItemCategory(String name, int iconIdentifier) {
         this.name = name;
         this.iconIdentifier = iconIdentifier;
     }
@@ -56,10 +58,19 @@ public class CafeMenuItemCategory {
                 return R.drawable.food_category_10;
             case 11:
                 return R.drawable.food_category_11;
-                default:
-                    return 0;
-
+            default:
+                return 0;
         }
+    }
+
+    /**
+     * Retrieves the café menu item category.
+     *
+     * @param context The activity context.
+     * @return The category of café menu item.
+     */
+    public static CafeMenuItemCategory getMealDealCategory(Context context) {
+        return new CafeMenuItemCategory(context.getString(R.string.mealDeal), 11);
     }
 
     @Override
