@@ -60,12 +60,9 @@ public class CafeItemCategoryActivity extends USBActivity {
             View view = layoutInflater.inflate(resource, null, false);
 
             TextView title = view.findViewById(R.id.cafeMenuCategoryTitleTextView);
-            TextView detail = view.findViewById(R.id.cafeMenuCategoryDetailTextView);
 
             final CafeMenuItem menuItem = menuItems.get(position);
             title.setText(menuItem.getName());
-            detail.setText(menuItem.getFormattedPrice());
-
             return view;
         }
     }

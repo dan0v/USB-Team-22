@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import uk.ac.newcastle.team22.usb.coreApp.JSONDataFetcher;
 import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
@@ -39,8 +38,8 @@ public class USB {
     /** The out of hours of the Urban Sciences Building. */
     private OpeningHours outOfHours;
 
-    /** The data fetcher for NUIT JSON data. */
-    private JSONDataFetcher dataFetcher = new JSONDataFetcher();
+    /** The configuration of the Urban Sciences Building. */
+    private USBConfiguration configuration;
 
     /**
      * Constructor using a {@link USBUpdateManager.USBUpdate}.
@@ -59,6 +58,7 @@ public class USB {
         this.cafe = new Cafe(update);
         this.openingHours = update.getOpeningHours().get(OpeningHours.Service.NORMAL);
         this.outOfHours = update.getOpeningHours().get(OpeningHours.Service.OUT_OF_HOURS);
+        this.configuration = update.getConfiguration();
 
         // Populate map of floors to their floor numbers for faster.
         this.floors = new HashMap<>();
@@ -78,13 +78,6 @@ public class USB {
         }
         // Ensure tour nodes are ordered correctly.
         Collections.sort(this.tourNodeIdentifiers);
-    }
-
-    /**
-     * Download and update local data using the Urban Sciences Building computer availability JSON provided by NUIT.
-     */
-    public void updateComputerAvailability() {
-        dataFetcher.execute();
     }
 
     /**
@@ -134,6 +127,13 @@ public class USB {
      */
     public OpeningHours getOutOfHours() {
         return outOfHours;
+    }
+
+    /**
+     * @return The configuration of the Urban Sciences Building.
+     */
+    public USBConfiguration getConfiguration() {
+        return configuration;
     }
 
     @Override

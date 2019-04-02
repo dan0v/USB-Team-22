@@ -1,39 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="15dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/cafeMenuCategoryTitleTextView"
+        android:id="@+id/searchResultTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:paddingBottom="5dp"
+        android:paddingBottom="10dp"
         android:text="Name"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"/>
+        android:textColor="@android:color/black"
+        android:textSize="17sp"/>
 
     <TextView
-        android:id="@+id/cafeMenuCategoryDetailTextView"
+        android:id="@+id/searchResultDetailTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cafeMenuCategoryTitleTextView"
-        android:layout_toRightOf="@id/cafeMenuCategoryImageView"
-        android:layout_centerVertical="true"
-        android:paddingLeft="7dp"
-        android:paddingTop="2dp"
+        android:layout_below="@+id/searchResultTitleTextView"
+        android:layout_marginTop="0dp"
         android:text="£1.00"
-        android:textSize="15sp"/>
-
-    <ImageView
-        android:id="@+id/cafeMenuCategoryImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cafeMenuCategoryTitleTextView"
-        android:tint="@color/colorPrimary"
-        app:srcCompat="@drawable/food_category_6"></ImageView>
+        android:textSize="15sp" />
 
 </RelativeLayout>

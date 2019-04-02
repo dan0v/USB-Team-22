@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import uk.ac.newcastle.team22.usb.R;
+import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.fragments.CafeFragment;
 import uk.ac.newcastle.team22.usb.fragments.DashboardFragment;
 import uk.ac.newcastle.team22.usb.fragments.SettingsFragment;
@@ -38,6 +40,7 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_navigation_drawer);
         super.onCreate(savedInstanceState);
+        Log.i("", "VERSION " + USBManager.shared.getBuilding().getConfiguration().getVersion());
     }
 
     /**
