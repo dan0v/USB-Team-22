@@ -1,6 +1,5 @@
 package uk.ac.newcastle.team22.usb.activities;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,11 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
@@ -116,15 +110,6 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
         // Set the navigation listener.
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        // Configure navigation drawer header view.
-        View headerView = navigationView.getHeaderView(0);
-        TextView subtitle = headerView.findViewById(R.id.navigationDrawerSubtitleTextView);
-
-        // Display current date in drawer header view.
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE d MMMM");
-        String currentDate = simpleDateFormat.format(Calendar.getInstance().getTime());
-        subtitle.setText(currentDate);
 
         // Display default fragment.
         USBFragment defaultFragment = new DashboardFragment();
