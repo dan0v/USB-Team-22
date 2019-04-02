@@ -107,8 +107,6 @@ public class CafeMenuItemActivity extends USBActivity {
      * @param sortMode The sort mode of the café menu items.
      */
     private void sortCafeMenuItems(final SortMode sortMode) {
-        adapter.menuItems.clear();
-
         // Sort café menu items.
         Cafe cafe = USBManager.shared.getBuilding().getCafe();
         List<CafeMenuItem> menuItems = cafe.getItems(category, this);
@@ -127,6 +125,7 @@ public class CafeMenuItemActivity extends USBActivity {
         });
 
         // Refresh list view.
+        adapter.menuItems.clear();
         adapter.addAll(menuItems);
         adapter.notifyDataSetChanged();
     }
