@@ -62,8 +62,6 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
                     Log.e("JSON Updater", "Room is missing from Firestore.: Floor: " + floor + " Room: " + number);
                 }
             }
-            return null;
-
         } catch (Exception e) {
             Log.e("JSON", "Something went wrong with fetching JSON data.: ");
             e.printStackTrace();
