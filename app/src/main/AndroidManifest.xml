@@ -28,6 +28,9 @@
             android:label="@string/urbanSciencesBuildingShorthand"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.NavigationActivity"
+            android:label="@string/navigation" />
+        <activity
             android:name=".activities.SearchActivity"
             android:label="@string/search">
             <intent-filter>

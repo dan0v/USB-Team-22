@@ -1,15 +1,22 @@
-package uk.ac.newcastle.team22.usb.fragments;
+package uk.ac.newcastle.team22.usb.navigation;
 
-public class NavigationDirection {
+/**
+ * A class to represent the information stored in a navigation card in the UI.
+ *
+ * @author Daniel Vincent
+ * @version 1.0
+ */
+
+public class DirectionCardData {
 
     private String directionText;
     private int distanceText;
     private int directionImage;
 
-    public NavigationDirection() {
+    public DirectionCardData() {
     }
 
-    public NavigationDirection(String directionText, int distanceText, int directionImage) {
+    public DirectionCardData(String directionText, int distanceText, int directionImage) {
         this.directionText = directionText;
         this.distanceText = distanceText;
         this.directionImage = directionImage;
@@ -23,8 +30,8 @@ public class NavigationDirection {
         this.directionText = directionText;
     }
 
-    public int getDistanceText() {
-        return distanceText;
+    public String getDistanceText() {
+        return distanceText + "";
     }
 
     public void setDistanceText(int distanceText) {
