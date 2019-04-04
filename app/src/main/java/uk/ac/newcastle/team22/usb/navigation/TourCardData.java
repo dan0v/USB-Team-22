@@ -7,14 +7,11 @@ package uk.ac.newcastle.team22.usb.navigation;
  * @author Daniel Vincent
  * @version 1.0
  */
-public class TourCardData {
+public class TourCardData extends AbstractCardData {
 
     private String nameText;
     private String descriptionText;
     private int image;
-
-    public TourCardData() {
-    }
 
     public TourCardData(String nameText, String descriptionText, int image) {
         this.nameText = nameText;

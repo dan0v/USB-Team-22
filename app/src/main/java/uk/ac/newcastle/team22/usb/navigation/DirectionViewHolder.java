@@ -13,7 +13,7 @@ import uk.ac.newcastle.team22.usb.R;
  * @version 1.0
  */
 
-public class DirectionViewHolder extends GeneralViewHolder {
+public class DirectionViewHolder extends AbstractViewHolder {
     public TextView directionText;
     public TextView distanceText;
     public ImageView directionImage;

@@ -19,17 +19,17 @@
 
     <!--navigation start-->
     <string name="navigation">Navigation</string>
-    <string name="directionForward">Continue forward</string>
-    <string name="directionLeft">Turn left</string>
-    <string name="directionSlightLeft">Turn slightly left</string>
-    <string name="directionSharpLeft">Turn sharp left</string>
-    <string name="directionRight">Turn right</string>
-    <string name="directionSlightRight">Turn slightly right</string>
-    <string name="directionSharpRight">Turn sharp right</string>
-    <string name="directionLiftUp">Take the lift up to floor %s</string>
-    <string name="directionLiftDown">Take the lift down to floor %s</string>
-    <string name="directionStairUp">Take the stairs up to floor %s</string>
-    <string name="directionStairDown">Take the stairs down to floor %s</string>
+    <string name="navigationForward">Continue forward</string>
+    <string name="navigationLeft">Turn left</string>
+    <string name="navigationModerateLeft">Turn slightly left</string>
+    <string name="navigationSharpLeft">Turn sharp left</string>
+    <string name="navigationRight">Turn right</string>
+    <string name="navigationModerateRight">Turn slightly right</string>
+    <string name="navigationSharpRight">Turn sharp right</string>
+    <string name="navigationLiftUp">Take the lift up to floor %s</string>
+    <string name="navigationLiftDown">Take the lift down to floor %s</string>
+    <string name="navigationStairUp">Take the stairs up to floor %s</string>
+    <string name="navigationStairDown">Take the stairs down to floor %s</string>
     <!--navigation end-->
 
     <!--drawer start-->

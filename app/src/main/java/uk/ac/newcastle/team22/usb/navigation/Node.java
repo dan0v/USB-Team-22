@@ -19,7 +19,7 @@ public class Node implements FirestoreConstructable<Node> {
     private int nodeIdentifier;
     private int floorNumber;
     private boolean isTourNode = false;
-    private String imageIdentifier;
+    private int imageIdentifier;
     private String name;
     private String description;
     private List<Edge> edges = new ArrayList<Edge>();
@@ -51,7 +51,7 @@ public class Node implements FirestoreConstructable<Node> {
         if (firestoreDictionary.get("description") != null) {
             this.isTourNode = true;
             this.description = (String) firestoreDictionary.get("description");
-            this.imageIdentifier = (String) firestoreDictionary.get("imageID");
+            this.imageIdentifier = ((Number) firestoreDictionary.get("imageID")).intValue();
             this.name = (String) firestoreDictionary.get("name");
         }
 
@@ -105,7 +105,7 @@ public class Node implements FirestoreConstructable<Node> {
     /**
      * @return Image name of this Tour Node's location.
      */
-    public String getImageIdentifier() {
+    public int getImageIdentifier() {
         if (!this.isTourNode) {throw new IllegalArgumentException("Non TourNode is being treated as TourNode.");}
         return imageIdentifier;
     }

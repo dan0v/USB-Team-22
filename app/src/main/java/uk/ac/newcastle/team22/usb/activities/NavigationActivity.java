@@ -10,9 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
-import uk.ac.newcastle.team22.usb.navigation.DirectionCardData;
+import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
+import uk.ac.newcastle.team22.usb.navigation.AbstractCardData;
+import uk.ac.newcastle.team22.usb.navigation.Direction;
+import uk.ac.newcastle.team22.usb.navigation.Navigable;
 import uk.ac.newcastle.team22.usb.navigation.NavigationAdapter;
-import uk.ac.newcastle.team22.usb.navigation.TourCardData;
+import uk.ac.newcastle.team22.usb.navigation.Navigator;
+import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
  * A class which presents navigation between two locations in the Urban Sciences Building.
@@ -24,7 +28,11 @@ import uk.ac.newcastle.team22.usb.navigation.TourCardData;
 public class NavigationActivity extends USBActivity {
     private RecyclerView recyclerView;
     private NavigationAdapter adapter;
-    private List<Object> navigationCardList;
+    private List<AbstractCardData> navigationCardList;
+
+    /* Temporarily set initial values while how to set start and destination is discussed. */
+    private Node start = USBManager.shared.getBuilding().getNavigationNodes().get(0);
+    private Node destination = USBManager.shared.getBuilding().getNavigationNodes().get(400);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +46,10 @@ public class NavigationActivity extends USBActivity {
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
-        //recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        buildTestList();
+//        Test navigation UI with set nodes:
+//        buildTestList();
     }
 
 
@@ -50,21 +58,50 @@ public class NavigationActivity extends USBActivity {
      */
     private void buildTestList() {
 
-        DirectionCardData a = new DirectionCardData("Forwards", 13, R.drawable.navigation_forward);
-        navigationCardList.add(a);
+        navigationCardList.clear();
+        navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(USBManager.shared.getBuilding().getNavigationNodes().get(0), USBManager.shared.getBuilding().getNavigationNodes().get(400), false), this));
 
-        a = new DirectionCardData("Keycard required for door", 2, R.drawable.navigation_keycard);
-        navigationCardList.add(a);
+        adapter.notifyDataSetChanged();
+    }
 
-        a = new DirectionCardData("Turn Left", 11, R.drawable.navigation_left);
-        navigationCardList.add(a);
+    /**
+     * Set the start location for navigation.
+     * @param start
+     */
+    public void setStartLocation(Navigable start) {
+        this.start = start.getNavigationNode();
+    }
 
-        TourCardData b = new TourCardData("Urban Sciences Building", "This building was constructed in 1234 and is very cool.", R.drawable.usb_hero);
-        navigationCardList.add(b);
+    /**
+     * Set the destination location for navigation.
+     * @param destination
+     */
+    public void setDestinationLocation(Navigable destination) {
+        this.destination = destination.getNavigationNode();
+    }
 
-        a = new DirectionCardData("Take the Lift Down", 3, R.drawable.navigation_lift_down);
-        navigationCardList.add(a);
+    /**
+     * Set the start location for navigation.
+     * @param start
+     */
+    public void setStartLocation(Node start) {
+        this.start = start;
+    }
 
+    /**
+     * Set the destination location for navigation.
+     * @param destination
+     */
+    public void setDestinationLocation(Node destination) {
+        this.destination = destination;
+    }
+
+    /**
+     * Update the UI with newly calculated navigation directions.
+     */
+    public void updateUI() {
+        navigationCardList.clear();
+        navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(start, destination, navigationRequiresLifts()), this));
         adapter.notifyDataSetChanged();
     }
 

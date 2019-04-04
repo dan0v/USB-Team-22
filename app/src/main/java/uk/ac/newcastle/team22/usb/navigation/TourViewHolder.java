@@ -15,7 +15,7 @@ import uk.ac.newcastle.team22.usb.R;
  * @version 1.0
  */
 
-public class TourViewHolder extends GeneralViewHolder {
+public class TourViewHolder extends AbstractViewHolder {
     public TextView nameText;
     public TextView descriptionText;
     public ImageView image;

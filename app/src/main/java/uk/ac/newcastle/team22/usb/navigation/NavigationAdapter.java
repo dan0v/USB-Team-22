@@ -16,17 +16,16 @@ import uk.ac.newcastle.team22.usb.R;
  * @author Daniel Vincent
  * @version 1.0
  */
+public class NavigationAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
+    private List<AbstractCardData> cardList;
 
-public class NavigationAdapter extends RecyclerView.Adapter<GeneralViewHolder> {
-    private List<Object> cardList;
-
-    public NavigationAdapter (List<Object> cardList) {
+    public NavigationAdapter (List<AbstractCardData> cardList) {
         this.cardList = cardList;
     }
 
-    public GeneralViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public AbstractViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        GeneralViewHolder holder;
+        AbstractViewHolder holder;
         View itemView;
         Context context = viewGroup.getContext();
 
@@ -42,7 +41,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<GeneralViewHolder> {
         return holder;
     }
 
-    public void onBindViewHolder(GeneralViewHolder viewHolder, int position) {
+    public void onBindViewHolder(AbstractViewHolder viewHolder, int position) {
         if(getItemViewType(position) == 0) {
             DirectionViewHolder updatingHolder = (DirectionViewHolder) viewHolder;
             DirectionCardData item = (DirectionCardData) cardList.get(position);

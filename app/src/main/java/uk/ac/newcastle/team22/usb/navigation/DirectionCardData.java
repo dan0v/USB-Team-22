@@ -7,16 +7,13 @@ package uk.ac.newcastle.team22.usb.navigation;
  * @version 1.0
  */
 
-public class DirectionCardData {
+public class DirectionCardData extends AbstractCardData {
 
     private String directionText;
-    private int distanceText;
+    private String distanceText;
     private int directionImage;
 
-    public DirectionCardData() {
-    }
-
-    public DirectionCardData(String directionText, int distanceText, int directionImage) {
+    public DirectionCardData(String directionText, String distanceText, int directionImage) {
         this.directionText = directionText;
         this.distanceText = distanceText;
         this.directionImage = directionImage;
@@ -31,10 +28,10 @@ public class DirectionCardData {
     }
 
     public String getDistanceText() {
-        return distanceText + "";
+        return distanceText;
     }
 
-    public void setDistanceText(int distanceText) {
+    public void setDistanceText(String distanceText) {
         this.distanceText = distanceText;
     }
 
