@@ -30,9 +30,9 @@ public class NavigationActivity extends USBActivity {
     private NavigationAdapter adapter;
     private List<AbstractCardData> navigationCardList;
 
+    private static Node start;
     /* Temporarily set initial values while how to set start and destination is discussed. */
-    private Node start = USBManager.shared.getBuilding().getNavigationNodes().get(0);
-    private Node destination = USBManager.shared.getBuilding().getNavigationNodes().get(400);
+    private static Node destination = USBManager.shared.getBuilding().getNavigationNodes().get(400);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +100,15 @@ public class NavigationActivity extends USBActivity {
      * Update the UI with newly calculated navigation directions.
      */
     public void updateUI() {
-        navigationCardList.clear();
-        navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(start, destination, navigationRequiresLifts()), this));
+        // If there start node is null, navigate from building origin.
+        if (this.start == null) {
+            navigationCardList.clear();
+            navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(destination, navigationRequiresLifts()), this));
+        }
+        else {
+            navigationCardList.clear();
+            navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(start, destination, navigationRequiresLifts()), this));
+        }
         adapter.notifyDataSetChanged();
     }
 

@@ -37,12 +37,22 @@ public class Navigator {
 
     /**
      * Calculate route from building entrance if no start position provided.
-     * @param destination The origin of the journey.
+     * @param destination The destination of the journey.
      * @param accessibility Boolean value whether the journey needs to be accessible.
      * @return List of edges to be traversed to reach destination.
      */
     public List<Edge> getRoute(Navigable destination, boolean accessibility) {
         return getRoute(USBManager.shared.getBuilding().getNavigationNodes().get(0), destination.getNavigationNode(), accessibility);
+    }
+
+    /**
+     * Calculate route from building entrance if no start position provided.
+     * @param destination The destionation of the journey.
+     * @param accessibility Boolean value whether the journey needs to be accessible.
+     * @return List of edges to be traversed to reach destination.
+     */
+    public List<Edge> getRoute(Node destination, boolean accessibility) {
+        return getRoute(USBManager.shared.getBuilding().getNavigationNodes().get(0), destination, accessibility);
     }
 
     /**
