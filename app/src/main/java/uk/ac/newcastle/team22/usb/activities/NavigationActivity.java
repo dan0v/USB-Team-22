@@ -13,10 +13,9 @@ import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.navigation.AbstractCardData;
 import uk.ac.newcastle.team22.usb.navigation.Direction;
-import uk.ac.newcastle.team22.usb.navigation.Navigable;
+import uk.ac.newcastle.team22.usb.navigation.Edge;
 import uk.ac.newcastle.team22.usb.navigation.NavigationAdapter;
 import uk.ac.newcastle.team22.usb.navigation.Navigator;
-import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
  * A class which presents navigation between two locations in the Urban Sciences Building.
@@ -29,10 +28,6 @@ public class NavigationActivity extends USBActivity {
     private RecyclerView recyclerView;
     private NavigationAdapter adapter;
     private List<AbstractCardData> navigationCardList;
-
-    private static Node start;
-    /* Temporarily set initial values while how to set start and destination is discussed. */
-    private static Node destination = USBManager.shared.getBuilding().getNavigationNodes().get(400);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +47,10 @@ public class NavigationActivity extends USBActivity {
 //        buildTestList();
     }
 
-
     /**
      * RecyclerView + CardView test
      */
     private void buildTestList() {
-
         navigationCardList.clear();
         navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(USBManager.shared.getBuilding().getNavigationNodes().get(0), USBManager.shared.getBuilding().getNavigationNodes().get(400), false), this));
 
@@ -65,50 +58,12 @@ public class NavigationActivity extends USBActivity {
     }
 
     /**
-     * Set the start location for navigation.
-     * @param start
-     */
-    public void setStartLocation(Navigable start) {
-        this.start = start.getNavigationNode();
-    }
-
-    /**
-     * Set the destination location for navigation.
-     * @param destination
-     */
-    public void setDestinationLocation(Navigable destination) {
-        this.destination = destination.getNavigationNode();
-    }
-
-    /**
-     * Set the start location for navigation.
-     * @param start
-     */
-    public void setStartLocation(Node start) {
-        this.start = start;
-    }
-
-    /**
-     * Set the destination location for navigation.
-     * @param destination
-     */
-    public void setDestinationLocation(Node destination) {
-        this.destination = destination;
-    }
-
-    /**
      * Update the UI with newly calculated navigation directions.
+     * @param edges from {@link Navigator} to display.
      */
-    public void updateUI() {
-        // If there start node is null, navigate from building origin.
-        if (this.start == null) {
-            navigationCardList.clear();
-            navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(destination, navigationRequiresLifts()), this));
-        }
-        else {
-            navigationCardList.clear();
-            navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(start, destination, navigationRequiresLifts()), this));
-        }
+    public void updateUI(List<Edge> edges) {
+        navigationCardList.clear();
+        navigationCardList.addAll(Direction.buildCards(edges, this));
         adapter.notifyDataSetChanged();
     }
 

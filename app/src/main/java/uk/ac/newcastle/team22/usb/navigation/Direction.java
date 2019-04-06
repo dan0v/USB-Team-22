@@ -201,7 +201,7 @@ public enum Direction {
                 else {
                     // Combine duplicate FORWARD directions.
                     if (parsedDirections.get(i).equals(FORWARD) && parsedDirections.get(i-1).equals(FORWARD)) {
-                        distances.set(i - 1, Math.round(Math.round(currentDistance)) + distances.get(i - 1));
+                        distances.set(i - 1, currentDistance + distances.get(i - 1));
                         parsedDirections.remove(i);
                     }
                     else {
@@ -230,7 +230,7 @@ public enum Direction {
                 }
                 else {
                     String directionText = context.getString(parsedDirections.get(j).getLocalisedDirection());
-                    DirectionCardData currentCard = new DirectionCardData(directionText, distances.get(j) + "", parsedDirections.get(j).getImageRepresentation());
+                    DirectionCardData currentCard = new DirectionCardData(directionText, ((int) Math.round(distances.get(j))) + "", parsedDirections.get(j).getImageRepresentation());
                     cards.add(currentCard);
                 }
             }

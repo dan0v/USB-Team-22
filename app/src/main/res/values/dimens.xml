@@ -19,11 +19,12 @@
     <!--navigation start-->
     <dimen name="navigation_direction_image_height">50dp</dimen>
     <dimen name="navigation_direction_image_width">50dp</dimen>
+    <dimen name="navigation_direction_image_margin">5dp</dimen>
     <dimen name="navigation_direction_text_padding">20dp</dimen>
     <dimen name="navigation_direction_text">15dp</dimen>
     <dimen name="navigation_distance_text_padding">20dp</dimen>
     <dimen name="navigation_distance_text">15dp</dimen>
-    <dimen name="navigation_distance_text_width">10dp</dimen>
+    <dimen name="navigation_distance_text_width">60dp</dimen>
 
     <dimen name="tour_location_image_height">140dp</dimen>
     <dimen name="tour_location_image_width">60dp</dimen>
