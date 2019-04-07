@@ -80,4 +80,11 @@ public class CafeMenuItemCategory {
         CafeMenuItemCategory c = (CafeMenuItemCategory) rhs;
         return name.equals(c.name);
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 }

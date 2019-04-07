@@ -1,10 +1,10 @@
-package uk.ac.newcastle.team22.usb.navigation;
+package uk.ac.newcastle.team22.usb.coreApp;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * A class to define navigation directions.
+ * A class which defines the holder for an individual recycler view.
  *
  * @author Daniel Vincent
  * @version 1.0

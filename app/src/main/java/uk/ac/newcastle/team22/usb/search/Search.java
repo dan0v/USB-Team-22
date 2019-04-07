@@ -80,15 +80,14 @@ public class Search {
      * @return The search result.
      */
     private SearchResult determineWhetherSearchResult(Searchable potentialResult) {
-        SearchResult result = null;
         for (ResultReason reason : potentialResult.getSearchableReasons()) {
             // Checks if result starts with value.
             if (reason.getAttribute().toLowerCase().startsWith(query)) {
-                result = new SearchResult(potentialResult, Priority.HIGH, reason);
+                return new SearchResult(potentialResult, Priority.HIGH, reason);
             } else if (reason.getAttribute().toLowerCase().contains(query)) {
-                result = new SearchResult(potentialResult, Priority.LOW, reason);
+                return new SearchResult(potentialResult, Priority.LOW, reason);
             }
         }
-        return result;
+        return null;
     }
 }

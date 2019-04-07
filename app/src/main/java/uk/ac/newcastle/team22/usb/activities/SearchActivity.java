@@ -1,6 +1,7 @@
 package uk.ac.newcastle.team22.usb.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -79,16 +80,38 @@ public class SearchActivity extends USBActivity {
         listView = findViewById(R.id.search_results_list_view);
 
         // Set the adapter of the list view.
-        adapter = new SearchResultAdapter(this, R.layout.search_result_list, new ArrayList<SearchResult>());
+        adapter = new SearchResultAdapter(this, R.layout.list_search_result, new ArrayList<SearchResult>());
         listView.setAdapter(adapter);
 
         // Set the on click listener.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
-                Searchable selected = (Searchable) adapter.getItemAtPosition(position);
+                SearchResult selected = (SearchResult) adapter.getItemAtPosition(position);
+                presentSearchResult(selected.getResult());
             }
         });
+    }
+
+    /**
+     * Determines which activity to present in order to display more information about a search result.
+     *
+     * @param result The search result.
+     */
+    private void presentSearchResult(Searchable result) {
+        Intent intent = null;
+
+        // Determine the activity to display the
+        if (result instanceof StaffMember) {
+            StaffMember staffMember = (StaffMember) result;
+            intent = new Intent(this, StaffMemberActivity.class);
+            intent.putExtra("identifier", staffMember.getIdentifier());
+        }
+
+        // Display the search result.
+        if (intent != null) {
+            startActivity(intent);
+        }
     }
 
     /**
@@ -170,12 +193,12 @@ public class SearchActivity extends USBActivity {
                 detail.setText(R.string.reasonStaffMember);
             } else if (searchResult instanceof Room) {
                 Room room = (Room) searchResult;
-                title.setText(getString(R.string.room) + " " + room.getNumber());
+                title.setText(room.getFormattedName());
                 detail.setText(getString(R.string.floor) + " " + room.getFloor().getNumber());
             } else if (searchResult instanceof Resource) {
                 Resource resource = (Resource) searchResult;
                 title.setText(resource.toString());
-                detail.setText(getString(R.string.room) + " " + resource.getRoom().getFormattedNumber());
+                detail.setText(getString(R.string.room) + " " + resource.getRoom().getFormattedName());
             }
 
             return view;

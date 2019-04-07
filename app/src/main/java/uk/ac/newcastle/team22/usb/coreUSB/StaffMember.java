@@ -43,8 +43,8 @@ public class StaffMember implements FirestoreConstructable<StaffMember>, Searcha
         String title = (String) firestoreDictionary.get("title");
         String firstName = (String) firestoreDictionary.get("firstName");
         String lastName = (String) firestoreDictionary.get("lastName");
-        String phoneNumber = (String) firestoreDictionary.get("phoneNumber");
-        String emailAddress = (String) firestoreDictionary.get("emailAddress");
+        String phoneNumber = (String) firestoreDictionary.get("telephone");
+        String emailAddress = (String) firestoreDictionary.get("email");
 
         this.identifier = documentIdentifier;
         this.title = title;
@@ -61,6 +61,13 @@ public class StaffMember implements FirestoreConstructable<StaffMember>, Searcha
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
+    }
+
+    /**
+     * @return The identifier of the staff member.
+     */
+    public String getIdentifier() {
+        return identifier;
     }
 
     /**
@@ -111,8 +118,10 @@ public class StaffMember implements FirestoreConstructable<StaffMember>, Searcha
     public Room getRoom() {
         for (Floor floor : USBManager.shared.getBuilding().getFloors().values()) {
             for (Room room : floor.getRooms().values()) {
-                if (room.getStaffResidenceIdentifier() == identifier) {
-                    return room;
+                if (room.getStaffResidenceIdentifier() != null) {
+                    if (room.getStaffResidenceIdentifier().equals(identifier)) {
+                        return room;
+                    }
                 }
             }
         }
@@ -131,6 +140,9 @@ public class StaffMember implements FirestoreConstructable<StaffMember>, Searcha
         }
         if (emailAddress != null) {
             reasons.add(new ResultReason(emailAddress, ResultReason.Reason.EMAIL));
+        }
+        if (title != null) {
+            reasons.add(new ResultReason(title, ResultReason.Reason.STAFF));
         }
 
         return reasons;

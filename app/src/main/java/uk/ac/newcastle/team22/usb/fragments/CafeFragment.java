@@ -61,7 +61,7 @@ public class CafeFragment extends Fragment implements USBFragment {
 
         // Initialise the adapter.
         List<CafeMenuItemCategory> categories = buildCafeMenu();
-        adapter = new CafeMenuItemCategoryAdapter(getContext(), R.layout.cafe_menu_category_list, categories);
+        adapter = new CafeMenuItemCategoryAdapter(getContext(), R.layout.list_cafe_menu_category, categories);
         listView.setAdapter(adapter);
 
         // Set the on click listener.

@@ -61,7 +61,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
 
         Map<String, Long> resources = (Map<String, Long>) firestoreDictionary.get("resources");
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
-        String alternateName = (String) firestoreDictionary.get("alternateName");
+        String alternateName = (String) firestoreDictionary.get("roomName");
 
         this.nodeIdentifier = nodeIdentifier;
         this.number = documentIdentifier;
@@ -96,13 +96,33 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     }
 
     /**
+     * An alternate name of the room may be provided by the manager.
+     * For example, the Lecture Theatre.
+     * The name of the room will otherwise be its room number.
+     *
+     * @return The name of the room.
+     */
+    public String getFormattedName() {
+        if (alternateName == null) {
+            return "Room " + getFormattedNumber();
+        }
+        return getAlternateName() + ", " + getFormattedNumber();
+    }
+
+    /**
      * @return The formatted room number includes the floor number.
      */
     @SuppressLint("DefaultLocale")
     public String getFormattedNumber() {
         String floorNumber = String.valueOf(floor.getNumber());
-        String roomNumber = String.format("%03d", Integer.getInteger(number));
-        return floorNumber + "." + roomNumber;
+        String formattedRoomNumber;
+        try {
+            int roomNumber = Integer.parseInt(number);
+            formattedRoomNumber = String.format("%03d", roomNumber);
+        } catch (NumberFormatException e) {
+            formattedRoomNumber = "0" + number;
+        }
+        return floorNumber + "." + formattedRoomNumber;
     }
 
     /**
@@ -182,8 +202,12 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     public List<ResultReason> getSearchableReasons() {
         List<ResultReason> reasons = new ArrayList();
 
-        reasons.add(new ResultReason(number, ResultReason.Reason.ROOM));
-        reasons.add(new ResultReason(getFormattedNumber(), ResultReason.Reason.ROOM));
+        reasons.add(new ResultReason(number, ResultReason.Reason.ROOM_NUMBER));
+        reasons.add(new ResultReason(getFormattedNumber(), ResultReason.Reason.ROOM_FORMATTED_NUMBER));
+
+        if (getAlternateName() != null) {
+            reasons.add(new ResultReason(getAlternateName(), ResultReason.Reason.ROOM_ALTERNATE_NAME));
+        }
 
         return reasons;
     }

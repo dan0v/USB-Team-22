@@ -80,4 +80,9 @@
     <!--opening hours start-->
     <string name="open">Open</string>
     <string name="closed">Closed</string>
+    <!--opening hours end-->
+
+    <!--staff members start-->
+    <string name="staffDetails">Staff Details</string>
+    <!--staff members end-->
 </resources>

@@ -25,20 +25,29 @@ public class ResultReason {
 
     /** The category of search result. */
     public enum Reason {
-        PHONE_NUMBER, STAFF, ROOM, CAFE_ITEM_NAME, RESOURCE, EMAIL;
+        PHONE_NUMBER, STAFF, ROOM_NUMBER, ROOM_FORMATTED_NUMBER, ROOM_ALTERNATE_NAME, CAFE_ITEM_NAME, RESOURCE, EMAIL;
 
         /**
          * @return Localised string representation of a {@link ResultReason}.
          */
-        public @StringRes int getLocalisedDirection() {
+        public @StringRes int getLocalisedReason() {
             switch(this) {
-                case PHONE_NUMBER:      return R.string.reasonPhoneNumber;
-                case STAFF:             return R.string.reasonStaffMember;
-                case ROOM:              return R.string.reasonRoom;
-                case CAFE_ITEM_NAME:    return R.string.reasonCafeMenuItem;
-                case RESOURCE:          return R.string.reasonResource;
-                case EMAIL:             return R.string.reasonEmail;
-                default:                return 0;
+                case PHONE_NUMBER:
+                    return R.string.reasonPhoneNumber;
+                case STAFF:
+                    return R.string.reasonStaffMember;
+                case ROOM_NUMBER:
+                case ROOM_FORMATTED_NUMBER:
+                case ROOM_ALTERNATE_NAME:
+                    return R.string.reasonRoom;
+                case CAFE_ITEM_NAME:
+                    return R.string.reasonCafeMenuItem;
+                case RESOURCE:
+                    return R.string.reasonResource;
+                case EMAIL:
+                    return R.string.reasonEmail;
+                default:
+                    return 0;
             }
         }
     }

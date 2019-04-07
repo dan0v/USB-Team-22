@@ -69,7 +69,7 @@ public class CafeMenuItemActivity extends USBActivity {
         });
 
         // Initialise the adapter.
-        adapter = new CafeMenuItemAdapter(this, R.layout.cafe_menu_item_list, menuItems);
+        adapter = new CafeMenuItemAdapter(this, R.layout.list_cafe_menu_item, menuItems);
         listView.setAdapter(adapter);
     }
 

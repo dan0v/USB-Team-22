@@ -3,6 +3,7 @@
     package="uk.ac.newcastle.team22.usb">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".coreApp.AppDelegate"
@@ -12,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.CafeMenuItemActivity"></activity>
+        <activity android:name=".activities.StaffMemberActivity"></activity>
+        <activity android:name=".activities.CafeMenuItemActivity" />
         <activity
             android:name=".activities.LaunchActivity"
             android:noHistory="true">

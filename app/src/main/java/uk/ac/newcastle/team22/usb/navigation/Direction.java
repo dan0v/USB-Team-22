@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
+import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 
 /**
  * A class to define navigation directions.
@@ -19,42 +20,42 @@ public enum Direction {
     FORWARD, LEFT, MODERATE_LEFT, SHARP_LEFT, RIGHT, MODERATE_RIGHT, SHARP_RIGHT, LIFT_UP, LIFT_DOWN, STAIR_UP, STAIR_DOWN, TOUR_LOCATION;
 
     /**
-     * @return Localised string representation of a direction.
+     * @return Localised string representation of the direction.
      */
     public @StringRes int getLocalisedDirection() {
         switch (this) {
-            case FORWARD:     return R.string.navigationForward;
-            case LEFT:        return R.string.navigationLeft;
-            case MODERATE_LEFT: return R.string.navigationModerateLeft;
-            case SHARP_LEFT:  return R.string.navigationSharpLeft;
-            case RIGHT:       return R.string.navigationRight;
-            case MODERATE_RIGHT:return R.string.navigationModerateRight;
-            case SHARP_RIGHT: return R.string.navigationSharpRight;
-            case LIFT_UP:     return R.string.navigationLiftUp;
-            case LIFT_DOWN:   return R.string.navigationLiftDown;
-            case STAIR_UP:    return R.string.navigationStairUp;
-            case STAIR_DOWN:  return R.string.navigationStairDown;
-            default:          return 0;
+            case FORWARD:           return R.string.navigationForward;
+            case LEFT:              return R.string.navigationLeft;
+            case MODERATE_LEFT:     return R.string.navigationModerateLeft;
+            case SHARP_LEFT:        return R.string.navigationSharpLeft;
+            case RIGHT:             return R.string.navigationRight;
+            case MODERATE_RIGHT:    return R.string.navigationModerateRight;
+            case SHARP_RIGHT:       return R.string.navigationSharpRight;
+            case LIFT_UP:           return R.string.navigationLiftUp;
+            case LIFT_DOWN:         return R.string.navigationLiftDown;
+            case STAIR_UP:          return R.string.navigationStairUp;
+            case STAIR_DOWN:        return R.string.navigationStairDown;
+            default:                return 0;
         }
     }
 
     /**
-     * @return Localised string representation of a direction.
+     * @return Image representation of the direction.
      */
     public @DrawableRes int getImageRepresentation() {
         switch (this) {
-            case FORWARD:     return R.drawable.navigation_forward;
-            case LEFT:        return R.drawable.navigation_left;
-            case MODERATE_LEFT: return R.drawable.navigation_moderate_left;
-            case SHARP_LEFT:  return R.drawable.navigation_sharp_left;
-            case RIGHT:       return R.drawable.navigation_right;
-            case MODERATE_RIGHT:return R.drawable.navigation_moderate_right;
-            case SHARP_RIGHT: return R.drawable.navigation_sharp_right;
-            case LIFT_UP:     return R.drawable.navigation_lift_up;
-            case LIFT_DOWN:   return R.drawable.navigation_lift_down;
-            case STAIR_UP:    return R.drawable.navigation_stairs_up;
-            case STAIR_DOWN:  return R.drawable.navigation_stairs_down;
-            default:          return 0;
+            case FORWARD:           return R.drawable.navigation_forward;
+            case LEFT:              return R.drawable.navigation_left;
+            case MODERATE_LEFT:     return R.drawable.navigation_moderate_left;
+            case SHARP_LEFT:        return R.drawable.navigation_sharp_left;
+            case RIGHT:             return R.drawable.navigation_right;
+            case MODERATE_RIGHT:    return R.drawable.navigation_moderate_right;
+            case SHARP_RIGHT:       return R.drawable.navigation_sharp_right;
+            case LIFT_UP:           return R.drawable.navigation_lift_up;
+            case LIFT_DOWN:         return R.drawable.navigation_lift_down;
+            case STAIR_UP:          return R.drawable.navigation_stairs_up;
+            case STAIR_DOWN:        return R.drawable.navigation_stairs_down;
+            default:                return 0;
         }
     }
 
@@ -65,8 +66,8 @@ public enum Direction {
      * @throws IllegalArgumentException
      */
     public static List<Direction> parseDirections(List<Edge> edges) throws IllegalArgumentException {
-        List<Direction> directions = new ArrayList<Direction>();
-        List<Integer> angleList = new ArrayList<Integer>();
+        List<Direction> directions = new ArrayList();
+        List<Integer> angleList = new ArrayList();
 
         // Simplify input data to list of direction angles.
         for (Edge currentEdge : edges) {
@@ -81,17 +82,21 @@ public enum Direction {
 
         for (int i = 1; i < angleList.size(); i++) {
             int currentAngle = angleList.get(i);
-
             switch (currentAngle) {
-                case -1:    directions.add(LIFT_UP);
-                            continue;
-                case -2:    directions.add(LIFT_DOWN);
-                            continue;
-                case -3:    directions.add(STAIR_UP);
-                            continue;
-                case -4:    directions.add(STAIR_DOWN);
-                            continue;
+                case -1:
+                    directions.add(LIFT_UP);
+                    continue;
+                case -2:
+                    directions.add(LIFT_DOWN);
+                    continue;
+                case -3:
+                    directions.add(STAIR_UP);
+                    continue;
+                case -4:
+                    directions.add(STAIR_DOWN);
+                    continue;
             }
+
             int previousAngle = angleList.get(i-1);
 
             // Exiting a lift or staircase should always be FORWARD.
@@ -166,13 +171,13 @@ public enum Direction {
      * @throws IllegalArgumentException
      */
     public static List<AbstractCardData> buildCards(List<Edge> edges, Context context) {
-        List<AbstractCardData> cards = new ArrayList<AbstractCardData>();
-        List<Node> tourNodes = new ArrayList<Node>();
-        List<Double> distances = new ArrayList<>();
+        List<AbstractCardData> cards = new ArrayList();
+        List<Node> tourNodes = new ArrayList();
+        List<Double> distances = new ArrayList();
         List<Direction> parsedDirections = parseDirections(edges);
-        List<String> floorChanges = new ArrayList<String>();
-
+        List<String> floorChanges = new ArrayList();
         int i = 0;
+
         // Simplify input data to list of distances.
         for (Edge currentEdge : edges) {
 
@@ -187,8 +192,7 @@ public enum Direction {
             if (currentEdge.getOrigin().getFloorNumber() != currentEdge.getDestination().getFloorNumber()) {
                 if (currentEdge.getDestination().getFloorNumber() == 0) {
                     floorChanges.add("G");
-                }
-                else {
+                } else {
                     floorChanges.add(currentEdge.getDestination().getFloorNumber() + "");
                 }
             }
@@ -197,14 +201,12 @@ public enum Direction {
             for (double currentDistance : currentEdge.distances) {
                 if (i == 0) {
                     distances.add(currentDistance);
-                }
-                else {
+                } else {
                     // Combine duplicate FORWARD directions.
                     if (parsedDirections.get(i).equals(FORWARD) && parsedDirections.get(i-1).equals(FORWARD)) {
                         distances.set(i - 1, currentDistance + distances.get(i - 1));
                         parsedDirections.remove(i);
-                    }
-                    else {
+                    } else {
                         distances.add(currentDistance);
                     }
                 }
@@ -220,15 +222,13 @@ public enum Direction {
                 Node currentNode = tourNodes.get(currentNodeIndex);
                 TourCardData currentCard = new TourCardData(currentNode.getName(), currentNode.getDescription(), currentNode.getImageIdentifier());
                 currentNodeIndex++;
-            }
-            else {
+            } else {
                 if (parsedDirections.get(j).equals(LIFT_UP) || parsedDirections.get(j).equals(LIFT_DOWN) || parsedDirections.get(j).equals(STAIR_UP) || parsedDirections.get(j).equals(STAIR_DOWN)) {
                     String directionText = String.format(context.getString(parsedDirections.get(j).getLocalisedDirection()), floorChanges.get(currentFloorChange));
                     DirectionCardData currentCard = new DirectionCardData(directionText, floorChanges.get(currentFloorChange), parsedDirections.get(j).getImageRepresentation());
                     cards.add(currentCard);
                     currentFloorChange++;
-                }
-                else {
+                } else {
                     String directionText = context.getString(parsedDirections.get(j).getLocalisedDirection());
                     DirectionCardData currentCard = new DirectionCardData(directionText, ((int) Math.round(distances.get(j))) + "", parsedDirections.get(j).getImageRepresentation());
                     cards.add(currentCard);

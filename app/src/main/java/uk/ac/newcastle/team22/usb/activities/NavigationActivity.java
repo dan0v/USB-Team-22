@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
+import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
-import uk.ac.newcastle.team22.usb.navigation.AbstractCardData;
 import uk.ac.newcastle.team22.usb.navigation.Direction;
 import uk.ac.newcastle.team22.usb.navigation.Edge;
 import uk.ac.newcastle.team22.usb.navigation.NavigationAdapter;
@@ -34,13 +34,14 @@ public class NavigationActivity extends USBActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
-        recyclerView = (RecyclerView) findViewById(R.id.navigation_recycler_view);
+        recyclerView = findViewById(R.id.navigation_recycler_view);
 
         navigationCardList = new ArrayList<>();
         adapter = new NavigationAdapter(navigationCardList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
 //        Test navigation UI with set nodes:

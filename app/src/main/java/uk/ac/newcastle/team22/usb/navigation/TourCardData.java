@@ -1,6 +1,8 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
 
+import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
+
 /**
  * A class to represent the information stored in a tour card in the UI.
  *
