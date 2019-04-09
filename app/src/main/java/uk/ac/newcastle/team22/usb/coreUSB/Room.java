@@ -30,7 +30,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     private String number;
 
     /** The resources which are available in the room. */
-    private List<Resource> resources = new ArrayList<Resource>();
+    private List<Resource> resources = new ArrayList();
 
     /** The identifier of the staff member who occupies the room. */
     private String staffResidenceIdentifier;
@@ -69,7 +69,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
         this.alternateName = alternateName;
 
         // Initialise room resources.
-        resources = resources == null ? Collections.<String, Long>emptyMap() : new HashMap();
+        resources = resources == null ? Collections.emptyMap() : new HashMap();
         for (Map.Entry<String, Long> entry : resources.entrySet()) {
             Resource newResource = new Resource(entry.getKey(), entry.getValue().intValue(), this);
             if (newResource != null) {
@@ -216,6 +216,4 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     public String toString() {
         return getFormattedNumber();
     }
-
-
 }
