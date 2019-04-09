@@ -18,7 +18,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/navigation_direction_image"
+                android:id="@+id/navigationDirectionImage"
                 android:layout_width="@dimen/navigation_direction_image_width"
                 android:layout_height="@dimen/navigation_direction_image_height"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -28,20 +28,20 @@
                 android:scaleType="fitXY" />
 
             <TextView
-                android:id="@+id/navigation_distance_text"
+                android:id="@+id/navigationDistanceText"
                 android:layout_width="@dimen/navigation_distance_text_width"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/navigation_direction_image"
+                android:layout_toRightOf="@id/navigationDirectionImage"
                 android:gravity="center"
                 android:padding="@dimen/navigation_distance_text_padding"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/navigation_distance_text" />
 
             <TextView
-                android:id="@+id/navigation_direction_text"
+                android:id="@+id/navigationDirectionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/navigation_distance_text"
+                android:layout_toRightOf="@id/navigationDistanceText"
                 android:gravity="left"
                 android:padding="@dimen/navigation_direction_text_padding"
                 android:textColor="@color/colorBlack"

@@ -20,8 +20,8 @@ public class DirectionViewHolder extends AbstractViewHolder {
 
     public DirectionViewHolder(View view) {
         super(view);
-        directionText = view.findViewById(R.id.navigation_direction_text);
-        distanceText = view.findViewById(R.id.navigation_distance_text);
-        directionImage = view.findViewById(R.id.navigation_direction_image);
+        directionText = view.findViewById(R.id.navigationDirectionText);
+        distanceText = view.findViewById(R.id.navigationDistanceText);
+        directionImage = view.findViewById(R.id.navigationDirectionImage);
     }
 }

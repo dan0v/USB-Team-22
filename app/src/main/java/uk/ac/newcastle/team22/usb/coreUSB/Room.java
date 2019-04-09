@@ -41,9 +41,10 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     /** The alternate name of the room. */
     private String alternateName;
 
-    public Room(Floor floor, String number) {
+    public Room(Floor floor, String number, int nodeIdentifier) {
         this.floor = floor;
         this.number = number;
+        this.nodeIdentifier = nodeIdentifier;
         floor.attachRoom(this);
     }
 
@@ -53,17 +54,11 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     @Override
     @SuppressWarnings("unchecked")
     public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
-        // TODO Temporary check for null node identifier while data is being finalised.
-        int nodeIdentifier = -1;
-        if (firestoreDictionary.get("node") != null) {
-            nodeIdentifier = (int) firestoreDictionary.get("node");
-        }
-
         Map<String, Long> resources = (Map<String, Long>) firestoreDictionary.get("resources");
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
         String alternateName = (String) firestoreDictionary.get("roomName");
 
-        this.nodeIdentifier = nodeIdentifier;
+        this.nodeIdentifier = ((Number) firestoreDictionary.get("nearestNode")).intValue();;
         this.number = documentIdentifier;
         this.staffResidenceIdentifier = staffResidenceIdentifier;
         this.alternateName = alternateName;
