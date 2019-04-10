@@ -26,6 +26,7 @@ import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.activities.CafeMenuItemActivity;
 import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItem;
 import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItemCategory;
+import uk.ac.newcastle.team22.usb.coreUSB.OpeningHours;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
 /**
@@ -73,8 +74,16 @@ public class CafeFragment extends Fragment implements USBFragment {
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.header_view_cafe, listView, false);
         listView.addHeaderView(header, null, false);
 
+        // Set the opening hours of the café.
         TextView detailTextView = header.findViewById(R.id.cafe_header_detail_view);
-        detailTextView.setText(USBManager.shared.getBuilding().getCafe().getOpeningHours().getDescription(getContext()));
+        OpeningHours openingHours = USBManager.shared.getBuilding().getCafe().getOpeningHours();
+        detailTextView.setText(openingHours.getDescription(getContext()));
+
+        if (openingHours.isOpen()) {
+            detailTextView.setTextColor(getResources().getColor(R.color.colorOpen, null));
+        } else {
+            detailTextView.setTextColor(getResources().getColor(R.color.colorClosed, null));
+        }
 
         // Initialise the adapter.
         adapter = new CafeMenuItemCategoryAdapter(getContext(), R.layout.list_cafe_menu_category, categories);

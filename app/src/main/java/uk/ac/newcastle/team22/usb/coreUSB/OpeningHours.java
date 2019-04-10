@@ -95,7 +95,7 @@ public class OpeningHours implements FirestoreConstructable<OpeningHours> {
     /**
      * @return Boolean value whether the service is open.
      */
-    private boolean isOpen() {
+    public boolean isOpen() {
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
         DayOfWeek dayOfWeek = date.getDayOfWeek();

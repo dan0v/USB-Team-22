@@ -39,7 +39,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="0dp"
             android:text="Open Now"
-            android:textColor="#66BC60"
+            android:textColor="@color/colorOpen"
             android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"/>
     </RelativeLayout>
 </LinearLayout>
