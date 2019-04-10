@@ -191,7 +191,7 @@ public enum Direction {
 
             // Display the floor to exit lifts at.
             if (currentEdge.getOrigin().getFloorNumber() != currentEdge.getDestination().getFloorNumber()) {
-                Floor edgeFloor = new Floor(currentEdge.getOrigin().getFloorNumber());
+                Floor edgeFloor = new Floor(currentEdge.getDestination().getFloorNumber());
                 floorChanges.add(edgeFloor.getFormattedName(context));
             }
 

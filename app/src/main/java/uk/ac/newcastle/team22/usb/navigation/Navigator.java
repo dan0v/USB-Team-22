@@ -63,6 +63,12 @@ public class Navigator {
      * @return List of edges to be traversed to reach the destination.
      */
     public List<Edge> getRoute(Node origin, Node destination, boolean accessibility) {
+
+        // Do not calculate route from node to itself.
+        if (origin.equals(destination)) {
+            return new ArrayList<Edge>();
+        }
+
         bestRouteWeight = Double.MAX_VALUE;
         bestRoute = new ArrayList<>();
 
