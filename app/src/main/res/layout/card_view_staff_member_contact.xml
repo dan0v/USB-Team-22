@@ -10,9 +10,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="6dip"
         android:layout_marginLeft="15dp"
-        android:paddingTop="10dp"
         android:tint="@color/colorPrimary"
-        android:paddingBottom="10dp"
         android:src="@drawable/email" />
 
     <TextView

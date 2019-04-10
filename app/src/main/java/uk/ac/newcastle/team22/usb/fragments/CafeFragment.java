@@ -59,8 +59,16 @@ public class CafeFragment extends Fragment implements USBFragment {
 
         listView = view.findViewById(R.id.cafe_menu_category_list_view);
 
-        // Initialise the adapter.
+        // Load and sort café menu item categories alphabetically.
         List<CafeMenuItemCategory> categories = buildCafeMenu();
+        Collections.sort(categories, new Comparator<CafeMenuItemCategory>() {
+            @Override
+            public int compare(CafeMenuItemCategory o1, CafeMenuItemCategory o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+
+        // Initialise the adapter.
         adapter = new CafeMenuItemCategoryAdapter(getContext(), R.layout.list_cafe_menu_category, categories);
         listView.setAdapter(adapter);
 
