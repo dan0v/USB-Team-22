@@ -147,7 +147,7 @@ public class SearchActivity extends USBActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 adapter.searchResults.clear();
-                adapter.addAll(new Search(s).search());
+                adapter.addAll(new Search(s, null).search());
                 adapter.notifyDataSetChanged();
                 return false;
             }

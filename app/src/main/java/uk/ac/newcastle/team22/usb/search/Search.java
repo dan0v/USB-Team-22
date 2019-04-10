@@ -13,18 +13,23 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 /**
  * The class from which the search algorithm is called.
  *
+ * @author Alexander MacLeod
  * @author Patrick Lindley
  * @version 1.0
  */
-public class Search {
+public class Search<T extends Searchable>  {
 
     /** The query string. */
     private String query;
 
-    public Search(String query) {
+    /** The type of results to display. If set to null, all results will be displayed. */
+    private Class<T> resultFilter;
+
+    public Search(String query, Class<T> resultFilter) {
         // Lowercase query string to avoid missing results.
         // Trim whitespace on either side of the query string.
         this.query = query.toLowerCase().trim();
+        this.resultFilter = resultFilter;
     }
 
     /**
@@ -42,6 +47,7 @@ public class Search {
             return results;
         }
 
+        // Build searchable database.
         USB building = USBManager.shared.getBuilding();
         List<Searchable> toSearch = new ArrayList<>();
 
@@ -55,7 +61,13 @@ public class Search {
             }
         }
 
+        // Check each item in database for a matching query.
         for (Searchable potentialResult : toSearch) {
+            // Determine whether result should be included.
+            if (resultFilter != null && !potentialResult.getClass().equals(resultFilter)) {
+                continue;
+            }
+            // Determine whether the result matches the query.
             SearchResult result = determineWhetherSearchResult(potentialResult);
             if (result != null) {
                 results.add(result);
