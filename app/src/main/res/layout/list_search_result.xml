@@ -42,11 +42,12 @@
 
         <ImageView
             android:id="@+id/searchResultNavigationIcon"
-            android:layout_width="@dimen/navigation_direction_image_width"
-            android:layout_height="@dimen/navigation_direction_image_height"
+            android:layout_width="@dimen/search_navigation_image_scale"
+            android:layout_height="@dimen/search_navigation_image_scale"
             android:layout_marginTop="@dimen/navigation_direction_image_margin"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/navigation_dark"
+            android:src="@drawable/navigation"
+            android:tint="@color/colorPrimary"
             android:clickable="true"
             android:scaleType="fitXY"
             android:tooltipText="Navigate here" />

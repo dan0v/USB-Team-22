@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,10 @@ public class NavigationActivity extends USBActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+
+        // Add custom drawn back button.
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.navigation_recycler_view);
 
@@ -83,5 +88,14 @@ public class NavigationActivity extends USBActivity {
     private boolean navigationRequiresLifts() {
         SharedPreferences manager = PreferenceManager.getDefaultSharedPreferences(this);
         return manager.getBoolean("navigationRequiresLiftSettingsKey", false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

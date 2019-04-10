@@ -55,12 +55,6 @@ public class SearchActivity extends USBActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_search);
         super.onCreate(savedInstanceState);
-
-        Intent intent = getIntent();
-        destinationNodeIdentifier = intent.getStringExtra("destinationNodeIdentifier");
-        if (destinationNodeIdentifier != null) {
-            secondInstance = true;
-        }
     }
 
     @Override
@@ -84,17 +78,33 @@ public class SearchActivity extends USBActivity {
     void configureView() {
         super.configureView();
 
+        Intent intent = getIntent();
+        destinationNodeIdentifier = intent.getStringExtra("destinationNodeIdentifier");
+        if (destinationNodeIdentifier != null) {
+            secondInstance = true;
+        }
+
+        TextView navigationHint = findViewById(R.id.searchNavigationHint);
+
+        // Configure the search results list view.
+        listView = findViewById(R.id.searchResultsListView);
+
+        // Set the adapter of the list view.
+        adapter = new SearchResultAdapter(this, R.layout.list_search_result, new ArrayList<SearchResult>());
+        listView.setAdapter(adapter);
+
+        // Hide activity's title and replace with custom drawn back button.
+        setTitle("");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // Different behaviour when on the second instance of search.
-        if (!secondInstance) {
-            // Hide activity's title
-            setTitle("");
-
-            // Configure the search results list view.
-            listView = findViewById(R.id.search_results_list_view);
-
-            // Set the adapter of the list view.
-            adapter = new SearchResultAdapter(this, R.layout.list_search_result, new ArrayList<SearchResult>());
-            listView.setAdapter(adapter);
+        if (secondInstance) {
+            navigationHint.setVisibility(View.VISIBLE);
+        }
+        else {
+            // Hide navigation hint.
+            navigationHint.setVisibility(View.GONE);
 
             // Set the on click listener.
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,13 +115,6 @@ public class SearchActivity extends USBActivity {
                 }
             });
         }
-        else {
-            setTitle("Find your current location");
-        }
-
-        // Replace with custom drawn back button.
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**
@@ -229,6 +232,7 @@ public class SearchActivity extends USBActivity {
                     });
                 }
                 else {
+                    navigationIcon.setColorFilter(context.getColor(R.color.colorAccent));
                     navigationIcon.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             Intent intent = new Intent(SearchActivity.this, NavigationActivity.class);

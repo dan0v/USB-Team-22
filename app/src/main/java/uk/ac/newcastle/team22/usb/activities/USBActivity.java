@@ -42,10 +42,6 @@ public abstract class USBActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent i = new Intent(USBActivity.this, SearchActivity.class);
                     startActivity(i);
-
-//                  Test navigation UI:
-//                  Intent i = new Intent(USBActivity.this, NavigationActivity.class);
-//                  startActivity(i);
                 }
             });
         }

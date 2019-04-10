@@ -58,7 +58,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
         String alternateName = (String) firestoreDictionary.get("roomName");
 
-        this.nodeIdentifier = ((Number) firestoreDictionary.get("nearestNode")).intValue();;
+        this.nodeIdentifier = ((Number) firestoreDictionary.get("nearestNode")).intValue();
         this.number = documentIdentifier;
         this.staffResidenceIdentifier = staffResidenceIdentifier;
         this.alternateName = alternateName;

@@ -34,4 +34,9 @@
     <dimen name="tour_name_text_padding">20dp</dimen>
     <dimen name="tour_name_text">15dp</dimen>
     <!--navigation end-->
+
+    <!--search start-->
+    <dimen name="search_navigation_image_scale">40dp</dimen>
+    <dimen name="search_navigation_hint">50dp</dimen>
+    <!--search end-->
 </resources>

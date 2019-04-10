@@ -76,6 +76,7 @@
     <string name="reasonEmail">Email Address</string>
     <string name="floor">Floor</string>
     <string name="room">Room</string>
+    <string name="secondInstanceHint">Select your current location</string>
     <!--search end-->
 
     <!--opening hours start-->
