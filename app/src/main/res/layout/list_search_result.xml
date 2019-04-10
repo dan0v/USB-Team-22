@@ -7,7 +7,6 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/searchResultInfoCell"
-        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -17,7 +16,7 @@
             android:gravity="left"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:paddingBottom="10dp"
+            android:paddingBottom="5dp"
             android:text="Name"
             android:textColor="@android:color/black"
             android:textSize="17sp"/>
@@ -34,17 +33,16 @@
     </RelativeLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/searchResultInfoCell"
+        android:layout_centerVertical="true"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/searchResultNavigationIcon"
             android:layout_width="@dimen/search_navigation_image_scale"
             android:layout_height="@dimen/search_navigation_image_scale"
-            android:layout_marginTop="@dimen/navigation_direction_image_margin"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/navigation"
             android:tint="@color/colorPrimary"

@@ -101,7 +101,7 @@ public class StaffMemberActivity extends USBActivity {
 
         // Add the room of the staff member, if available.
         if (staffMember.getRoom() != null) {
-            String roomAddress = staffMember.getRoom().getFormattedName();
+            String roomAddress = staffMember.getRoom().getFormattedName(this);
             StaffMemberContactCardData roomData = new StaffMemberContactCardData(StaffMemberContactCardData.ContactOption.ROOM, roomAddress);
             cards.add(roomData);
         }

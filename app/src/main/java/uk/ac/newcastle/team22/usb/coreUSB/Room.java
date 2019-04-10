@@ -1,6 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 import uk.ac.newcastle.team22.usb.navigation.Navigable;
 import uk.ac.newcastle.team22.usb.navigation.Node;
@@ -95,11 +97,12 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
      * For example, the Lecture Theatre.
      * The name of the room will otherwise be its room number.
      *
+     * @param context The current context.
      * @return The name of the room.
      */
-    public String getFormattedName() {
+    public String getFormattedName(Context context) {
         if (alternateName == null) {
-            return "Room " + getFormattedNumber();
+            return context.getString(R.string.room) + " " + getFormattedNumber();
         }
         return getAlternateName() + ", " + getFormattedNumber();
     }

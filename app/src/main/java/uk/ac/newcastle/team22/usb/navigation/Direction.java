@@ -9,6 +9,7 @@ import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
+import uk.ac.newcastle.team22.usb.coreUSB.Floor;
 
 /**
  * A class to define navigation directions.
@@ -157,7 +158,7 @@ public enum Direction {
             }
 
             // The current angle does not lie in the allowed range in the database (0 to 359).
-            throw new IllegalArgumentException("Invalid Direction value provided: " + currentAngle + " at: " + i);
+            throw new IllegalArgumentException("Invalid direction value provided: " + currentAngle + " at: " + i);
         }
 
         return directions;
@@ -190,11 +191,8 @@ public enum Direction {
 
             // Display the floor to exit lifts at.
             if (currentEdge.getOrigin().getFloorNumber() != currentEdge.getDestination().getFloorNumber()) {
-                if (currentEdge.getDestination().getFloorNumber() == 0) {
-                    floorChanges.add("G");
-                } else {
-                    floorChanges.add(currentEdge.getDestination().getFloorNumber() + "");
-                }
+                Floor edgeFloor = new Floor(currentEdge.getOrigin().getFloorNumber());
+                floorChanges.add(edgeFloor.getFormattedName(context));
             }
 
             // Create list of distances.
@@ -203,9 +201,10 @@ public enum Direction {
                     distances.add(currentDistance);
                 } else {
                     // Combine duplicate FORWARD directions.
-                    if (parsedDirections.get(i).equals(FORWARD) && parsedDirections.get(i-1).equals(FORWARD)) {
+                    if (parsedDirections.get(i).equals(FORWARD) && parsedDirections.get(i - 1).equals(FORWARD)) {
                         distances.set(i - 1, currentDistance + distances.get(i - 1));
                         parsedDirections.remove(i);
+                        i--;
                     } else {
                         distances.add(currentDistance);
                     }
@@ -221,11 +220,12 @@ public enum Direction {
             if (parsedDirections.get(j).equals(TOUR_LOCATION)) {
                 Node currentNode = tourNodes.get(currentNodeIndex);
                 TourCardData currentCard = new TourCardData(currentNode.getName(), currentNode.getDescription(), currentNode.getImageIdentifier());
+                cards.add(currentCard);
                 currentNodeIndex++;
             } else {
                 if (parsedDirections.get(j).equals(LIFT_UP) || parsedDirections.get(j).equals(LIFT_DOWN) || parsedDirections.get(j).equals(STAIR_UP) || parsedDirections.get(j).equals(STAIR_DOWN)) {
                     String directionText = String.format(context.getString(parsedDirections.get(j).getLocalisedDirection()), floorChanges.get(currentFloorChange));
-                    DirectionCardData currentCard = new DirectionCardData(directionText, floorChanges.get(currentFloorChange), parsedDirections.get(j).getImageRepresentation());
+                    DirectionCardData currentCard = new DirectionCardData(directionText, "", parsedDirections.get(j).getImageRepresentation());
                     cards.add(currentCard);
                     currentFloorChange++;
                 } else {

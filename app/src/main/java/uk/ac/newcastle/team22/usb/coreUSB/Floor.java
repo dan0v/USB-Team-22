@@ -1,10 +1,12 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import android.content.Context;
 import android.graphics.Color;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreApp.ColorUtility;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
@@ -28,10 +30,6 @@ public class Floor implements FirestoreConstructable<Floor> {
     /** The color which represents the floor. */
     private Color color;
 
-    public Floor(int number) {
-        this.number = number;
-    }
-
     /** Empty constructor. */
     public Floor() {}
 
@@ -44,6 +42,14 @@ public class Floor implements FirestoreConstructable<Floor> {
         this.color = ColorUtility.valueOf(color);
         this.rooms = new HashMap();
         return this;
+    }
+
+    /**
+     * Helper constructor for navigation and testing.
+     * @param number The floor number.
+     */
+    public Floor(int number) {
+        this.number = number;
     }
 
     /**
@@ -60,6 +66,17 @@ public class Floor implements FirestoreConstructable<Floor> {
      */
     public int getNumber() {
         return number;
+    }
+
+    /**
+     * @param context The current context.
+     * @return The name of the floor.
+     */
+    public String getFormattedName(Context context) {
+        if (number == 0) {
+            return context.getString(R.string.groundFloor);
+        }
+        return context.getString(R.string.floor) + " " + number;
     }
 
     /**

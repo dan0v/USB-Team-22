@@ -46,10 +46,7 @@ public class SearchActivity extends USBActivity {
     private SearchResultAdapter adapter;
 
     /** The destination node identifier for navigation */
-    private String destinationNodeIdentifier;
-
-    /** Boolean to denote whether this is the second search instance (for navigation). */
-    private boolean secondInstance = false;
+    private int destinationNodeIdentifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +75,6 @@ public class SearchActivity extends USBActivity {
     void configureView() {
         super.configureView();
 
-        Intent intent = getIntent();
-        destinationNodeIdentifier = intent.getStringExtra("destinationNodeIdentifier");
-        if (destinationNodeIdentifier != null) {
-            secondInstance = true;
-        }
-
-        TextView navigationHint = findViewById(R.id.searchNavigationHint);
-
         // Configure the search results list view.
         listView = findViewById(R.id.searchResultsListView);
 
@@ -98,23 +87,31 @@ public class SearchActivity extends USBActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Different behaviour when on the second instance of search.
-        if (secondInstance) {
+        // Configure the navigation origin selector.
+        TextView navigationHint = findViewById(R.id.searchNavigationHint);
+        destinationNodeIdentifier = getIntent().getIntExtra("destinationNodeIdentifier", -1);
+        if (isSelectingNavigationOrigin()) {
             navigationHint.setVisibility(View.VISIBLE);
-        }
-        else {
-            // Hide navigation hint.
+        } else {
             navigationHint.setVisibility(View.GONE);
+        }
 
-            // Set the on click listener.
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
-                    SearchResult selected = (SearchResult) adapter.getItemAtPosition(position);
+        // Set the on click listener.
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
+                SearchResult selected = (SearchResult) adapter.getItemAtPosition(position);
+                if (isSelectingNavigationOrigin()) {
+                    Room room = (Room) selected.getResult();
+                    Intent intent = new Intent(SearchActivity.this, NavigationActivity.class);
+                    intent.putExtra("startNodeIdentifier", room.getNavigationNode().getNodeIdentifier());
+                    intent.putExtra("destinationNodeIdentifier", destinationNodeIdentifier);
+                    startActivity(intent);
+                } else {
                     presentSearchResult(selected.getResult());
                 }
-            });
-        }
+            }
+        });
     }
 
     /**
@@ -161,41 +158,34 @@ public class SearchActivity extends USBActivity {
         ViewGroup linearLayoutSearchView =(ViewGroup) searchViewIcon.getParent();
         linearLayoutSearchView.removeView(searchViewIcon);
 
-        if (!secondInstance) {
-            // Configure listener for user queries.
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    return false;
-                }
+        // Configure listener for user queries.
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    adapter.searchResults.clear();
-                    adapter.addAll(new Search(s, null).search());
-                    adapter.notifyDataSetChanged();
-                    return false;
+            @Override
+            public boolean onQueryTextChange(String query) {
+                Search search;
+                if (isSelectingNavigationOrigin()) {
+                    search = new Search(query, Room.class);
+                } else {
+                    search = new Search(query, null);
                 }
-            });
-        }
-        else {
-            // Configure listener for user queries.
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    return false;
-                }
+                adapter.searchResults.clear();
+                adapter.addAll(search.search());
+                adapter.notifyDataSetChanged();
+                return false;
+            }
+        });
+    }
 
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    adapter.searchResults.clear();
-                    // Only show Room results.
-                    adapter.addAll(new Search(s, Room.class).search());
-                    adapter.notifyDataSetChanged();
-                    return false;
-                }
-            });
-        }
+    /**
+     * @return Boolean value whether the user is selecting the navigation's origin.
+     */
+    private boolean isSelectingNavigationOrigin() {
+        return destinationNodeIdentifier > -1;
     }
 
     /**
@@ -230,6 +220,7 @@ public class SearchActivity extends USBActivity {
 
             TextView title = view.findViewById(R.id.searchResultTitleTextView);
             TextView detail = view.findViewById(R.id.searchResultDetailTextView);
+
             ImageView navigationIcon = view.findViewById(R.id.searchResultNavigationIcon);
             navigationIcon.setVisibility(View.INVISIBLE);
 
@@ -248,33 +239,23 @@ public class SearchActivity extends USBActivity {
                 detail.setText(R.string.reasonStaffMember);
             } else if (searchResult instanceof Room) {
                 final Room room = (Room) searchResult;
-                title.setText(room.getFormattedName());
-                detail.setText(getString(R.string.floor) + " " + room.getFloor().getNumber());
-                navigationIcon.setVisibility(View.VISIBLE);
-                if (!secondInstance) {
-                    navigationIcon.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
-                            intent.putExtra("destinationNodeIdentifier", room.getNavigationNode().getNodeIdentifier() + "");
-                            startActivity(intent);
-                        }
-                    });
+                title.setText(room.getFormattedName(context));
+                detail.setText(room.getFloor().getFormattedName(context));
+                if (!isSelectingNavigationOrigin()) {
+                    navigationIcon.setVisibility(View.VISIBLE);
                 }
-                else {
-                    navigationIcon.setColorFilter(context.getColor(R.color.colorAccent));
-                    navigationIcon.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            Intent intent = new Intent(SearchActivity.this, NavigationActivity.class);
-                            intent.putExtra("startNodeIdentifier", room.getNavigationNode().getNodeIdentifier() + "");
-                            intent.putExtra("destinationNodeIdentifier", destinationNodeIdentifier + "");
-                            startActivity(intent);
-                        }
-                    });
-                }
+                // Set the action of the navigation button.
+                navigationIcon.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
+                        intent.putExtra("destinationNodeIdentifier", room.getNavigationNode().getNodeIdentifier());
+                        startActivity(intent);
+                    }
+                });
             } else if (searchResult instanceof Resource) {
                 Resource resource = (Resource) searchResult;
                 title.setText(resource.toString());
-                detail.setText(getString(R.string.room) + " " + resource.getRoom().getFormattedName());
+                detail.setText(getString(R.string.room) + " " + resource.getRoom().getFormattedName(context));
             }
 
             return view;

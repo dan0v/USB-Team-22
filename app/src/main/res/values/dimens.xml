@@ -36,7 +36,7 @@
     <!--navigation end-->
 
     <!--search start-->
-    <dimen name="search_navigation_image_scale">40dp</dimen>
+    <dimen name="search_navigation_image_scale">30dp</dimen>
     <dimen name="search_navigation_hint">50dp</dimen>
     <!--search end-->
 </resources>

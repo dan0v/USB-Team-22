@@ -73,11 +73,16 @@ public class NavigationActivity extends USBActivity {
      * Update the UI with newly calculated navigation directions.
      */
     public void updateUI() {
-        navigationCardList.clear();
         Intent intent = getIntent();
         Map<Integer, Node> nodes = USBManager.shared.getBuilding().getNavigationNodes();
-        start = nodes.get(Integer.parseInt(intent.getExtras().get("startNodeIdentifier") + ""));
-        destination = nodes.get(Integer.parseInt(intent.getExtras().get("destinationNodeIdentifier") + ""));
+
+        int startNodeIdentifier = intent.getIntExtra("startNodeIdentifier", 0);
+        int destinationNodeIdentifier = intent.getIntExtra("destinationNodeIdentifier", 0);
+
+        start = nodes.get(startNodeIdentifier);
+        destination = nodes.get(destinationNodeIdentifier);
+
+        navigationCardList.clear();
         navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(start, destination, navigationRequiresLifts()), this));
         adapter.notifyDataSetChanged();
     }
