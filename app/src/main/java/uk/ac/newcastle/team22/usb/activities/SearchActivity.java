@@ -101,11 +101,18 @@ public class SearchActivity extends USBActivity {
     private void presentSearchResult(Searchable result) {
         Intent intent = null;
 
-        // Determine the activity to display the
+        // Present the staff member's details.
         if (result instanceof StaffMember) {
             StaffMember staffMember = (StaffMember) result;
             intent = new Intent(this, StaffMemberActivity.class);
             intent.putExtra("identifier", staffMember.getIdentifier());
+        }
+
+        // Present the café menu item's category.
+        if (result instanceof CafeMenuItem) {
+            CafeMenuItem cafeMenuItem = (CafeMenuItem) result;
+            intent = new Intent(this, CafeMenuItemActivity.class);
+            intent.putExtra("categoryName", cafeMenuItem.getCategory().getName());
         }
 
         // Display the search result.
