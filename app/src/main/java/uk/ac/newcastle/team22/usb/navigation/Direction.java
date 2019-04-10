@@ -221,6 +221,7 @@ public enum Direction {
             if (parsedDirections.get(j).equals(TOUR_LOCATION)) {
                 Node currentNode = tourNodes.get(currentNodeIndex);
                 TourCardData currentCard = new TourCardData(currentNode.getName(), currentNode.getDescription(), currentNode.getImageIdentifier());
+                cards.add(currentCard);
                 currentNodeIndex++;
             } else {
                 if (parsedDirections.get(j).equals(LIFT_UP) || parsedDirections.get(j).equals(LIFT_DOWN) || parsedDirections.get(j).equals(STAIR_UP) || parsedDirections.get(j).equals(STAIR_DOWN)) {
