@@ -6,4 +6,5 @@
     <color name="colorBlack">#000000</color>
     <color name="colorOpen">#66BC60</color>
     <color name="colorClosed">#E53F39</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>

@@ -236,6 +236,9 @@ public enum Direction {
             }
         }
 
+        // Add destination card.
+        DirectionCardData finalCard = new DirectionCardData(context.getString(R.string.navigationDestinationReached), "", R.drawable.navigation_destination_flag);
+        cards.add(finalCard);
         return cards;
     }
 }

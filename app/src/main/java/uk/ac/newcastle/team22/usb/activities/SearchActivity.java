@@ -34,6 +34,7 @@ import uk.ac.newcastle.team22.usb.search.Searchable;
  * A class which manages the unified search activity.
  *
  * @author Alexander MacLeod
+ * @author Daniel Vincent
  * @version 1.0
  */
 public class SearchActivity extends USBActivity {
@@ -43,6 +44,12 @@ public class SearchActivity extends USBActivity {
 
     /** The adapter of the list view. */
     private SearchResultAdapter adapter;
+
+    /** The destination node identifier for navigation */
+    private String destinationNodeIdentifier;
+
+    /** Boolean to denote whether this is the second search instance (for navigation). */
+    private boolean secondInstance = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,26 +78,43 @@ public class SearchActivity extends USBActivity {
     void configureView() {
         super.configureView();
 
-        // Hide activity's title and replace with custom drawn back button.
-        setTitle("");
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Intent intent = getIntent();
+        destinationNodeIdentifier = intent.getStringExtra("destinationNodeIdentifier");
+        if (destinationNodeIdentifier != null) {
+            secondInstance = true;
+        }
+
+        TextView navigationHint = findViewById(R.id.searchNavigationHint);
 
         // Configure the search results list view.
-        listView = findViewById(R.id.search_results_list_view);
+        listView = findViewById(R.id.searchResultsListView);
 
         // Set the adapter of the list view.
         adapter = new SearchResultAdapter(this, R.layout.list_search_result, new ArrayList<SearchResult>());
         listView.setAdapter(adapter);
 
-        // Set the on click listener.
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
-                SearchResult selected = (SearchResult) adapter.getItemAtPosition(position);
-                presentSearchResult(selected.getResult());
-            }
-        });
+        // Hide activity's title and replace with custom drawn back button.
+        setTitle("");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Different behaviour when on the second instance of search.
+        if (secondInstance) {
+            navigationHint.setVisibility(View.VISIBLE);
+        }
+        else {
+            // Hide navigation hint.
+            navigationHint.setVisibility(View.GONE);
+
+            // Set the on click listener.
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3) {
+                    SearchResult selected = (SearchResult) adapter.getItemAtPosition(position);
+                    presentSearchResult(selected.getResult());
+                }
+            });
+        }
     }
 
     /**
@@ -186,6 +210,8 @@ public class SearchActivity extends USBActivity {
 
             TextView title = view.findViewById(R.id.searchResultTitleTextView);
             TextView detail = view.findViewById(R.id.searchResultDetailTextView);
+            ImageView navigationIcon = view.findViewById(R.id.searchResultNavigationIcon);
+            navigationIcon.setVisibility(View.INVISIBLE);
 
             Searchable searchResult = searchResults.get(position).getResult();
 
@@ -201,9 +227,30 @@ public class SearchActivity extends USBActivity {
                 title.setText(staffMember.getFullTitle());
                 detail.setText(R.string.reasonStaffMember);
             } else if (searchResult instanceof Room) {
-                Room room = (Room) searchResult;
+                final Room room = (Room) searchResult;
                 title.setText(room.getFormattedName());
                 detail.setText(getString(R.string.floor) + " " + room.getFloor().getNumber());
+                navigationIcon.setVisibility(View.VISIBLE);
+                if (!secondInstance) {
+                    navigationIcon.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
+                            intent.putExtra("destinationNodeIdentifier", room.getNavigationNode().getNodeIdentifier() + "");
+                            startActivity(intent);
+                        }
+                    });
+                }
+                else {
+                    navigationIcon.setColorFilter(context.getColor(R.color.colorAccent));
+                    navigationIcon.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Intent intent = new Intent(SearchActivity.this, NavigationActivity.class);
+                            intent.putExtra("startNodeIdentifier", room.getNavigationNode().getNodeIdentifier() + "");
+                            intent.putExtra("destinationNodeIdentifier", destinationNodeIdentifier + "");
+                            startActivity(intent);
+                        }
+                    });
+                }
             } else if (searchResult instanceof Resource) {
                 Resource resource = (Resource) searchResult;
                 title.setText(resource.toString());

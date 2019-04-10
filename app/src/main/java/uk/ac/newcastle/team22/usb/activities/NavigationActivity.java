@@ -1,21 +1,24 @@
 package uk.ac.newcastle.team22.usb.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.navigation.Direction;
-import uk.ac.newcastle.team22.usb.navigation.Edge;
 import uk.ac.newcastle.team22.usb.navigation.NavigationAdapter;
 import uk.ac.newcastle.team22.usb.navigation.Navigator;
+import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
  * A class which presents navigation between two locations in the Urban Sciences Building.
@@ -28,11 +31,17 @@ public class NavigationActivity extends USBActivity {
     private RecyclerView recyclerView;
     private NavigationAdapter adapter;
     private List<AbstractCardData> navigationCardList;
+    private Node start;
+    private Node destination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+
+        // Add custom drawn back button.
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.navigation_recycler_view);
 
@@ -43,6 +52,8 @@ public class NavigationActivity extends USBActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
+        updateUI();
 
 //        Test navigation UI with set nodes:
 //        buildTestList();
@@ -60,11 +71,14 @@ public class NavigationActivity extends USBActivity {
 
     /**
      * Update the UI with newly calculated navigation directions.
-     * @param edges from {@link Navigator} to display.
      */
-    public void updateUI(List<Edge> edges) {
+    public void updateUI() {
         navigationCardList.clear();
-        navigationCardList.addAll(Direction.buildCards(edges, this));
+        Intent intent = getIntent();
+        Map<Integer, Node> nodes = USBManager.shared.getBuilding().getNavigationNodes();
+        start = nodes.get(Integer.parseInt(intent.getExtras().get("startNodeIdentifier") + ""));
+        destination = nodes.get(Integer.parseInt(intent.getExtras().get("destinationNodeIdentifier") + ""));
+        navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(start, destination, navigationRequiresLifts()), this));
         adapter.notifyDataSetChanged();
     }
 
@@ -74,5 +88,14 @@ public class NavigationActivity extends USBActivity {
     private boolean navigationRequiresLifts() {
         SharedPreferences manager = PreferenceManager.getDefaultSharedPreferences(this);
         return manager.getBoolean("navigationRequiresLiftSettingsKey", false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

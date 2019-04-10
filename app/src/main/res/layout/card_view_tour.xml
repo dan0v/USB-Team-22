@@ -18,7 +18,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tour_location_name_text"
+                android:id="@+id/tourLocationNameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -31,10 +31,10 @@
                 android:textSize="@dimen/tour_name_text" />
 
             <ImageView
-                android:id="@+id/tour_location_image"
+                android:id="@+id/tourLocationImage"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/tour_location_image_height"
-                android:layout_below="@id/tour_location_name_text"
+                android:layout_below="@id/tourLocationNameText"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:paddingTop="@dimen/tour_location_image_padding"
                 android:paddingBottom="@dimen/tour_location_image_padding"
@@ -43,10 +43,10 @@
                 android:src="@drawable/usb_hero" />
 
             <TextView
-                android:id="@+id/tour_description_text"
+                android:id="@+id/tourDescriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tour_location_image"
+                android:layout_below="@id/tourLocationImage"
                 android:gravity="center"
                 android:paddingTop="@dimen/tour_location_image_padding"
                 android:paddingBottom="@dimen/tour_description_text_padding"

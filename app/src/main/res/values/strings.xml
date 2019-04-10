@@ -30,6 +30,7 @@
     <string name="navigationLiftDown">Take the lift down to floor %s</string>
     <string name="navigationStairUp">Take the stairs up to floor %s</string>
     <string name="navigationStairDown">Take the stairs down to floor %s</string>
+    <string name="navigationDestinationReached">You have reached your destination!</string>
     <!--navigation end-->
 
     <!--drawer start-->
@@ -76,6 +77,7 @@
     <string name="reasonEmail">Email Address</string>
     <string name="floor">Floor</string>
     <string name="room">Room</string>
+    <string name="secondInstanceHint">Select your current location</string>
     <!--search end-->
 
     <!--opening hours start-->

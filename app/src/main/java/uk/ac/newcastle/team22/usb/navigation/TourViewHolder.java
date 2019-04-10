@@ -20,8 +20,8 @@ public class TourViewHolder extends AbstractViewHolder {
 
     public TourViewHolder(View view) {
         super(view);
-        nameText = view.findViewById(R.id.tour_location_name_text);
-        descriptionText = view.findViewById(R.id.tour_description_text);
-        image = view.findViewById(R.id.tour_location_image);
+        nameText = view.findViewById(R.id.tourLocationNameText);
+        descriptionText = view.findViewById(R.id.tourDescriptionText);
+        image = view.findViewById(R.id.tourLocationImage);
     }
 }
