@@ -185,8 +185,10 @@ public class SearchActivity extends USBActivity {
             // Display each search result with a custom title and description.
             if (searchResult instanceof CafeMenuItem) {
                 CafeMenuItem cafeMenuItem = (CafeMenuItem) searchResult;
+                String cafeMenuItemCategory = cafeMenuItem.getCategory().getName();
+                String cafeMenuItemPrice = cafeMenuItem.getFormattedPrice();
                 title.setText(cafeMenuItem.getName());
-                detail.setText(R.string.reasonCafeMenuItem);
+                detail.setText(cafeMenuItemCategory + ", " + cafeMenuItemPrice);
             } else if (searchResult instanceof StaffMember) {
                 StaffMember staffMember = (StaffMember) searchResult;
                 title.setText(staffMember.getFullTitle());
