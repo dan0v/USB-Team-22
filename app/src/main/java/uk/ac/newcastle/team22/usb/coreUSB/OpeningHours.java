@@ -1,15 +1,17 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
-import uk.ac.newcastle.team22.usb.R;
-import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
-
 import android.content.Context;
+
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.HashMap;
 import java.util.Map;
+
+import uk.ac.newcastle.team22.usb.R;
+import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
 /**
  * A class which represents a set of opening hours.
@@ -73,18 +75,37 @@ public class OpeningHours implements FirestoreConstructable<OpeningHours> {
     }
 
     /**
+     * @param context The current context.
+     * @return The description of the opening hours on a given day.
+     */
+    public String getDescription(Context context) {
+        if (isOpen()) {
+            LocalDate date = LocalDate.now();
+            DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+            // Return a description of when the facility is open until.
+            String closingTime = openingHours.get(dayOfWeek).getCloses().toString();
+            String openUntil = context.getString(R.string.openUntil);
+            return openUntil + " " + closingTime;
+        } else {
+            return context.getString(R.string.closed);
+        }
+    }
+
+    /**
      * @return Boolean value whether the service is open.
      */
-    public boolean isOpen() {
-        LocalTime now = LocalTime.now();
-        DayOfWeek dayOfWeek = DayOfWeek.from(now);
+    private boolean isOpen() {
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
         Hours openingHours = this.openingHours.get(dayOfWeek);
 
         // If the day has null opening hours, treat the service as closed.
         if (openingHours == null) {
             return false;
         }
-        return openingHours.getOpens().isBefore(now) && openingHours.getCloses().isAfter(now);
+        return openingHours.getOpens().isBefore(time) && openingHours.getCloses().isAfter(time);
     }
 
     /**

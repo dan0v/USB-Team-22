@@ -49,6 +49,7 @@
 
     <!--café start-->
     <string name="cafe">Café</string>
+    <string name="cafeTitle">Urban Sciences Building Café</string>
     <string name="alphabetically">Alphabetically</string>
     <string name="leastExpensive">Least Expensive</string>
     <string name="mostExpensive">Most Expensive</string>
@@ -79,6 +80,7 @@
 
     <!--opening hours start-->
     <string name="open">Open</string>
+    <string name="openUntil">Open until</string>
     <string name="closed">Closed</string>
     <!--opening hours end-->
 

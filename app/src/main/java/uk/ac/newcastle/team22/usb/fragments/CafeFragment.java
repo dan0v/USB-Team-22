@@ -68,6 +68,14 @@ public class CafeFragment extends Fragment implements USBFragment {
             }
         });
 
+        // Add header view to list view.
+        LayoutInflater inflater = getLayoutInflater();
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.header_view_cafe, listView, false);
+        listView.addHeaderView(header, null, false);
+
+        TextView detailTextView = header.findViewById(R.id.cafe_header_detail_view);
+        detailTextView.setText(USBManager.shared.getBuilding().getCafe().getOpeningHours().getDescription(getContext()));
+
         // Initialise the adapter.
         adapter = new CafeMenuItemCategoryAdapter(getContext(), R.layout.list_cafe_menu_category, categories);
         listView.setAdapter(adapter);
