@@ -20,11 +20,10 @@
             <ImageView
                 android:id="@+id/navigationDirectionImage"
                 android:layout_width="@dimen/navigation_direction_image_width"
+                android:layout_centerVertical="true"
                 android:layout_height="@dimen/navigation_direction_image_height"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="false"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/navigation_direction_image_margin"
                 android:scaleType="fitXY" />
 
             <TextView

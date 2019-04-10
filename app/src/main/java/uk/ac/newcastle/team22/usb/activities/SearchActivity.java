@@ -161,21 +161,41 @@ public class SearchActivity extends USBActivity {
         ViewGroup linearLayoutSearchView =(ViewGroup) searchViewIcon.getParent();
         linearLayoutSearchView.removeView(searchViewIcon);
 
-        // Configure listener for user queries.
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
+        if (!secondInstance) {
+            // Configure listener for user queries.
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    return false;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                adapter.searchResults.clear();
-                adapter.addAll(new Search(s, null).search());
-                adapter.notifyDataSetChanged();
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    adapter.searchResults.clear();
+                    adapter.addAll(new Search(s, null).search());
+                    adapter.notifyDataSetChanged();
+                    return false;
+                }
+            });
+        }
+        else {
+            // Configure listener for user queries.
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    adapter.searchResults.clear();
+                    // Only show Room results.
+                    adapter.addAll(new Search(s, Room.class).search());
+                    adapter.notifyDataSetChanged();
+                    return false;
+                }
+            });
+        }
     }
 
     /**
