@@ -15,7 +15,6 @@ import java.util.Map;
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
-import uk.ac.newcastle.team22.usb.navigation.Compass;
 import uk.ac.newcastle.team22.usb.navigation.Direction;
 import uk.ac.newcastle.team22.usb.navigation.Edge;
 import uk.ac.newcastle.team22.usb.navigation.NavigationAdapter;

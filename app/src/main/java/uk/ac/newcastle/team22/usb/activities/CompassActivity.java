@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -18,7 +19,7 @@ import uk.ac.newcastle.team22.usb.navigation.Compass;
  * @author Daniel Vincent
  * @version 1.0
  */
-public class CompassActivity extends AppCompatActivity {
+public class CompassActivity extends USBActivity {
 
     private static final String TAG = "CompassActivity";
 
@@ -34,6 +35,11 @@ public class CompassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
+
+        // Hide activity's title and replace with custom drawn back button.
+        setTitle("");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         compassBorder = findViewById(R.id.navigation_compass_border);
         setupCompass();
@@ -107,5 +113,14 @@ public class CompassActivity extends AppCompatActivity {
                 });
             }
         };
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
