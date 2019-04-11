@@ -20,6 +20,8 @@ import uk.ac.newcastle.team22.usb.coreUSB.Floor;
 public enum Direction {
     FORWARD, LEFT, MODERATE_LEFT, SHARP_LEFT, RIGHT, MODERATE_RIGHT, SHARP_RIGHT, LIFT_UP, LIFT_DOWN, STAIR_UP, STAIR_DOWN, TOUR_LOCATION;
 
+    private static final int compassHeadingOffset = 320;
+
     /**
      * @return Localised string representation of the direction.
      */
@@ -61,7 +63,7 @@ public enum Direction {
     }
 
     /**
-     * Given a list of Edges, returns a list of directions for turn by turn navigation between nodes.
+     * Given a list of edges, returns a list of directions for turn by turn navigation between nodes.
      * @param edges list of edges whose directions should be parsed.
      * @return List of direction enums.
      * @throws IllegalArgumentException
@@ -165,7 +167,23 @@ public enum Direction {
     }
 
     /**
-     * Given a list of Edges, returns a list of cards for displaying turn by turn navigation between
+     * Given a list of edges, return the heading users should face to follow parsed directions.
+     * @param edges list of edges whose directions the user will follow.
+     * @return
+     */
+    public static int getFirstAngle(List<Edge> edges) {
+        if (edges.size() > 0) {
+            int heading = edges.get(0).directions.get(0) + compassHeadingOffset;
+            if (heading > 360) {
+                heading = heading - 360;
+                return heading;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Given a list of edges, returns a list of cards for displaying turn by turn navigation between
      * nodes.
      * @param edges list of edges whose directions should be parsed.
      * @return List of direction enums.
@@ -176,6 +194,7 @@ public enum Direction {
         List<Node> tourNodes = new ArrayList();
         List<Double> distances = new ArrayList();
         List<Direction> parsedDirections = parseDirections(edges);
+        List<String> formattedFloorChanges = new ArrayList();
         List<String> floorChanges = new ArrayList();
         int i = 0;
 
@@ -191,8 +210,17 @@ public enum Direction {
 
             // Display the floor to exit lifts at.
             if (currentEdge.getOrigin().getFloorNumber() != currentEdge.getDestination().getFloorNumber()) {
-                Floor edgeFloor = new Floor(currentEdge.getDestination().getFloorNumber());
-                floorChanges.add(edgeFloor.getFormattedName(context));
+                int floorNumber = currentEdge.getDestination().getFloorNumber();
+
+                Floor edgeFloor = new Floor(floorNumber);
+                formattedFloorChanges.add(edgeFloor.getFormattedName(context));
+
+                if (floorNumber == 0) {
+                    floorChanges.add("G");
+                }
+                else {
+                    floorChanges.add(edgeFloor.getNumber() + "");
+                }
             }
 
             // Create list of distances.
@@ -224,8 +252,8 @@ public enum Direction {
                 currentNodeIndex++;
             } else {
                 if (parsedDirections.get(j).equals(LIFT_UP) || parsedDirections.get(j).equals(LIFT_DOWN) || parsedDirections.get(j).equals(STAIR_UP) || parsedDirections.get(j).equals(STAIR_DOWN)) {
-                    String directionText = String.format(context.getString(parsedDirections.get(j).getLocalisedDirection()), floorChanges.get(currentFloorChange));
-                    DirectionCardData currentCard = new DirectionCardData(directionText, "", parsedDirections.get(j).getImageRepresentation());
+                    String directionText = String.format(context.getString(parsedDirections.get(j).getLocalisedDirection()), formattedFloorChanges.get(currentFloorChange));
+                    DirectionCardData currentCard = new DirectionCardData(directionText, floorChanges.get(currentFloorChange), parsedDirections.get(j).getImageRepresentation());
                     cards.add(currentCard);
                     currentFloorChange++;
                 } else {

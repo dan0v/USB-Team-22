@@ -31,6 +31,9 @@
     <string name="navigationStairUp">Take the stairs up to %s</string>
     <string name="navigationStairDown">Take the stairs down to %s</string>
     <string name="navigationDestinationReached">You have reached your destination!</string>
+
+    <string name="navigationCompass">Compass</string>
+    <string name="navigationCompassHint">Turn to align the arrows</string>
     <!--navigation end-->
 
     <!--drawer start-->

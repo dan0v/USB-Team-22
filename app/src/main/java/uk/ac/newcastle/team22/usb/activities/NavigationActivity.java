@@ -15,7 +15,9 @@ import java.util.Map;
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
+import uk.ac.newcastle.team22.usb.navigation.Compass;
 import uk.ac.newcastle.team22.usb.navigation.Direction;
+import uk.ac.newcastle.team22.usb.navigation.Edge;
 import uk.ac.newcastle.team22.usb.navigation.NavigationAdapter;
 import uk.ac.newcastle.team22.usb.navigation.Navigator;
 import uk.ac.newcastle.team22.usb.navigation.Node;
@@ -83,8 +85,17 @@ public class NavigationActivity extends USBActivity {
         destination = nodes.get(destinationNodeIdentifier);
 
         navigationCardList.clear();
-        navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(start, destination, navigationRequiresLifts()), this));
+        List<Edge> route = Navigator.shared.getRoute(start, destination, navigationRequiresLifts());
+        navigationCardList.addAll(Direction.buildCards(route, this));
         adapter.notifyDataSetChanged();
+
+        // Display compass to align user to directions.
+        int azimuthOffset = Direction.getFirstAngle(route);
+        if (azimuthOffset != -1) {
+            Intent compassIntent = new Intent(NavigationActivity.this, CompassActivity.class);
+            compassIntent.putExtra("azimuthOffset", azimuthOffset);
+            startActivity(compassIntent);
+        }
     }
 
     /**

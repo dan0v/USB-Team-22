@@ -33,6 +33,8 @@
     <dimen name="tour_description_text">15dp</dimen>
     <dimen name="tour_name_text_padding">20dp</dimen>
     <dimen name="tour_name_text">15dp</dimen>
+
+    <dimen name="navigation_compass_size">320dp</dimen>
     <!--navigation end-->
 
     <!--search start-->

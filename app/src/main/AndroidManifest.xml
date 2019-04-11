@@ -33,6 +33,9 @@
             android:name=".activities.NavigationActivity"
             android:label="@string/navigation" />
         <activity
+            android:name=".activities.CompassActivity"
+            android:label="@string/navigationCompass" />
+        <activity
             android:name=".activities.SearchActivity"
             android:label="@string/search">
             <intent-filter>

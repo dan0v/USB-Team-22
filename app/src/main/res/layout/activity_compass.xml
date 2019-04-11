@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_navigation_hint"
+        android:text="@string/navigationCompassHint"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"/>
+
+    <ImageView
+        android:id="@+id/navigation_compass_border"
+        android:layout_width="@dimen/navigation_compass_size"
+        android:layout_height="@dimen/navigation_compass_size"
+        android:layout_centerInParent="true"
+        android:src="@drawable/navigation_compass_border" />
+
+    <ImageView
+        android:id="@+id/navigation_compass_needle"
+        android:layout_width="@dimen/navigation_compass_size"
+        android:layout_height="@dimen/navigation_compass_size"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/navigation_compass_needle" />
+</RelativeLayout>
