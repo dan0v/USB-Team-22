@@ -54,7 +54,8 @@ public class Compass implements SensorEventListener {
 
     // Used to alter the heading users should face.
     public void setAzimuthOffset(int offset) {
-        azimuthOffset = offset;
+        int mirror = 360 - offset;
+        azimuthOffset = mirror;
     }
 
     public void setListener(CompassListener l) {
