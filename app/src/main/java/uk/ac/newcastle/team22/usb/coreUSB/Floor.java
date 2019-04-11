@@ -47,6 +47,14 @@ public class Floor implements FirestoreConstructable<Floor> {
     }
 
     /**
+     *  Constructor to be used for the purposes of testing.
+     */
+    public Floor (int number, Color color) {
+        this.number = number;
+        this.color = color;
+    }
+
+    /**
      * Helper method to place a room onto a floor.
      *
      * @param room The room which is to be situated on the floor.
