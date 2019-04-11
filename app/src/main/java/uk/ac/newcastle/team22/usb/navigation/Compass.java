@@ -52,7 +52,10 @@ public class Compass implements SensorEventListener {
         sensorManager.unregisterListener(this);
     }
 
-    // Used to alter the heading users should face.
+    /**
+     * Used to alter the heading users should face.
+     * @param offset heading the user should face in degrees.
+     */
     public void setAzimuthOffset(int offset) {
         int mirror = 360 - offset;
         azimuthOffset = mirror;

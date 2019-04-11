@@ -12,7 +12,7 @@ import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.navigation.Compass;
 
 /**
- * A class to provide compass functionality. Code has been altered for use in this project.
+ * A class to provide compass functionality. Code has been adapted for use in this project.
  *
  * @author Viacheslav Iutin - https://github.com/iutinvg/compass - See Compass_License.txt
  * @author Daniel Vincent
@@ -22,7 +22,7 @@ public class CompassActivity extends USBActivity {
 
     private static final String TAG = "CompassActivity";
 
-    // Range of acceptable accuracy when checking user heading in degrees.
+    // Acceptable error in degrees for checking user heading.
     private static final int compassAccuracyRange = 3;
 
     private Compass compass;
@@ -72,6 +72,7 @@ public class CompassActivity extends USBActivity {
 
     private void setupCompass() {
         Intent intent = getIntent();
+        // Offset the zero location in compass logic to determine the heading users should face.
         int azimuthOffset = intent.getIntExtra("azimuthOffset", 0);
         compass = new Compass(this);
         Compass.CompassListener cl = getCompassListener();
@@ -88,7 +89,7 @@ public class CompassActivity extends USBActivity {
                 0.5f);
         currentAzimuth = azimuth;
 
-        an.setDuration(500);
+        an.setDuration(300);
         an.setRepeatCount(0);
         an.setFillAfter(true);
 
