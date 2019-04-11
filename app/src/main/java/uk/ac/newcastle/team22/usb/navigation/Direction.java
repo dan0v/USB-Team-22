@@ -177,8 +177,8 @@ public enum Direction {
             int heading = edges.get(0).directions.get(0) + compassHeadingOffset;
             if (heading > 360) {
                 heading = heading - 360;
-                return heading;
             }
+            return heading;
         }
         return -1;
     }
