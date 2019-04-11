@@ -2,7 +2,6 @@ package uk.ac.newcastle.team22.usb.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.animation.Animation;
@@ -13,7 +12,7 @@ import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.navigation.Compass;
 
 /**
- * A class to provide compass functionality
+ * A class to provide compass functionality. Code has been altered for use in this project.
  *
  * @author Viacheslav Iutin - https://github.com/iutinvg/compass - See Compass_License.txt
  * @author Daniel Vincent

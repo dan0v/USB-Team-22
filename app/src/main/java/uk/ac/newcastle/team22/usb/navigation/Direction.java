@@ -20,7 +20,8 @@ import uk.ac.newcastle.team22.usb.coreUSB.Floor;
 public enum Direction {
     FORWARD, LEFT, MODERATE_LEFT, SHARP_LEFT, RIGHT, MODERATE_RIGHT, SHARP_RIGHT, LIFT_UP, LIFT_DOWN, STAIR_UP, STAIR_DOWN, TOUR_LOCATION;
 
-    private static final int compassHeadingOffset = 320;
+    // All angles in the database deviate 10 degrees from reality.
+    private static final int compassHeadingOffset = 10;
 
     /**
      * @return Localised string representation of the direction.
