@@ -47,10 +47,11 @@ public class Floor implements FirestoreConstructable<Floor> {
     }
 
     /**
-     *  Constructor to be used for the purposes of testing.
+     * Constructor to be used for the purposes of testing.
      */
-    public Floor (int number, Color color) {
+    public Floor(int number, Color color) {
         this.number = number;
+        this.rooms = new HashMap<>();
         this.color = color;
     }
 

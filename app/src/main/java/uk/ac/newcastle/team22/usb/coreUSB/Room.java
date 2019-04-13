@@ -155,8 +155,10 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
      */
     public StaffMember getResidentStaff() {
         for (StaffMember staffMember : USBManager.shared.getBuilding().getStaffMembers()) {
-            if (staffMember.getRoom() == this) {
-                return staffMember;
+            if (staffMember.getRoom() != null) {
+                if (staffMember.getRoom().equals(this)) {
+                    return staffMember;
+                }
             }
         }
         return null;

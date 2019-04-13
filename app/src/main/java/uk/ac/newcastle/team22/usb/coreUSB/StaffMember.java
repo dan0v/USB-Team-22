@@ -55,7 +55,8 @@ public class StaffMember implements FirestoreConstructable<StaffMember>, Searcha
         return this;
     }
 
-    public StaffMember(String title, String firstName, String lastName, String phoneNumber, String emailAddress) {
+    public StaffMember(String identifier, String title, String firstName, String lastName, String phoneNumber, String emailAddress) {
+        this.identifier = identifier;
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;

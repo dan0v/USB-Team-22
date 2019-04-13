@@ -23,7 +23,7 @@ public class Cafe {
     private OpeningHours openingHours;
 
     /** Constructor using an Urban Sciences Building update. */
-    public Cafe(USBUpdateManager.USBUpdate update) {
+    public Cafe(USBUpdate update) {
         this.items =  update.getCafeMenuItems();
         this.openingHours = update.getOpeningHours().get(OpeningHours.Service.CAFE);
     }
