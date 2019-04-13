@@ -89,4 +89,8 @@
     <!--staff members start-->
     <string name="staffDetails">Staff Details</string>
     <!--staff members end-->
+
+    <!--room start-->
+    <string name="roomDetails">Room Details</string>
+    <!--staff members end-->
 </resources>

@@ -22,6 +22,6 @@
         android:layout_below="@+id/cafeMenuItemTitleTextView"
         android:layout_marginTop="0dp"
         android:text="£1.00"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
 </RelativeLayout>

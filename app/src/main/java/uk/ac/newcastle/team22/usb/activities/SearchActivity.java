@@ -45,7 +45,7 @@ public class SearchActivity extends USBActivity {
     /** The adapter of the list view. */
     private SearchResultAdapter adapter;
 
-    /** The destination node identifier for navigation */
+    /** The destination node identifier for navigation. */
     private int destinationNodeIdentifier;
 
     @Override
@@ -134,6 +134,15 @@ public class SearchActivity extends USBActivity {
             CafeMenuItem cafeMenuItem = (CafeMenuItem) result;
             intent = new Intent(this, CafeMenuItemActivity.class);
             intent.putExtra("categoryName", cafeMenuItem.getCategory().getName());
+        }
+
+
+        // Present the room's category.
+        if (result instanceof Room) {
+            Room room = (Room) result;
+            intent = new Intent(this, RoomActivity.class);
+            intent.putExtra("floorNumber", room.getFloor().getNumber());
+            intent.putExtra("roomNumber", room.getNumber());
         }
 
         // Display the search result.

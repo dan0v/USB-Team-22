@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activities.StaffMemberActivity"></activity>
         <activity android:name=".activities.CafeMenuItemActivity" />
+        <activity android:name=".activities.RoomActivity" />
         <activity
             android:name=".activities.LaunchActivity"
             android:noHistory="true">
