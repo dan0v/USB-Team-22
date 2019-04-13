@@ -79,10 +79,8 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
         return this;
     }
 
-    /**
-     * Constructor used for the purposes of testing
-     */
-    public Room (Floor floor, String number, List<Resource> resources, String staffResidenceIdentifier, int nodeIdentifier, String alternateName ) {
+    /** Helper constructor for testing. */
+    public Room(Floor floor, String number, List<Resource> resources, String staffResidenceIdentifier, int nodeIdentifier, String alternateName ) {
         this.floor = floor;
         this.number = number;
         this.resources = resources;

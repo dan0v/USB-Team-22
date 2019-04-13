@@ -2,18 +2,23 @@ package uk.ac.newcastle.team22.usb;
 
 import android.graphics.Color;
 
+import org.junit.Before;
+import org.junit.Test;
 
-import org.junit.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 import uk.ac.newcastle.team22.usb.coreUSB.Floor;
 import uk.ac.newcastle.team22.usb.coreUSB.Resource;
 import uk.ac.newcastle.team22.usb.coreUSB.Room;
+import uk.ac.newcastle.team22.usb.coreUSB.StaffMember;
+import uk.ac.newcastle.team22.usb.coreUSB.USB;
+import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
+import uk.ac.newcastle.team22.usb.coreUSB.USBUpdate;
+
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * A test class for {@link Floor}.
@@ -24,25 +29,43 @@ import uk.ac.newcastle.team22.usb.coreUSB.Room;
  */
 public class AFloorShould {
 
-    Color yellow;
+    /** The floor to be attached to the test room. */
     Floor floor;
+
+    /** The room to be tested. */
     Room room;
-    Room roomTwo;
-    List<Resource> resources;
+
+    /** The staff member to be tested. */
+    StaffMember staffMember;
+
+    /** The room's resources. */
+    List<Resource> resources = new ArrayList<>();
+
     @Before
     public void setUp() {
-        yellow = new Color();
-        floor = new Floor(3, yellow);
+        // Create floor with one room.
+        List<Floor> floors = new ArrayList<>();
         room = new Room(floor, "46" , resources, "Alan Tully", 109 , "Lecture Theatre");
-
-    }
-/**
-    @Test
-    public void beAbleToAttachRooms() {
+        floor = new Floor(3, new Color());
+        room.attachFloor(floor);
         floor.attachRoom(room);
-        assertNotNull(floor.getRooms());
+        floors.add(floor);
+
+        // Create staff member.
+        List<StaffMember> members = new ArrayList<>();
+        staffMember = new StaffMember("Alan Tully", "Dr", "Alan", "Tully", "01912088223", "alan.tully@newcastle.ac.uk");
+        members.add(staffMember);
+
+        // Create a custom building update.
+        USBUpdate update = new USBUpdate();
+        update.setFloors(floors);
+        update.setStaffMembers(members);
+
+        // Set the custom building.
+        USB building = new USB(update);
+        USBManager.shared.setBuilding(building);
     }
-*/
+
     @Test
     public void haveAColour() {
         assertNotNull(floor.getColor());
@@ -58,5 +81,4 @@ public class AFloorShould {
         int num = floor.getNumber();
         assertTrue(0 <= num && num <= 6);
     }
-
 }
