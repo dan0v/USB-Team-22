@@ -76,6 +76,15 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
         return this;
     }
 
+    /** Helper constructor for testing. */
+    public Room(Floor floor, String number, List<Resource> resources, String staffResidenceIdentifier, int nodeIdentifier, String alternateName ) {
+        this.floor = floor;
+        this.number = number;
+        this.resources = resources;
+        this.staffResidenceIdentifier = staffResidenceIdentifier;
+        this.nodeIdentifier = nodeIdentifier;
+        this.alternateName = alternateName;
+    }
     /**
      * Helper method to set the floor on which this room is situated.
      *
@@ -142,8 +151,10 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
      */
     public StaffMember getResidentStaff() {
         for (StaffMember staffMember : USBManager.shared.getBuilding().getStaffMembers()) {
-            if (staffMember.getRoom() == this) {
-                return staffMember;
+            if (staffMember.getRoom() != null) {
+                if (staffMember.getRoom().equals(this)) {
+                    return staffMember;
+                }
             }
         }
         return null;

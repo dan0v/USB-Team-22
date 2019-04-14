@@ -1,8 +1,11 @@
 package uk.ac.newcastle.team22.usb;
 
 import org.junit.Test;
-import uk.ac.newcastle.team22.usb.coreUSB.*;
-import static org.junit.Assert.*;
+
+import uk.ac.newcastle.team22.usb.coreUSB.Floor;
+import uk.ac.newcastle.team22.usb.coreUSB.StaffMember;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * A test class for {@link StaffMember}.
@@ -16,7 +19,7 @@ public class AStaffMemberShould {
     @Test
     public void haveAFirstName() {
         Floor testFloor = new Floor();
-        StaffMember newStaffMember = new StaffMember("Mr", "Patrick", "Lindley",
+        StaffMember newStaffMember = new StaffMember("1234", "Mr", "Patrick", "Lindley",
                 "0111111111", "test@ncl.ac.uk");
         assertEquals("Patrick", newStaffMember.getFirstName());
     }
@@ -24,7 +27,7 @@ public class AStaffMemberShould {
     @Test
     public void haveALastName() {
         Floor testFloor = new Floor();
-        StaffMember newStaffMember = new StaffMember("Mr", "Patrick", "Lindley",
+        StaffMember newStaffMember = new StaffMember("1234", "Mr", "Patrick", "Lindley",
                 "0111111111", "test@ncl.ac.uk");
         assertEquals("Lindley", newStaffMember.getLastName());
     }
@@ -32,7 +35,7 @@ public class AStaffMemberShould {
     @Test
     public void haveAPhoneNumber() {
         Floor testFloor = new Floor();
-        StaffMember newStaffMember = new StaffMember("Mr", "Patrick", "Lindley",
+        StaffMember newStaffMember = new StaffMember("1234", "Mr", "Patrick", "Lindley",
                 "0111111111", "test@ncl.ac.uk");
         assertEquals("0111111111", newStaffMember.getPhoneNumber());
     }
@@ -40,7 +43,7 @@ public class AStaffMemberShould {
     @Test
     public void haveAnEmailAddress() {
         Floor testFloor = new Floor();
-        StaffMember newStaffMember = new StaffMember("Mr", "Patrick", "Lindley",
+        StaffMember newStaffMember = new StaffMember("1234", "Mr", "Patrick", "Lindley",
                 "0111111111", "test@ncl.ac.uk");
         assertEquals("test@ncl.ac.uk", newStaffMember.getEmailAddress());
     }

@@ -30,9 +30,9 @@ public class USBManager {
      * @param handler The completion handler called once the Urban Sciences Building has been retrieved.
      */
     public void prepareBuilding(final USBUpdateManager.UpdateCompletionHandler handler) {
-        updateManager.requestCached(new FirestoreCompletionHandler<USBUpdateManager.USBUpdate>() {
+        updateManager.requestCached(new FirestoreCompletionHandler<USBUpdate>() {
             @Override
-            public void completed(USBUpdateManager.USBUpdate cached) {
+            public void completed(USBUpdate cached) {
                 building = new USB(cached);
 
                 // Check for updates to the Urban Sciences Building.
@@ -43,9 +43,9 @@ public class USBManager {
 
                         // Determine whether an update is required.
                         if (updateRequired) {
-                            updateManager.update(new FirestoreCompletionHandler<USBUpdateManager.USBUpdate>() {
+                            updateManager.update(new FirestoreCompletionHandler<USBUpdate>() {
                                 @Override
-                                public void completed(USBUpdateManager.USBUpdate usbUpdate) {
+                                public void completed(USBUpdate usbUpdate) {
                                     super.completed(usbUpdate);
                                     building = new USB(usbUpdate);
                                     handler.loadedFromCache();
@@ -82,9 +82,9 @@ public class USBManager {
      * @param handler The completion handler called once the Urban Sciences Building has been updated.
      */
     public void updateBuilding(final USBUpdateManager.UpdateCompletionHandler handler) {
-        updateManager.update(new FirestoreCompletionHandler<USBUpdateManager.USBUpdate>() {
+        updateManager.update(new FirestoreCompletionHandler<USBUpdate>() {
             @Override
-            public void completed(USBUpdateManager.USBUpdate update) {
+            public void completed(USBUpdate update) {
                 building = new USB(update);
                 handler.loadedFromCache();
             }
@@ -100,6 +100,15 @@ public class USBManager {
      */
     public USB getBuilding() {
         return building;
+    }
+
+    /**
+     * Helper method for setting a custom Urban Sciences building for testing.
+     *
+     * @param building The Urban Sciences Building.
+     */
+    public void setBuilding(USB building) {
+        this.building = building;
     }
 
     /**
