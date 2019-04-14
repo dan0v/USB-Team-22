@@ -50,6 +50,7 @@ public class NavigationActivity extends USBActivity {
         navigationCardList = new ArrayList<>();
         adapter = new NavigationAdapter(navigationCardList);
 
+        // Set up RecyclerView
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
@@ -78,24 +79,28 @@ public class NavigationActivity extends USBActivity {
         Intent intent = getIntent();
         Map<Integer, Node> nodes = USBManager.shared.getBuilding().getNavigationNodes();
 
-        int startNodeIdentifier = intent.getIntExtra("startNodeIdentifier", 0);
-        int destinationNodeIdentifier = intent.getIntExtra("destinationNodeIdentifier", 0);
+        // Access static info bar UI elements from intent.
         String startLocationName = intent.getStringExtra("startLocationName");
         String destinationLocationName = intent.getStringExtra("destinationLocationName");
 
+        // Set static info bar UI elements from intent.
+        TextView startLocation = findViewById(R.id.navigation_start_text);
+        TextView destinationLocation = findViewById(R.id.navigation_destination_text);
+        startLocation.setText(startLocationName);
+        destinationLocation.setText(destinationLocationName);
+
+        // Access node identifiers from intent.
+        int startNodeIdentifier = intent.getIntExtra("startNodeIdentifier", 0);
+        int destinationNodeIdentifier = intent.getIntExtra("destinationNodeIdentifier", 0);
         start = nodes.get(startNodeIdentifier);
         destination = nodes.get(destinationNodeIdentifier);
 
-        navigationCardList.clear();
         List<Edge> route = Navigator.shared.getRoute(start, destination, navigationRequiresLifts());
+
+        // Populate RecyclerView with card list.
+        navigationCardList.clear();
         navigationCardList.addAll(Direction.buildCards(route, this));
         adapter.notifyDataSetChanged();
-
-        TextView startLocation = findViewById(R.id.navigation_start_text);
-        TextView destinationLocation = findViewById(R.id.navigation_destination_text);
-
-        startLocation.setText(startLocationName);
-        destinationLocation.setText(destinationLocationName);
 
         // Display compass to align user to directions.
         int azimuthOffset = Direction.getFirstAngle(route);
