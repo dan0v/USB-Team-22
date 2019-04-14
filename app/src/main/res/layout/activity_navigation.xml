@@ -1,11 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/navigation_info_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navigation_info_bar_height"
+        android:background="@color/colorPrimary">
+        <TextView
+            android:id="@+id/navigation_start_tag"
+            android:textStyle="bold"
+            android:layout_width="@dimen/navigation_info_tag_width"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="5dp"
+            android:text="@string/navigationFromText"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:background="@color/colorWhite"
+            android:gravity="left"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:id="@+id/navigation_start_text"
+            android:layout_toRightOf="@id/navigation_start_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:text="Room 1"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:background="@color/colorWhite"
+            android:gravity="left"/>
+        <TextView
+            android:id="@+id/navigation_destination_tag"
+            android:textStyle="bold"
+            android:layout_width="@dimen/navigation_info_tag_width"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/navigation_start_tag"
+            android:paddingTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="5dp"
+            android:text="@string/navigationToText"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:background="@color/colorWhite"
+            android:gravity="left"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:id="@+id/navigation_destination_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/navigation_destination_tag"
+            android:layout_below="@id/navigation_start_text"
+            android:layout_marginTop="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="5dp"
+            android:text="Room 2"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:background="@color/colorWhite"
+            android:gravity="left"
+            android:layout_marginBottom="5dp"/>
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/navigation_recycler_view"
+        android:layout_below="@id/navigation_info_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="5dp"
         android:scrollbars="vertical" />
 </RelativeLayout>

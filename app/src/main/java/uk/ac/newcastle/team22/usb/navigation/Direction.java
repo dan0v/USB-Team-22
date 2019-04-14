@@ -70,6 +70,11 @@ public enum Direction {
      * @throws IllegalArgumentException
      */
     public static List<Direction> parseDirections(List<Edge> edges) throws IllegalArgumentException {
+        // Stop crashes when navigating from a node to itself.
+        if (edges.size() == 0) {
+            return new ArrayList<Direction>();
+        }
+
         List<Direction> directions = new ArrayList();
         List<Integer> angleList = new ArrayList();
 
