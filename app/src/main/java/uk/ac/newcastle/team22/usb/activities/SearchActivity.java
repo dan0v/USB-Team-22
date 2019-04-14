@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +48,9 @@ public class SearchActivity extends USBActivity {
 
     /** The destination node identifier for navigation */
     private int destinationNodeIdentifier;
+
+    /** The destination location name for navigation */
+    private String destinationLocationName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,7 @@ public class SearchActivity extends USBActivity {
         // Configure the navigation origin selector.
         TextView navigationHint = findViewById(R.id.searchNavigationHint);
         destinationNodeIdentifier = getIntent().getIntExtra("destinationNodeIdentifier", -1);
+        destinationLocationName = getIntent().getStringExtra("destinationLocationName");
         if (isSelectingNavigationOrigin()) {
             navigationHint.setVisibility(View.VISIBLE);
         } else {
@@ -106,6 +111,9 @@ public class SearchActivity extends USBActivity {
                     Intent intent = new Intent(SearchActivity.this, NavigationActivity.class);
                     intent.putExtra("startNodeIdentifier", room.getNavigationNode().getNodeIdentifier());
                     intent.putExtra("destinationNodeIdentifier", destinationNodeIdentifier);
+                    Log.d("SEARCH INTENT", room.getFormattedName(getApplicationContext()));
+                    intent.putExtra("startLocationName", room.getFormattedName(getApplicationContext()));
+                    intent.putExtra("destinationLocationName", destinationLocationName);
                     startActivity(intent);
                 } else {
                     presentSearchResult(selected.getResult());
@@ -249,6 +257,7 @@ public class SearchActivity extends USBActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
                         intent.putExtra("destinationNodeIdentifier", room.getNavigationNode().getNodeIdentifier());
+                        intent.putExtra("destinationLocationName", room.getFormattedName(getApplicationContext()));
                         startActivity(intent);
                     }
                 });

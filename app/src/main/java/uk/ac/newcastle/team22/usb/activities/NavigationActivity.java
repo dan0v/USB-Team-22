@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,8 @@ public class NavigationActivity extends USBActivity {
 
         int startNodeIdentifier = intent.getIntExtra("startNodeIdentifier", 0);
         int destinationNodeIdentifier = intent.getIntExtra("destinationNodeIdentifier", 0);
+        String startLocationName = intent.getStringExtra("startLocationName");
+        String destinationLocationName = intent.getStringExtra("destinationLocationName");
 
         start = nodes.get(startNodeIdentifier);
         destination = nodes.get(destinationNodeIdentifier);
@@ -87,6 +90,12 @@ public class NavigationActivity extends USBActivity {
         List<Edge> route = Navigator.shared.getRoute(start, destination, navigationRequiresLifts());
         navigationCardList.addAll(Direction.buildCards(route, this));
         adapter.notifyDataSetChanged();
+
+        TextView startLocation = findViewById(R.id.navigation_start_text);
+        TextView destinationLocation = findViewById(R.id.navigation_destination_text);
+
+        startLocation.setText(startLocationName);
+        destinationLocation.setText(destinationLocationName);
 
         // Display compass to align user to directions.
         int azimuthOffset = Direction.getFirstAngle(route);

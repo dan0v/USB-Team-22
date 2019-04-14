@@ -34,6 +34,9 @@
     <dimen name="tour_name_text_padding">20dp</dimen>
     <dimen name="tour_name_text">15dp</dimen>
 
+    <dimen name="navigation_info_bar_height">70dp</dimen>
+    <dimen name="navigation_info_tag_width">70dp</dimen>
+
     <dimen name="navigation_compass_size">320dp</dimen>
     <!--navigation end-->
 
