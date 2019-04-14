@@ -66,19 +66,19 @@ public class AFloorShould {
         USBManager.shared.setBuilding(building);
     }
 
-    /** Assert a floor can have a colour field */
+    /** Assert a floor can have a colour. */
     @Test
     public void haveAColour() {
         assertNotNull(floor.getColor());
     }
 
-    /** Assert a floor can be represented as a string in a standardised format */
+    /** Assert a floor can be represented as a string. */
     @Test
     public void haveAStringRepresentation() {
         assertEquals("Floor (number: 3)", floor.toString());
     }
 
-    /** Assert the floor number is in the range 0-6 inclusive */
+    /** Assert the floor number is in the range 0-6 inclusive. */
     @Test
     public void holdAValidFloorNumber() {
         int num = floor.getNumber();

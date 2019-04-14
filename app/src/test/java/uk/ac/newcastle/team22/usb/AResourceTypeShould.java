@@ -18,7 +18,7 @@ public class AResourceTypeShould {
 
     /** Assert the correct ResourceType will be returned from an identifier. */
     @Test
-    public void returnTypeFromIdentifier()throws FirestoreConstructable.InitialisationFailed {
+    public void returnTypeFromIdentifier() throws FirestoreConstructable.InitialisationFailed {
         assertEquals(ResourceType.COMPUTER, ResourceType.valueFor("1"));
     }
 
