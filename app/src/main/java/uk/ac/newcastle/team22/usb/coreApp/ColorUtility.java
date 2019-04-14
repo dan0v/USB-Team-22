@@ -1,6 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreApp;
 
 import android.graphics.Color;
+
 import java.util.Map;
 
 /**
@@ -15,7 +16,7 @@ public class ColorUtility {
      * The default color to return when a color could not parsed.
      * The color matches Newcastle University's main blue color.
      */
-    private static Color DEFAULT_COLOR = Color.valueOf(1, 57, 99);
+    public static Color DEFAULT_COLOR = Color.valueOf(1, 57, 99);
 
     /**
      * Parses a color from a map of RGB values.
