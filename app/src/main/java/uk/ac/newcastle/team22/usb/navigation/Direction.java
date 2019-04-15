@@ -145,7 +145,7 @@ public enum Direction {
                 continue;
             }
 
-            if (currentAngle > -179 && currentAngle <= -120) {
+            if (currentAngle >= -180 && currentAngle <= -120) {
                 directions.add(SHARP_LEFT);
                 continue;
             }
