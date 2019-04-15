@@ -13,7 +13,7 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/staffMemberProfilePictureImageView"
         android:layout_marginLeft="12dp"
-        android:paddingTop="34dp"
+        android:paddingTop="22dp"
         android:text="Staff Member Name"
         android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"/>
 
@@ -26,7 +26,7 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/roomTitleTextView"
         android:layout_marginLeft="12dp"
-        android:paddingBottom="34dp"
+        android:paddingBottom="22dp"
         android:text="Staff Member Name"
         android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle" />
 
