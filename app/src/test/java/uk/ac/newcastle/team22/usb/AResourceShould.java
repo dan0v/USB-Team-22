@@ -1,10 +1,11 @@
 package uk.ac.newcastle.team22.usb;
 
 import org.junit.Test;
-import uk.ac.newcastle.team22.usb.coreUSB.*;
-import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
-import static org.junit.Assert.*;
+import uk.ac.newcastle.team22.usb.coreUSB.Resource;
+import uk.ac.newcastle.team22.usb.coreUSB.ResourceType;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * A test class for {@link Resource}.

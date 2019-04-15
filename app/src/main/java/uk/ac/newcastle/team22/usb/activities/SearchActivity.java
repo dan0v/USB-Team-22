@@ -252,7 +252,7 @@ public class SearchActivity extends USBActivity {
                 detail.setText(cafeMenuItemCategory + ", " + cafeMenuItemPrice);
             } else if (searchResult instanceof StaffMember) {
                 StaffMember staffMember = (StaffMember) searchResult;
-                title.setText(staffMember.getFullTitle());
+                title.setText(staffMember.getFullName());
                 detail.setText(R.string.reasonStaffMember);
             } else if (searchResult instanceof Room) {
                 final Room room = (Room) searchResult;

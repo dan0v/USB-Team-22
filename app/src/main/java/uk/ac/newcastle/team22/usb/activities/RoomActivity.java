@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
@@ -98,6 +97,13 @@ public class RoomActivity extends USBActivity {
         RoomTitleCardData titleData = new RoomTitleCardData(room);
         cards.add(titleData);
 
+        // Add a resident staff member attribute.
+        if (room.getResidentStaff() != null) {
+            String staffMemberName = room.getResidentStaff().getFullName();
+            RoomAttributeCardData staffMemberData = new RoomAttributeCardData(RoomAttributeCardData.Attribute.STAFF_MEMBER, staffMemberName);
+            cards.add(staffMemberData);
+        }
+
         return cards;
     }
 }
@@ -132,8 +138,8 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
                 holder = new RoomTitleViewHolder(itemView);
                 break;
             default:
-                itemView = LayoutInflater.from(context).inflate(R.layout.card_view_staff_member_contact, viewGroup, false);
-                holder = new StaffMemberContactViewHolder(itemView);
+                itemView = LayoutInflater.from(context).inflate(R.layout.card_view_room_attribute, viewGroup, false);
+                holder = new RoomAttributeViewHolder(itemView);
                 break;
         }
 
@@ -157,22 +163,15 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
                 break;
             }
             default: {
-                StaffMemberContactViewHolder updatingHolder = (StaffMemberContactViewHolder) viewHolder;
-                final StaffMemberContactCardData item = (StaffMemberContactCardData) cardList.get(position);
-                updatingHolder.contactAddressTextView.setText(item.getAddress());
-                updatingHolder.iconView.setImageResource(item.getOption().getImageRepresentation());
+                RoomAttributeViewHolder updatingHolder = (RoomAttributeViewHolder) viewHolder;
+                final RoomAttributeCardData item = (RoomAttributeCardData) cardList.get(position);
+                updatingHolder.roomAttributeTextView.setText(item.getTitle());
+                updatingHolder.iconView.setImageResource(item.getAttribute().getImageRepresentation());
 
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = item.getOption().open(item.getAddress());
-                        if (intent != null) {
-                            if (item.getOption() == StaffMemberContactCardData.ContactOption.PHONE) {
-                                startCallActivity(intent, activity, v.getContext());
-                            } else {
-                                v.getContext().startActivity(intent);
-                            }
-                        }
+
                     }
                 });
                 break;
@@ -255,45 +254,22 @@ class RoomTitleViewHolder extends AbstractViewHolder {
 }
 
 /**
- * A class which defines the data to be displayed by a {@link RoomResourceViewHolder}.
+ * A class which defines the data to be displayed by a {@link RoomAttributeViewHolder}.
  *
  * @author Alexander MacLeod
  * @version 1.0
  */
-class RoomResourceCardData extends AbstractCardData {
+class RoomAttributeCardData extends AbstractCardData {
 
-    /** The address of the contact option. */
-    private ContactOption option;
+    /** The attribute. */
+    private Attribute attribute;
 
-    /** The address of the contact option. */
-    private String address;
+    /** The title of the attribute. */
+    private String title;
 
     /** The type of staff member contact. */
-    enum ContactOption {
-        EMAIL, PHONE, ROOM;
-
-        /**
-         * Opens the contact option.
-         *
-         * @param address The address of the contact option.
-         * @return The intent to open.
-         */
-        Intent open(String address) {
-            Intent intent;
-            switch (this) {
-                case EMAIL:
-                    intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("message/rfc822");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ address });
-                    return intent;
-                case PHONE:
-                    intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse("tel:" + address));
-                    return intent;
-                default:
-                    return null;
-            }
-        }
+    enum Attribute {
+        STAFF_MEMBER;
 
         /**
          * @return Image representation of the contact option..
@@ -301,55 +277,51 @@ class RoomResourceCardData extends AbstractCardData {
         @DrawableRes
         int getImageRepresentation() {
             switch (this) {
-                case EMAIL:
-                    return R.drawable.email;
-                case PHONE:
-                    return R.drawable.phone;
-                case ROOM:
-                    return R.drawable.room;
+                case STAFF_MEMBER:
+                    return R.drawable.staff_member;
                 default:
                     return 0;
             }
         }
     }
 
-    RoomResourceCardData(ContactOption option, String address) {
-        this.option = option;
-        this.address = address;
+    RoomAttributeCardData(Attribute attribute, String title) {
+        this.attribute = attribute;
+        this.title = title;
     }
 
     /**
-     * @return The address of the contact option.
+     * @return The attribute.
      */
-    public ContactOption getOption() {
-        return option;
+    public Attribute getAttribute() {
+        return attribute;
     }
 
     /**
-     * @return The address of the contact option.
+     * @return The title of the attribute.
      */
-    public String getAddress() {
-        return address;
+    public String getTitle() {
+        return title;
     }
 }
 
 /**
- * A class which defines the view to be display data from a {@link RoomResourceCardData}.
+ * A class which defines the view to be display data from a {@link RoomAttributeCardData}.
  *
  * @author Alexander MacLeod
  * @version 1.0
  */
-class RoomResourceViewHolder extends AbstractViewHolder {
+class RoomAttributeViewHolder extends AbstractViewHolder {
 
-    /** The text view which displays the address of the contact option. */
-    TextView contactAddressTextView;
+    /** The text view which displays the room attribute's title. */
+    TextView roomAttributeTextView;
 
-    /** The image view which displays an icon of the contact option. */
+    /** The image view which displays the room attribute's icon. */
     ImageView iconView;
 
-    RoomResourceViewHolder(View view) {
+    RoomAttributeViewHolder(View view) {
         super(view);
-        contactAddressTextView = view.findViewById(R.id.staffMemberContactTextView);
-        iconView = view.findViewById(R.id.staffMemberContactImageView);
+        roomAttributeTextView = view.findViewById(R.id.roomAttributeTextView);
+        iconView = view.findViewById(R.id.roomAttributeImageView);
     }
 }

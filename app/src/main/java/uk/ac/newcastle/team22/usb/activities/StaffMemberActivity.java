@@ -30,6 +30,7 @@ import java.util.List;
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractViewHolder;
+import uk.ac.newcastle.team22.usb.coreUSB.Room;
 import uk.ac.newcastle.team22.usb.coreUSB.StaffMember;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
@@ -101,14 +102,16 @@ public class StaffMemberActivity extends USBActivity {
 
         // Add the room of the staff member, if available.
         if (staffMember.getRoom() != null) {
-            String roomAddress = staffMember.getRoom().getFormattedName(this);
-            StaffMemberContactCardData roomData = new StaffMemberContactCardData(StaffMemberContactCardData.ContactOption.ROOM, roomAddress);
+            Room room = staffMember.getRoom();
+            StaffMemberContactCardData roomData = new StaffMemberContactCardData(StaffMemberContactCardData.ContactOption.ROOM,
+                    new String[] { room.getFormattedName(this), room.getFloor().getNumber() + "", room.getNumber()
+            });
             cards.add(roomData);
         }
 
         // Add the email of the staff member, if available.
         if (staffMember.getEmailAddress() != null) {
-            StaffMemberContactCardData emailData = new StaffMemberContactCardData(StaffMemberContactCardData.ContactOption.EMAIL, staffMember.getEmailAddress());
+            StaffMemberContactCardData emailData = new StaffMemberContactCardData(StaffMemberContactCardData.ContactOption.EMAIL, new String[] { staffMember.getEmailAddress() });
             cards.add(emailData);
         }
 
@@ -118,7 +121,7 @@ public class StaffMemberActivity extends USBActivity {
             if (formattedNumber == null) {
                 formattedNumber = staffMember.getPhoneNumber();
             }
-            StaffMemberContactCardData phoneData = new StaffMemberContactCardData(StaffMemberContactCardData.ContactOption.PHONE, formattedNumber);
+            StaffMemberContactCardData phoneData = new StaffMemberContactCardData(StaffMemberContactCardData.ContactOption.PHONE, new String[] { formattedNumber });
             cards.add(phoneData);
         }
 
@@ -176,13 +179,13 @@ class StaffMemberAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
             default: {
                 StaffMemberContactViewHolder updatingHolder = (StaffMemberContactViewHolder) viewHolder;
                 final StaffMemberContactCardData item = (StaffMemberContactCardData) cardList.get(position);
-                updatingHolder.contactAddressTextView.setText(item.getAddress());
+                updatingHolder.contactAddressTextView.setText(item.getAddress()[0]);
                 updatingHolder.iconView.setImageResource(item.getOption().getImageRepresentation());
 
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = item.getOption().open(item.getAddress());
+                        Intent intent = item.getOption().open(item.getAddress(), v.getContext());
                         if (intent != null) {
                             if (item.getOption() == StaffMemberContactCardData.ContactOption.PHONE) {
                                 startCallActivity(intent, activity, v.getContext());
@@ -239,7 +242,7 @@ class StaffMemberTitleCardData extends AbstractCardData {
     private String fullName;
 
     StaffMemberTitleCardData(StaffMember staffMember) {
-        this.fullName = staffMember.getFullTitle();
+        this.fullName = staffMember.getFullName();
     }
 
     /**
@@ -291,7 +294,7 @@ class StaffMemberContactCardData extends AbstractCardData {
     private ContactOption option;
 
     /** The address of the contact option. */
-    private String address;
+    private String[] address;
 
     /** The type of staff member contact. */
     enum ContactOption {
@@ -301,19 +304,25 @@ class StaffMemberContactCardData extends AbstractCardData {
          * Opens the contact option.
          *
          * @param address The address of the contact option.
+         * @param context The context displaying the card data.
          * @return The intent to open.
          */
-        Intent open(String address) {
+        Intent open(String[] address, Context context) {
             Intent intent;
             switch (this) {
                 case EMAIL:
                     intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("message/rfc822");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ address });
+                    intent.putExtra(Intent.EXTRA_EMAIL, address[0]);
                     return intent;
                 case PHONE:
                     intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse("tel:" + address));
+                    intent.setData(Uri.parse("tel:" + address[0]));
+                    return intent;
+                case ROOM:
+                    intent = new Intent(context, RoomActivity.class);
+                    intent.putExtra("floorNumber", Integer.parseInt(address[1]));
+                    intent.putExtra("roomNumber", address[2]);
                     return intent;
                 default:
                     return null;
@@ -338,7 +347,7 @@ class StaffMemberContactCardData extends AbstractCardData {
         }
     }
 
-    StaffMemberContactCardData(ContactOption option, String address) {
+    StaffMemberContactCardData(ContactOption option, String[] address) {
         this.option = option;
         this.address = address;
     }
@@ -353,7 +362,7 @@ class StaffMemberContactCardData extends AbstractCardData {
     /**
      * @return The address of the contact option.
      */
-    public String getAddress() {
+    public String[] getAddress() {
         return address;
     }
 }

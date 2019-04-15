@@ -104,21 +104,6 @@ public class ARoomShould {
         assertEquals(room.getStaffResidenceIdentifier(), "Alan Tully");
     }
 
-    /** Assert room name can be correctly formatted and returned when alternate room name is available. */
-    @Test
-    public void formatNameCorrectlyWithAlternateRoomName() {
-        String name = "Lecture Theatre, 2.046";
-        assertEquals(name, room.getFormattedName());
-    }
-
-    /** Assert room name can be correctly formatted and returned when alternate room name is not available. */
-    @Test
-    public void formatNameCorrectlyWithoutAlternateRoomName() {
-        Room roomTwo = new Room(floor, "46" , resources, "Alan Tully", 109 , null);
-        String name = "Room 2.046";
-        assertEquals(name, roomTwo.getFormattedName());
-    }
-
     /** Assert room number can be formatted correctly given floor and initial room number. */
     @Test
     public void formatRoomNumberCorrectly() {
