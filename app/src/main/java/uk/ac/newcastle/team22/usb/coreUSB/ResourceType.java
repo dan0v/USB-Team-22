@@ -1,5 +1,9 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
+
+import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
 /**
@@ -10,7 +14,7 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
  * @version 1.0
  */
 public enum ResourceType {
-    COMPUTER(1), PRINTER(2), WHITEBOARD(3), PROJECTOR(4), WORK_SPACE(5);
+    COMPUTER(1), PRINTER(2), WHITEBOARD(3), PROJECTOR(4), WORKSPACE(5);
 
     /** The identifier of the resource type. */
     private int identifier;
@@ -37,6 +41,42 @@ public enum ResourceType {
             }
         }
         throw new FirestoreConstructable.InitialisationFailed("Unknown resource type identifier '" + identifier + "'");
+    }
+
+    /**
+     * @return Localised string representation of the resource type.
+     */
+    public @StringRes
+    int getLocalisedResourceType() {
+        switch (this) {
+            case COMPUTER:      return R.string.computer;
+            case PRINTER:       return R.string.printer;
+            case WHITEBOARD:    return R.string.whiteboard;
+            case PROJECTOR:     return R.string.projector;
+            case WORKSPACE:     return R.string.workspace;
+            default:            return 0;
+        }
+    }
+
+    /**
+     * @return Image representation of the resource type.
+     */
+    @DrawableRes
+    public int getImageRepresentation() {
+        switch (this) {
+            case COMPUTER:
+                return R.drawable.computer;
+            case PRINTER:
+                return R.drawable.printer;
+            case WHITEBOARD:
+                return R.drawable.whiteboard;
+            case PROJECTOR:
+                return R.drawable.projector;
+            case WORKSPACE:
+                return R.drawable.workspace;
+            default:
+                return 0;
+        }
     }
 
     /**

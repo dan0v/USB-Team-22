@@ -95,5 +95,11 @@
 
     <!--room start-->
     <string name="roomDetails">Room Details</string>
-    <!--staff members end-->
+    <string name="computer">Computer Cluster</string>
+    <string name="printer">Printer</string>
+    <string name="whiteboard">Whiteboard</string>
+    <string name="projector">Projector</string>
+    <string name="workspace">Workspace</string>
+
+    <!--room end-->
 </resources>

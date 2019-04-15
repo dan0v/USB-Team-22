@@ -90,4 +90,9 @@ public class Resource implements Searchable {
         reasons.add(new ResultReason(type.name(), ResultReason.Reason.RESOURCE));
         return reasons;
     }
+
+    @Override
+    public String toString() {
+        return type.toString();
+    }
 }

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     private String number;
 
     /** The resources which are available in the room. */
-    private List<Resource> resources = new ArrayList();
+    private List<Resource> resources;
 
     /** The identifier of the staff member who occupies the room. */
     private String staffResidenceIdentifier;
@@ -56,7 +55,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     @Override
     @SuppressWarnings("unchecked")
     public Room initFromFirebase(Map<String, Object> firestoreDictionary, String documentIdentifier) throws FirestoreConstructable.InitialisationFailed {
-        Map<String, Long> resources = (Map<String, Long>) firestoreDictionary.get("resources");
+        Map<String, Long> resourcesMap = (Map<String, Long>) firestoreDictionary.get("resources");
         String staffResidenceIdentifier = (String) firestoreDictionary.get("staffResidenceIdentifier");
         String alternateName = (String) firestoreDictionary.get("roomName");
 
@@ -66,8 +65,9 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
         this.alternateName = alternateName;
 
         // Initialise room resources.
-        resources = resources == null ? Collections.emptyMap() : new HashMap();
-        for (Map.Entry<String, Long> entry : resources.entrySet()) {
+        resources = new ArrayList<>();
+        resourcesMap = resourcesMap == null ? new HashMap<String, Long>() : resourcesMap;
+        for (Map.Entry<String, Long> entry : resourcesMap.entrySet()) {
             Resource newResource = new Resource(entry.getKey(), entry.getValue().intValue(), this);
             if (newResource != null) {
                 this.resources.add(newResource);

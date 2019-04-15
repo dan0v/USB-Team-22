@@ -25,6 +25,7 @@ import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractViewHolder;
 import uk.ac.newcastle.team22.usb.coreUSB.Floor;
+import uk.ac.newcastle.team22.usb.coreUSB.Resource;
 import uk.ac.newcastle.team22.usb.coreUSB.Room;
 import uk.ac.newcastle.team22.usb.coreUSB.StaffMember;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
@@ -101,8 +102,17 @@ public class RoomActivity extends USBActivity {
         // Add a resident staff member attribute.
         if (room.getResidentStaff() != null) {
             String staffMemberName = room.getResidentStaff().getFullName();
-            RoomAttributeCardData staffMemberData = new RoomAttributeCardData(RoomAttributeCardData.Attribute.STAFF_MEMBER, staffMemberName, room);
+            RoomAttributeCardData staffMemberData = new RoomAttributeCardData(RoomAttributeCardData.Attribute.STAFF_MEMBER, staffMemberName, room, 0);
             cards.add(staffMemberData);
+        }
+
+        // Add attribute for each available room resource.
+        for (Resource resource : room.getResources()) {
+            RoomAttributeCardData.Attribute attribute = RoomAttributeCardData.Attribute.ROOM_RESOURCE;
+            String title = getString(resource.getType().getLocalisedResourceType());
+            int imageRepresentation = resource.getType().getImageRepresentation();
+            RoomAttributeCardData roomResourceData = new RoomAttributeCardData(attribute, title, room, imageRepresentation);
+            cards.add(roomResourceData);
         }
 
         return cards;
@@ -167,7 +177,11 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
                 RoomAttributeViewHolder updatingHolder = (RoomAttributeViewHolder) viewHolder;
                 final RoomAttributeCardData item = (RoomAttributeCardData) cardList.get(position);
                 updatingHolder.roomAttributeTextView.setText(item.getTitle());
-                updatingHolder.iconView.setImageResource(item.getAttribute().getImageRepresentation());
+                if (item.getCustomImage() > 0) {
+                    updatingHolder.iconView.setImageResource(item.getCustomImage());
+                } else {
+                    updatingHolder.iconView.setImageResource(item.getAttribute().getImageRepresentation());
+                }
 
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -279,12 +293,15 @@ class RoomAttributeCardData extends AbstractCardData {
     /** The room containing the attribute. */
     private Room room;
 
-    /** The type of staff member contact. */
+    /** The custom image representation. */
+    private @DrawableRes int customImage;
+
+    /** The type of room attribute. */
     enum Attribute {
-        STAFF_MEMBER;
+        STAFF_MEMBER, ROOM_RESOURCE;
 
         /**
-         * @return Image representation of the contact option..
+         * @return Image representation of the room attribute.
          */
         @DrawableRes
         int getImageRepresentation() {
@@ -297,10 +314,11 @@ class RoomAttributeCardData extends AbstractCardData {
         }
     }
 
-    RoomAttributeCardData(Attribute attribute, String title, Room room) {
+    RoomAttributeCardData(Attribute attribute, String title, Room room, @DrawableRes int customImage) {
         this.attribute = attribute;
         this.title = title;
         this.room = room;
+        this.customImage = customImage;
     }
 
     /**
@@ -322,6 +340,13 @@ class RoomAttributeCardData extends AbstractCardData {
      */
     public Room getRoom() {
         return room;
+    }
+
+    /**
+     * @return The custom image representation.
+     */
+    public int getCustomImage() {
+        return customImage;
     }
 }
 

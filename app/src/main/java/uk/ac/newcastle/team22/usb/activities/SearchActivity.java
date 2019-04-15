@@ -144,12 +144,20 @@ public class SearchActivity extends USBActivity {
             intent.putExtra("categoryName", cafeMenuItem.getCategory().getName());
         }
 
-        // Present the room's category.
+        // Present the room's details.
         if (result instanceof Room) {
             Room room = (Room) result;
             intent = new Intent(this, RoomActivity.class);
             intent.putExtra("floorNumber", room.getFloor().getNumber());
             intent.putExtra("roomNumber", room.getNumber());
+        }
+
+        // Present the resource's room details.
+        if (result instanceof Resource) {
+            Resource resource = (Resource) result;
+            intent = new Intent(this, RoomActivity.class);
+            intent.putExtra("floorNumber", resource.getRoom().getFloor().getNumber());
+            intent.putExtra("roomNumber", resource.getRoom().getNumber());
         }
 
         // Display the search result.
@@ -271,7 +279,7 @@ public class SearchActivity extends USBActivity {
                 });
             } else if (searchResult instanceof Resource) {
                 Resource resource = (Resource) searchResult;
-                title.setText(resource.toString());
+                title.setText(resource.getType().getLocalisedResourceType());
                 detail.setText(getString(R.string.room) + " " + resource.getRoom().getFormattedName(context));
             }
 
