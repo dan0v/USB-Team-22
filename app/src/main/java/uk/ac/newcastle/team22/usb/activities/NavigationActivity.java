@@ -30,10 +30,17 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
  * @version 1.0
  */
 public class NavigationActivity extends USBActivity {
+
+    /** The recycler view containing the directions of the navigation. */
     private RecyclerView recyclerView;
-    private NavigationAdapter adapter;
+
+    /** The list of navigation directions. */
     private List<AbstractCardData> navigationCardList;
+
+    /** The start node. */
     private Node start;
+
+    /** The destination node. */
     private Node destination;
 
     @Override
@@ -41,41 +48,29 @@ public class NavigationActivity extends USBActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
-        // Add custom drawn back button.
+        // Set the title of the activity.
+        setTitle(R.string.directions);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Configure recycler view.
         recyclerView = findViewById(R.id.navigation_recycler_view);
 
         navigationCardList = new ArrayList<>();
-        adapter = new NavigationAdapter(navigationCardList);
+        NavigationAdapter adapter = new NavigationAdapter(navigationCardList);
 
-        // Set up RecyclerView
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
         updateUI();
-
-//        Test navigation UI with set nodes:
-//        buildTestList();
-    }
-
-    /**
-     * RecyclerView + CardView test
-     */
-    private void buildTestList() {
-        navigationCardList.clear();
-        navigationCardList.addAll(Direction.buildCards(Navigator.shared.getRoute(USBManager.shared.getBuilding().getNavigationNodes().get(0), USBManager.shared.getBuilding().getNavigationNodes().get(400), false), this));
-
-        adapter.notifyDataSetChanged();
     }
 
     /**
      * Update the UI with newly calculated navigation directions.
      */
-    public void updateUI() {
+    private void updateUI() {
         Intent intent = getIntent();
         Map<Integer, Node> nodes = USBManager.shared.getBuilding().getNavigationNodes();
 
@@ -97,10 +92,10 @@ public class NavigationActivity extends USBActivity {
 
         List<Edge> route = Navigator.shared.getRoute(start, destination, navigationRequiresLifts());
 
-        // Populate RecyclerView with card list.
+        // Populate recycler view with card list.
         navigationCardList.clear();
         navigationCardList.addAll(Direction.buildCards(route, this));
-        adapter.notifyDataSetChanged();
+        recyclerView.getAdapter().notifyDataSetChanged();
 
         // Display compass to align user to directions.
         int azimuthOffset = Direction.getFirstAngle(route);

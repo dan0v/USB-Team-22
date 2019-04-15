@@ -19,6 +19,7 @@
 
     <!--navigation start-->
     <string name="navigation">Navigation</string>
+    <string name="directions">Directions</string>
     <string name="navigationForward">Continue forward</string>
     <string name="navigationLeft">Turn left</string>
     <string name="navigationModerateLeft">Turn slightly left</string>
@@ -91,6 +92,7 @@
 
     <!--staff members start-->
     <string name="staffDetails">Staff Details</string>
+    <string name="staffResidence">Staff Residence</string>
     <!--staff members end-->
 
     <!--room start-->
@@ -100,6 +102,6 @@
     <string name="whiteboard">Whiteboard</string>
     <string name="projector">Projector</string>
     <string name="workspace">Workspace</string>
-
+    <string name="resourcesAvailable">available</string>
     <!--room end-->
 </resources>

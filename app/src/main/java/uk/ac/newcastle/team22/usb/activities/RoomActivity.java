@@ -101,8 +101,9 @@ public class RoomActivity extends USBActivity {
 
         // Add a resident staff member attribute.
         if (room.getResidentStaff() != null) {
-            String staffMemberName = room.getResidentStaff().getFullName();
-            RoomAttributeCardData staffMemberData = new RoomAttributeCardData(RoomAttributeCardData.Attribute.STAFF_MEMBER, staffMemberName, room, 0);
+            String title = room.getResidentStaff().getFullName();
+            String detail = getString(R.string.staffResidence);
+            RoomAttributeCardData staffMemberData = new RoomAttributeCardData(RoomAttributeCardData.Attribute.STAFF_MEMBER, title, detail, room, 0);
             cards.add(staffMemberData);
         }
 
@@ -110,8 +111,9 @@ public class RoomActivity extends USBActivity {
         for (Resource resource : room.getResources()) {
             RoomAttributeCardData.Attribute attribute = RoomAttributeCardData.Attribute.ROOM_RESOURCE;
             String title = getString(resource.getType().getLocalisedResourceType());
+            String detail = resource.getAvailable() + " " + getString(R.string.resourcesAvailable);
             int imageRepresentation = resource.getType().getImageRepresentation();
-            RoomAttributeCardData roomResourceData = new RoomAttributeCardData(attribute, title, room, imageRepresentation);
+            RoomAttributeCardData roomResourceData = new RoomAttributeCardData(attribute, title, detail, room, imageRepresentation);
             cards.add(roomResourceData);
         }
 
@@ -176,7 +178,8 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
             default: {
                 RoomAttributeViewHolder updatingHolder = (RoomAttributeViewHolder) viewHolder;
                 final RoomAttributeCardData item = (RoomAttributeCardData) cardList.get(position);
-                updatingHolder.roomAttributeTextView.setText(item.getTitle());
+                updatingHolder.roomAttributeTitleTextView.setText(item.getTitle());
+                updatingHolder.roomAttributeDetailTextView.setText(item.getDetail());
                 if (item.getCustomImage() > 0) {
                     updatingHolder.iconView.setImageResource(item.getCustomImage());
                 } else {
@@ -290,6 +293,9 @@ class RoomAttributeCardData extends AbstractCardData {
     /** The title of the attribute. */
     private String title;
 
+    /** The detail of the attribute. */
+    private String detail;
+
     /** The room containing the attribute. */
     private Room room;
 
@@ -314,9 +320,10 @@ class RoomAttributeCardData extends AbstractCardData {
         }
     }
 
-    RoomAttributeCardData(Attribute attribute, String title, Room room, @DrawableRes int customImage) {
+    RoomAttributeCardData(Attribute attribute, String title, String detail, Room room, @DrawableRes int customImage) {
         this.attribute = attribute;
         this.title = title;
+        this.detail = detail;
         this.room = room;
         this.customImage = customImage;
     }
@@ -333,6 +340,13 @@ class RoomAttributeCardData extends AbstractCardData {
      */
     public String getTitle() {
         return title;
+    }
+
+    /**
+     * @return The detail of the attribute.
+     */
+    public String getDetail() {
+        return detail;
     }
 
     /**
@@ -359,14 +373,18 @@ class RoomAttributeCardData extends AbstractCardData {
 class RoomAttributeViewHolder extends AbstractViewHolder {
 
     /** The text view which displays the room attribute's title. */
-    TextView roomAttributeTextView;
+    TextView roomAttributeTitleTextView;
+
+    /** The text view which displays the room attribute's detail. */
+    TextView roomAttributeDetailTextView;
 
     /** The image view which displays the room attribute's icon. */
     ImageView iconView;
 
     RoomAttributeViewHolder(View view) {
         super(view);
-        roomAttributeTextView = view.findViewById(R.id.roomAttributeTextView);
+        roomAttributeTitleTextView = view.findViewById(R.id.roomAttributeTitleTextView);
+        roomAttributeDetailTextView = view.findViewById(R.id.roomAttributeDetailTextView);
         iconView = view.findViewById(R.id.roomAttributeImageView);
     }
 }
