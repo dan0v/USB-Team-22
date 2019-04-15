@@ -183,9 +183,8 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
             if (resource.getType().equals(ResourceType.COMPUTER)) {
                 return resource;
             }
-            return new Resource(ResourceType.COMPUTER, 0, 0);
         }
-        return null;
+        return new Resource(ResourceType.COMPUTER, 0, 0);
     }
 
     /**
