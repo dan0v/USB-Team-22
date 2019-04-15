@@ -13,43 +13,45 @@
         android:elevation="3dp"
         card_view:cardCornerRadius="@dimen/card_navigation_radius">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
 
             <ImageView
                 android:id="@+id/navigationDirectionImage"
-                android:layout_width="@dimen/navigation_direction_image_width"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_centerVertical="true"
-                android:layout_height="@dimen/navigation_direction_image_height"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="false"
-                android:scaleType="fitXY"
-                android:src="@drawable/navigation_forward"
-                android:tint="@color/colorGray"/>
-
-            <TextView
-                android:id="@+id/navigationDistanceText"
-                android:layout_width="@dimen/navigation_distance_text_width"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/navigationDirectionImage"
-                android:gravity="center"
-                android:padding="@dimen/navigation_distance_text_padding"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/navigation_distance_text"
-                android:text="1"/>
+                android:layout_marginRight="6dp"
+                android:layout_marginLeft="15dp"
+                android:tint="@color/colorPrimary"
+                android:src="@drawable/email"/>
 
             <TextView
                 android:id="@+id/navigationDirectionText"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/navigationDistanceText"
-                android:gravity="left"
-                android:padding="@dimen/navigation_direction_text_padding"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/navigation_direction_text"
-                android:text="Sample Direction"/>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/navigationDirectionImage"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="developer@newcastle.ac.uk"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
+            <TextView
+                android:id="@+id/navigationDistanceText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/navigationDirectionText"
+                android:layout_toRightOf="@id/navigationDirectionImage"
+                android:layout_marginLeft="10dp"
+                android:text="Staff Member Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
         </RelativeLayout>
 

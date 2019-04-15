@@ -31,13 +31,15 @@
     <string name="navigationLiftDown">Take the lift down to %s</string>
     <string name="navigationStairUp">Take the stairs up to %s</string>
     <string name="navigationStairDown">Take the stairs down to %s</string>
-    <string name="navigationDestinationReached">You have reached your destination!</string>
-
+    <string name="navigationSteps">%d steps</string>
+    <string name="navigationEnd">Destination</string>
+    <string name="navigationDestinationReached">You have reached your destination</string>
     <string name="navigationFromText">From:</string>
     <string name="navigationToText">To:</string>
 
     <string name="navigationCompass">Compass</string>
     <string name="navigationCompassHint">Turn to align the arrows</string>
+
     <!--navigation end-->
 
     <!--drawer start-->
@@ -79,6 +81,7 @@
     <string name="reasonResource">Resource</string>
     <string name="reasonEmail">Email Address</string>
     <string name="groundFloor">Ground Floor</string>
+    <string name="groundFloorAbbreviated">G</string>
     <string name="floor">Floor</string>
     <string name="room">Room</string>
     <string name="secondInstanceHint">Select your current location</string>

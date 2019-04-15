@@ -8,20 +8,19 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/navigation_info_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/navigation_info_bar_height"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:background="@color/colorPrimary">
         <TextView
             android:id="@+id/navigation_start_tag"
             android:textStyle="bold"
             android:layout_width="@dimen/navigation_info_tag_width"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
             android:paddingLeft="15dp"
-            android:paddingBottom="5dp"
             android:text="@string/navigationFromText"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
-            android:background="@color/colorWhite"
+            android:textColor="@color/colorWhite"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:gravity="left"
             android:layout_marginBottom="5dp"/>
         <TextView
@@ -29,13 +28,10 @@
             android:layout_toRightOf="@id/navigation_start_tag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
             android:paddingLeft="15dp"
             android:text="Room 1"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
-            android:background="@color/colorWhite"
+            android:textColor="@color/colorWhite"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:gravity="left"/>
         <TextView
             android:id="@+id/navigation_destination_tag"
@@ -43,13 +39,10 @@
             android:layout_width="@dimen/navigation_info_tag_width"
             android:layout_height="wrap_content"
             android:layout_below="@id/navigation_start_tag"
-            android:paddingTop="5dp"
             android:paddingLeft="15dp"
-            android:paddingBottom="3dp"
             android:text="@string/navigationToText"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
-            android:background="@color/colorWhite"
+            android:textColor="@color/colorWhite"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:gravity="left"/>
         <TextView
             android:id="@+id/navigation_destination_text"
@@ -58,13 +51,10 @@
             android:layout_toRightOf="@id/navigation_destination_tag"
             android:layout_below="@id/navigation_start_text"
             android:layout_marginTop="5dp"
-            android:paddingTop="5dp"
             android:paddingLeft="15dp"
-            android:paddingBottom="3dp"
             android:text="Room 2"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
-            android:background="@color/colorWhite"
+            android:textColor="@color/colorWhite"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:gravity="left"/>
     </RelativeLayout>
 
@@ -73,6 +63,5 @@
         android:layout_below="@id/navigation_info_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="5dp"
         android:scrollbars="vertical" />
 </RelativeLayout>

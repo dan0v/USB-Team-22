@@ -12,6 +12,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="6dp"
         android:layout_marginLeft="15dp"
+        android:paddingTop="5dp"
         android:tint="@color/colorPrimary"
         android:src="@drawable/email" />
 

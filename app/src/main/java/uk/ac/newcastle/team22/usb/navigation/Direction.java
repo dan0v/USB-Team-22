@@ -222,9 +222,8 @@ public enum Direction {
                 formattedFloorChanges.add(edgeFloor.getFormattedName(context));
 
                 if (floorNumber == 0) {
-                    floorChanges.add("G");
-                }
-                else {
+                    floorChanges.add(context.getString(R.string.groundFloorAbbreviated));
+                } else {
                     floorChanges.add(edgeFloor.getNumber() + "");
                 }
             }
@@ -264,14 +263,15 @@ public enum Direction {
                     currentFloorChange++;
                 } else {
                     String directionText = context.getString(parsedDirections.get(j).getLocalisedDirection());
-                    DirectionCardData currentCard = new DirectionCardData(directionText, ((int) Math.round(distances.get(j))) + "", parsedDirections.get(j).getImageRepresentation());
+                    String distanceText = String.format(context.getString(R.string.navigationSteps), ((int) Math.round(distances.get(j))));
+                    DirectionCardData currentCard = new DirectionCardData(directionText, distanceText, parsedDirections.get(j).getImageRepresentation());
                     cards.add(currentCard);
                 }
             }
         }
 
         // Add destination card.
-        DirectionCardData finalCard = new DirectionCardData(context.getString(R.string.navigationDestinationReached), "", R.drawable.navigation_destination_flag);
+        DirectionCardData finalCard = new DirectionCardData(context.getString(R.string.navigationEnd),context.getString(R.string.navigationDestinationReached), R.drawable.navigation_destination_flag);
         cards.add(finalCard);
         return cards;
     }

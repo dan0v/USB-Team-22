@@ -14,7 +14,7 @@
         android:layout_marginLeft="15dp"
         android:paddingTop="5dp"
         android:tint="@color/colorPrimary"
-        android:src="@drawable/email" />
+        android:src="@drawable/email"/>
 
     <TextView
         android:id="@+id/roomAttributeTitleTextView"
@@ -26,7 +26,7 @@
         android:layout_marginLeft="10dp"
         android:gravity="center_vertical"
         android:text="developer@newcastle.ac.uk"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <TextView
         android:id="@+id/roomAttributeDetailTextView"
@@ -38,6 +38,6 @@
         android:layout_toRightOf="@id/roomAttributeImageView"
         android:layout_marginLeft="10dp"
         android:text="Staff Member Name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
 </RelativeLayout>
