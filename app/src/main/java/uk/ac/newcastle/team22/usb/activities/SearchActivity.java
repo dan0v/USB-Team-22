@@ -144,7 +144,6 @@ public class SearchActivity extends USBActivity {
             intent.putExtra("categoryName", cafeMenuItem.getCategory().getName());
         }
 
-
         // Present the room's category.
         if (result instanceof Room) {
             Room room = (Room) result;
@@ -267,7 +266,7 @@ public class SearchActivity extends USBActivity {
                         Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
                         intent.putExtra("destinationNodeIdentifier", room.getNavigationNode().getNodeIdentifier());
                         intent.putExtra("destinationLocationName", room.getFormattedName(getApplicationContext()));
-                        startActivity(intent);
+                        v.getContext().startActivity(intent);
                     }
                 });
             } else if (searchResult instanceof Resource) {

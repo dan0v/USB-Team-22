@@ -26,6 +26,7 @@ import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractViewHolder;
 import uk.ac.newcastle.team22.usb.coreUSB.Floor;
 import uk.ac.newcastle.team22.usb.coreUSB.Room;
+import uk.ac.newcastle.team22.usb.coreUSB.StaffMember;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
 /**
@@ -100,7 +101,7 @@ public class RoomActivity extends USBActivity {
         // Add a resident staff member attribute.
         if (room.getResidentStaff() != null) {
             String staffMemberName = room.getResidentStaff().getFullName();
-            RoomAttributeCardData staffMemberData = new RoomAttributeCardData(RoomAttributeCardData.Attribute.STAFF_MEMBER, staffMemberName);
+            RoomAttributeCardData staffMemberData = new RoomAttributeCardData(RoomAttributeCardData.Attribute.STAFF_MEMBER, staffMemberName, room);
             cards.add(staffMemberData);
         }
 
@@ -153,7 +154,7 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
                 RoomTitleViewHolder updatingHolder = (RoomTitleViewHolder) viewHolder;
                 RoomTitleCardData item = (RoomTitleCardData) cardList.get(position);
                 String roomTitle;
-                if (item.getRoom().getAlternateName() == null) {
+                if (item.getRoom().getAlternateName() == null || item.getRoom().getAlternateName().length() == 0) {
                     roomTitle = item.getRoom().getFormattedName(activity);
                 } else {
                     roomTitle = item.getRoom().getAlternateName();
@@ -171,7 +172,15 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        switch (item.getAttribute()) {
+                            case STAFF_MEMBER:
+                                StaffMember staffMember = item.getRoom().getResidentStaff();
+                                Intent intent = new Intent(v.getContext(), StaffMemberActivity.class);
+                                intent.putExtra("identifier", staffMember.getIdentifier());
+                                v.getContext().startActivity(intent);
+                            default:
+                                break;
+                        }
                     }
                 });
                 break;
@@ -267,6 +276,9 @@ class RoomAttributeCardData extends AbstractCardData {
     /** The title of the attribute. */
     private String title;
 
+    /** The room containing the attribute. */
+    private Room room;
+
     /** The type of staff member contact. */
     enum Attribute {
         STAFF_MEMBER;
@@ -285,9 +297,10 @@ class RoomAttributeCardData extends AbstractCardData {
         }
     }
 
-    RoomAttributeCardData(Attribute attribute, String title) {
+    RoomAttributeCardData(Attribute attribute, String title, Room room) {
         this.attribute = attribute;
         this.title = title;
+        this.room = room;
     }
 
     /**
@@ -302,6 +315,13 @@ class RoomAttributeCardData extends AbstractCardData {
      */
     public String getTitle() {
         return title;
+    }
+
+    /**
+     * @return The room containing the attribute.
+     */
+    public Room getRoom() {
+        return room;
     }
 }
 

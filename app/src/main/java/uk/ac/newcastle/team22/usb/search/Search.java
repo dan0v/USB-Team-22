@@ -11,7 +11,7 @@ import uk.ac.newcastle.team22.usb.coreUSB.USB;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 
 /**
- * The class from which the search algorithm is called.
+ * The class which defines the search algorithm.
  *
  * @author Alexander MacLeod
  * @author Patrick Lindley
@@ -51,15 +51,17 @@ public class Search<T extends Searchable>  {
         USB building = USBManager.shared.getBuilding();
         List<Searchable> toSearch = new ArrayList<>();
 
-        toSearch.addAll(building.getCafe().getItems());
-        toSearch.addAll(building.getStaffMembers());
-
+        // Show room and resources first.
         for (Floor floor : building.getFloors().values()) {
             for (Room room : floor.getRooms().values()) {
                 toSearch.add(room);
                 toSearch.addAll(room.getResources());
             }
         }
+
+        // Show café menu items and staff members next.
+        toSearch.addAll(building.getCafe().getItems());
+        toSearch.addAll(building.getStaffMembers());
 
         // Check each item in database for a matching query.
         for (Searchable potentialResult : toSearch) {

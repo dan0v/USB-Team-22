@@ -110,7 +110,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
      * @return The name of the room.
      */
     public String getFormattedName(Context context) {
-        if (alternateName == null) {
+        if (alternateName == null || alternateName.length() == 0) {
             return context.getString(R.string.room) + " " + getFormattedNumber();
         }
         return getAlternateName() + ", " + getFormattedNumber();
