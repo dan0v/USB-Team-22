@@ -24,7 +24,9 @@
                 android:layout_height="@dimen/navigation_direction_image_height"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="false"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:src="@drawable/navigation_forward"
+                android:tint="@color/colorGray"/>
 
             <TextView
                 android:id="@+id/navigationDistanceText"
@@ -34,7 +36,8 @@
                 android:gravity="center"
                 android:padding="@dimen/navigation_distance_text_padding"
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/navigation_distance_text" />
+                android:textSize="@dimen/navigation_distance_text"
+                android:text="1"/>
 
             <TextView
                 android:id="@+id/navigationDirectionText"
@@ -44,7 +47,8 @@
                 android:gravity="left"
                 android:padding="@dimen/navigation_direction_text_padding"
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/navigation_direction_text" />
+                android:textSize="@dimen/navigation_direction_text"
+                android:text="Sample Direction"/>
 
 
         </RelativeLayout>
