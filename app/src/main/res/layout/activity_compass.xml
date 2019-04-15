@@ -26,5 +26,6 @@
         android:layout_height="@dimen/navigation_compass_size"
         android:layout_centerInParent="true"
         android:scaleType="fitXY"
-        android:src="@drawable/navigation_compass_needle" />
+        android:src="@drawable/navigation_compass_needle"
+        android:tint="@color/colorGray"/>
 </RelativeLayout>

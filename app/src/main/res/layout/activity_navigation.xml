@@ -45,13 +45,12 @@
             android:layout_below="@id/navigation_start_tag"
             android:paddingTop="5dp"
             android:paddingLeft="15dp"
-            android:paddingBottom="5dp"
+            android:paddingBottom="3dp"
             android:text="@string/navigationToText"
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
             android:background="@color/colorWhite"
-            android:gravity="left"
-            android:layout_marginBottom="5dp"/>
+            android:gravity="left"/>
         <TextView
             android:id="@+id/navigation_destination_text"
             android:layout_width="match_parent"
@@ -61,13 +60,12 @@
             android:layout_marginTop="5dp"
             android:paddingTop="5dp"
             android:paddingLeft="15dp"
-            android:paddingBottom="5dp"
+            android:paddingBottom="3dp"
             android:text="Room 2"
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
             android:background="@color/colorWhite"
-            android:gravity="left"
-            android:layout_marginBottom="5dp"/>
+            android:gravity="left"/>
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
