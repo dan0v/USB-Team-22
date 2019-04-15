@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -72,38 +73,66 @@ public class NavigationActivity extends USBActivity {
      */
     private void updateUI() {
         Intent intent = getIntent();
-        Map<Integer, Node> nodes = USBManager.shared.getBuilding().getNavigationNodes();
 
-        // Access static info bar UI elements from intent.
-        String startLocationName = intent.getStringExtra("startLocationName");
-        String destinationLocationName = intent.getStringExtra("destinationLocationName");
-
-        // Set static info bar UI elements from intent.
+        // Get static UI elements.
         TextView startLocation = findViewById(R.id.navigation_start_text);
         TextView destinationLocation = findViewById(R.id.navigation_destination_text);
-        startLocation.setText(startLocationName);
-        destinationLocation.setText(destinationLocationName);
 
-        // Access node identifiers from intent.
-        int startNodeIdentifier = intent.getIntExtra("startNodeIdentifier", 0);
-        int destinationNodeIdentifier = intent.getIntExtra("destinationNodeIdentifier", 0);
-        start = nodes.get(startNodeIdentifier);
-        destination = nodes.get(destinationNodeIdentifier);
+        // Access navigation node identifiers from intent.
+        int startNodeIdentifier = intent.getIntExtra("startNodeIdentifier", -1);
+        int destinationNodeIdentifier = intent.getIntExtra("destinationNodeIdentifier", -1);
 
-        List<Edge> route = Navigator.shared.getRoute(start, destination, navigationRequiresLifts());
+        // Tour mode or navigation mode. Default to tour mode if something goes wrong with navigation.
+        if (startNodeIdentifier == -1 || destinationNodeIdentifier == -1) {
+            // Tour mode.
+            startLocation.setText("Urban Sciences Building Tour");
+            startLocation.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            destinationLocation.setVisibility(View.GONE);
 
-        // Populate recycler view with card list.
+            // Clear navigation tags text - temporary visual fix.
+            TextView startTag = findViewById(R.id.navigation_start_tag);
+            TextView destinationTag = findViewById(R.id.navigation_destination_tag);
+            startTag.setVisibility(View.GONE);
+            destinationTag.setVisibility(View.GONE);
+
+            List<Edge> route = Navigator.shared.getTourRoute();
+            populateRecyclerView(route);
+        } else {
+            // Navigation mode.
+            Map<Integer, Node> nodes = USBManager.shared.getBuilding().getNavigationNodes();
+
+            // Access static info bar UI elements from intent.
+            String startLocationName = intent.getStringExtra("startLocationName");
+            String destinationLocationName = intent.getStringExtra("destinationLocationName");
+
+            // Set static info bar UI elements from intent.
+            startLocation.setText(startLocationName);
+            destinationLocation.setText(destinationLocationName);
+
+            start = nodes.get(startNodeIdentifier);
+            destination = nodes.get(destinationNodeIdentifier);
+
+            List<Edge> route = Navigator.shared.getRoute(start, destination, navigationRequiresLifts());
+            populateRecyclerView(route);
+
+            // Display compass to align user to directions.
+            int azimuthOffset = Direction.getFirstAngle(route);
+            if (azimuthOffset != -1) {
+                Intent compassIntent = new Intent(NavigationActivity.this, CompassActivity.class);
+                compassIntent.putExtra("azimuthOffset", azimuthOffset);
+                startActivity(compassIntent);
+            }
+        }
+    }
+
+    /**
+     * Populate recycler view with card list.
+     * @param route the list of edges whose route to populate recycler view with.
+     */
+    private void populateRecyclerView(List<Edge> route) {
         navigationCardList.clear();
         navigationCardList.addAll(Direction.buildCards(route, this));
         recyclerView.getAdapter().notifyDataSetChanged();
-
-        // Display compass to align user to directions.
-        int azimuthOffset = Direction.getFirstAngle(route);
-        if (azimuthOffset != -1) {
-            Intent compassIntent = new Intent(NavigationActivity.this, CompassActivity.class);
-            compassIntent.putExtra("azimuthOffset", azimuthOffset);
-            startActivity(compassIntent);
-        }
     }
 
     /**

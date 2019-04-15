@@ -31,6 +31,7 @@
     <string name="navigationLiftDown">Take the lift down to %s</string>
     <string name="navigationStairUp">Take the stairs up to %s</string>
     <string name="navigationStairDown">Take the stairs down to %s</string>
+    <string name="navigationStep">1 step</string>
     <string name="navigationSteps">%d steps</string>
     <string name="navigationEnd">Destination</string>
     <string name="navigationDestinationReached">You have reached your destination</string>

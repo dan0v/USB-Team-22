@@ -247,14 +247,14 @@ public enum Direction {
         }
 
         // Construct cards.
-        int currentNodeIndex = 0;
+        int currentTourNodeIndex = 0;
         int currentFloorChange = 0;
         for (int j = 0; j < parsedDirections.size(); j++) {
             if (parsedDirections.get(j).equals(TOUR_LOCATION)) {
-                Node currentNode = tourNodes.get(currentNodeIndex);
+                Node currentNode = tourNodes.get(currentTourNodeIndex);
                 TourCardData currentCard = new TourCardData(currentNode.getName(), currentNode.getDescription(), currentNode.getImageIdentifier());
                 cards.add(currentCard);
-                currentNodeIndex++;
+                currentTourNodeIndex++;
             } else {
                 if (parsedDirections.get(j).equals(LIFT_UP) || parsedDirections.get(j).equals(LIFT_DOWN) || parsedDirections.get(j).equals(STAIR_UP) || parsedDirections.get(j).equals(STAIR_DOWN)) {
                     String directionText = String.format(context.getString(parsedDirections.get(j).getLocalisedDirection()), formattedFloorChanges.get(currentFloorChange));
@@ -263,7 +263,14 @@ public enum Direction {
                     currentFloorChange++;
                 } else {
                     String directionText = context.getString(parsedDirections.get(j).getLocalisedDirection());
-                    String distanceText = String.format(context.getString(R.string.navigationSteps), ((int) Math.round(distances.get(j))));
+                    int distance = ((int) Math.round(distances.get(j)));
+                    String distanceText;
+                    if (distance == 1) {
+                        distanceText = context.getString(R.string.navigationStep);
+                    }
+                    else {
+                        distanceText = String.format(context.getString(R.string.navigationSteps), distance);
+                    }
                     DirectionCardData currentCard = new DirectionCardData(directionText, distanceText, parsedDirections.get(j).getImageRepresentation());
                     cards.add(currentCard);
                 }
