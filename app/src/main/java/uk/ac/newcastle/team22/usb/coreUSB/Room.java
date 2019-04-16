@@ -179,13 +179,12 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
      * Returns a new resource with 0 total and 0 available computers if this room has none.
      */
     public Resource getComputers() {
-        for (Resource resource : this.resources) {
-            if (resource.getType().equals(ResourceType.COMPUTER)) {
-                return resource;
+            for (Resource resource : this.resources) {
+                if (resource.getType().equals(ResourceType.COMPUTER)) {
+                    return resource;
+                }
             }
             return new Resource(ResourceType.COMPUTER, 0, 0);
-        }
-        return null;
     }
 
     /**
