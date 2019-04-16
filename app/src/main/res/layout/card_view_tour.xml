@@ -40,7 +40,7 @@
                 android:paddingBottom="@dimen/tour_location_image_padding"
                 android:clickable="false"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/usb_hero" />
+                android:src="@drawable/usb_hero" />
 
             <TextView
                 android:id="@+id/tourDescriptionText"

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:cropToPadding="true"
         android:scaleType="centerCrop"
-        android:src="@mipmap/usb_hero"
+        android:src="@drawable/usb_hero"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         android:tint="#6F000000"
-        tools:src="@mipmap/usb_hero" />
+        tools:src="@drawable/usb_hero" />
 
     <TextView
         android:layout_width="match_parent"
