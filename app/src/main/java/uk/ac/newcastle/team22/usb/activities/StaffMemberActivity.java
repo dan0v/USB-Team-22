@@ -198,7 +198,7 @@ class StaffMemberAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
                 updatingHolder.contactAddressTextView.setText(item.getAddress()[0]);
                 updatingHolder.iconView.setImageResource(item.getOption().getImageRepresentation());
 
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                updatingHolder.selectionView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = item.getOption().open(item.getAddress(), v.getContext());
@@ -413,9 +413,13 @@ class StaffMemberContactViewHolder extends AbstractViewHolder {
     /** The image view which displays an icon of the contact option. */
     ImageView iconView;
 
+    /** The selection view. */
+    View selectionView;
+
     StaffMemberContactViewHolder(View view) {
         super(view);
         contactAddressTextView = view.findViewById(R.id.staffMemberContactTextView);
         iconView = view.findViewById(R.id.staffMemberContactImageView);
+        selectionView = view.findViewById(R.id.staffMemberContactSelectionView);
     }
 }

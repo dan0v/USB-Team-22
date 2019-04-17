@@ -198,8 +198,7 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
                 } else {
                     updatingHolder.iconView.setImageResource(item.getAttribute().getImageRepresentation());
                 }
-
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                updatingHolder.selectionView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         switch (item.getAttribute()) {
@@ -398,10 +397,14 @@ class RoomAttributeViewHolder extends AbstractViewHolder {
     /** The image view which displays the room attribute's icon. */
     ImageView iconView;
 
+    /** The selection view. */
+    View selectionView;
+
     RoomAttributeViewHolder(View view) {
         super(view);
         roomAttributeTitleTextView = view.findViewById(R.id.roomAttributeTitleTextView);
         roomAttributeDetailTextView = view.findViewById(R.id.roomAttributeDetailTextView);
         iconView = view.findViewById(R.id.roomAttributeImageView);
+        selectionView = view.findViewById(R.id.roomAttributeSelectionView);
     }
 }

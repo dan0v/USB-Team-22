@@ -1,43 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="15dp"
-    android:layout_marginBottom="15dp">
-
-    <ImageView
-        android:id="@+id/roomAttributeImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="6dp"
-        android:layout_marginLeft="15dp"
-        android:paddingTop="5dp"
-        android:tint="@color/colorPrimary"
-        android:src="@drawable/email"/>
-
-    <TextView
-        android:id="@+id/roomAttributeTitleTextView"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/roomAttributeSelectionView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/roomAttributeImageView"
-        android:layout_marginLeft="10dp"
-        android:gravity="center_vertical"
-        android:text="developer@newcastle.ac.uk"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-
-    <TextView
-        android:id="@+id/roomAttributeDetailTextView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/roomAttributeTitleTextView"
-        android:layout_toRightOf="@id/roomAttributeImageView"
-        android:layout_marginLeft="10dp"
-        android:text="Staff Member Name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
-
+        android:layout_height="fill_parent"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
+        <ImageView
+            android:id="@+id/roomAttributeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:layout_marginLeft="15dp"
+            android:paddingTop="5dp"
+            android:tint="@color/colorPrimary"
+            android:src="@drawable/email"/>
+        <TextView
+            android:id="@+id/roomAttributeTitleTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/roomAttributeImageView"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="developer@newcastle.ac.uk"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        <TextView
+            android:id="@+id/roomAttributeDetailTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/roomAttributeTitleTextView"
+            android:layout_toRightOf="@id/roomAttributeImageView"
+            android:layout_marginLeft="10dp"
+            android:text="Staff Member Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+    </RelativeLayout>
 </RelativeLayout>
