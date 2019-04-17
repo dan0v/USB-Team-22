@@ -7,7 +7,8 @@
     android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/constraintLayoutTour"
+        android:onClick="tourButton"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:clickable="true"
@@ -58,7 +59,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/relativeLayout2"
+        android:id="@+id/constraintLayoutNav"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="102dp"
@@ -114,7 +115,7 @@
         android:id="@+id/SplitLine_hor1"
         android:layout_width="match_parent"
         android:layout_height= "2dp"
-        android:layout_below="@id/relativeLayout"
+        android:layout_below="@id/constraintLayoutTour"
         android:background="@color/colorBlack" />
 
     <LinearLayout
@@ -122,7 +123,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
-        android:layout_below="@id/relativeLayout2"
+        android:layout_below="@id/constraintLayoutNav"
         android:background="@color/colorPrimary"
         android:padding="8dp"
         android:paddingBottom="16dp">
@@ -154,11 +155,18 @@
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/available_computers_view"
-        android:layout_width="400dp"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:clickable="true"
         android:layout_below="@id/dashboard_header"
         android:scrollbars="vertical"
         tools:listitem="@layout/card_view_available_computers"/>
 
+    <View
+        android:id="@+id/SplitLine_hor2"
+        android:layout_width="match_parent"
+        android:layout_height= "2dp"
+        android:layout_below="@id/available_computers_view"
+        android:background="@color/colorBlack" />
 
 </RelativeLayout>

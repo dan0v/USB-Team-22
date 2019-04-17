@@ -1,6 +1,7 @@
 package uk.ac.newcastle.team22.usb.activities;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -144,6 +145,8 @@ class DashboardActivity extends USBActivity {
     private Map<String, Integer> displayMap = new TreeMap<String, Integer>();
     private List<String> nameList;
     private List<Integer> computerList;
+    private ConstraintLayout tourButton = findViewById(R.id.constraintLayoutTour);
+    private ConstraintLayout navButton = findViewById(R.id.constraintLayoutNav);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +167,7 @@ class DashboardActivity extends USBActivity {
     }
 
     /**
-     * Take live data on computer availablity from JSON and sort top 5 rooms with most
+     * Take live data on computer availability from JSON and sort top 5 rooms with most
      * available computers
      */
 
