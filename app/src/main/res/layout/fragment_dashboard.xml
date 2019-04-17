@@ -8,7 +8,6 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayoutTour"
-        android:onClick="tourButton"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:clickable="true"
@@ -35,11 +34,10 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentEnd="true"
-            android:layout_gravity="right"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="36dp"
             android:background="@drawable/tour"
-            android:contentDescription="Tour icon"
+            android:contentDescription="@string/tourIcon"
             android:paddingBottom="100dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -105,7 +103,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="36dp"
             android:background="@drawable/navigation_inverted"
-            android:contentDescription="Navigation icon"
+            android:contentDescription="@string/navigationIcon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -136,9 +134,7 @@
             android:gravity="center"
             android:textStyle="bold"
             android:textColor="@color/colorWhite"
-            android:textSize="20sp"
-
-            />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/header_available"
@@ -151,13 +147,11 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        >
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/available_computers_view"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:clickable="true"
         android:layout_below="@id/dashboard_header"
         android:scrollbars="vertical"
         tools:listitem="@layout/card_view_available_computers"/>

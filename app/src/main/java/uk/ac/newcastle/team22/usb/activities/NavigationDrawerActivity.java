@@ -1,5 +1,6 @@
 package uk.ac.newcastle.team22.usb.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
@@ -145,33 +146,46 @@ class DashboardActivity extends USBActivity {
     private Map<String, Integer> displayMap = new TreeMap<String, Integer>();
     private List<String> nameList;
     private List<Integer> computerList;
-    private ConstraintLayout tourButton = findViewById(R.id.constraintLayoutTour);
-    private ConstraintLayout navButton = findViewById(R.id.constraintLayoutNav);
+    private ConstraintLayout tourLayout = (ConstraintLayout) findViewById(R.id.constraintLayoutTour);
+    private ConstraintLayout navigationLayout = (ConstraintLayout) findViewById(R.id.constraintLayoutNav);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard);
+        dashboardCardList = new ArrayList();
         USBManager.shared.updateComputerAvailability();
         initData();
 
-        //Setting up RecyclerView
+        navigationLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        //Setting up RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.available_computers_view);
         adapter = new DashboardAdapter(dashboardCardList);
-
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
         layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
         buildCards();
     }
+
+//    public void tourButton(View view) {
+//        Intent intent = new Intent(DashboardActivity.this, TourActivity.class);
+//        startActivity(intent);
+//    }
 
     /**
      * Take live data on computer availability from JSON and sort top 5 rooms with most
      * available computers
      */
 
-    private Map<String,Integer> initData() {
+    private void initData() {
         USB building = USBManager.shared.getBuilding();
         List<Floor> floorsList = new ArrayList<Floor>(building.getFloors().values());
         Map<String, Room> roomsMap = new HashMap<String, Room>();
@@ -187,13 +201,12 @@ class DashboardActivity extends USBActivity {
         }
         nameList = new ArrayList<String>(displayMap.keySet());
         computerList = new ArrayList<Integer>(displayMap.values());
-        return displayMap;
     }
 
     private void buildCards() {
         dashboardCardList.clear();
         for(int i=0;i<5;i++) {
-            DashboardCardData computerData = new DashboardCardData(nameList.get(i),computerList.get(i).toString());
+            DashboardCardData computerData = new DashboardCardData("test","test2");
             dashboardCardList.add(computerData);
         }
         adapter.notifyDataSetChanged();

@@ -73,6 +73,8 @@
     <string name="descNav">Navigate the USB</string>
     <string name="roomName">Room Name</string>
     <string name="available">Available PCs</string>
+    <string name="tourIcon">Tour icon</string>
+    <string name="navigationIcon">Navigation icon</string>
     <!--dashboard end-->
 
     <!--search start-->
