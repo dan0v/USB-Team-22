@@ -1,7 +1,6 @@
 package uk.ac.newcastle.team22.usb.activities;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,8 +17,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import java.util.*;
-import static java.util.stream.Collectors.*;
-import static java.util.Map.Entry.*;
 
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreUSB.*;
@@ -132,6 +129,13 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
     }
 }
 
+/**
+ * A class which manages the dashboard activity
+ *
+ * @author Alexander Beeching
+ * @version 1.0
+ */
+
 class DashboardActivity extends USBActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -148,14 +152,21 @@ class DashboardActivity extends USBActivity {
         USBManager.shared.updateComputerAvailability();
         initData();
 
+        //Setting up RecyclerView
+
         recyclerView = (RecyclerView) findViewById(R.id.available_computers_view);
-        dashboardCardList =  buildCards();
         adapter = new DashboardAdapter(dashboardCardList);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         layoutManager = new LinearLayoutManager(this);
+        buildCards();
     }
+
+    /**
+     * Take live data on computer availablity from JSON and sort top 5 rooms with most
+     * available computers
+     */
 
     private Map<String,Integer> initData() {
         USB building = USBManager.shared.getBuilding();
@@ -176,16 +187,23 @@ class DashboardActivity extends USBActivity {
         return displayMap;
     }
 
-    private List<AbstractCardData> buildCards() {
-        List<AbstractCardData> cards = new ArrayList();
+    private void buildCards() {
+        dashboardCardList.clear();
         for(int i=0;i<5;i++) {
             DashboardCardData computerData = new DashboardCardData(nameList.get(i),computerList.get(i).toString());
-            cards.add(computerData);
+            dashboardCardList.add(computerData);
         }
-        return cards;
+        adapter.notifyDataSetChanged();
     }
 
 }
+
+/**
+ * A class which defines the detail view of the computers available on the dashboard.
+ *
+ * @author Alexander Beeching
+ * @version 1.0
+ */
 
 class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
     private List<AbstractCardData> cardList;
@@ -209,9 +227,17 @@ class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
     }
 
     public int getItemCount() {
-        return 5;
+        return cardList.size();
     }
 }
+
+/**
+ * A class which defines the data to be displayed by a {@link DashboardViewHolder}.
+ *
+ * @author Alexander Beeching
+ * @version 1.0
+ */
+
 class DashboardCardData extends AbstractCardData {
     private String roomNumber;
     private String computersAvailable;
@@ -237,6 +263,14 @@ class DashboardCardData extends AbstractCardData {
         this.computersAvailable = computersAvailable;
     }
 }
+
+/**
+ * A class to represent the information stored in a computers available card in the UI.
+ *
+ * @author Alexander Beeching
+ * @version 1.0
+ */
+
 class DashboardViewHolder extends AbstractViewHolder {
     public TextView roomNumber;
     public TextView computersAvailable;

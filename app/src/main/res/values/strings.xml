@@ -67,6 +67,12 @@
 
     <!--dashboard start-->
     <string name="dashboard">Dashboard</string>
+    <string name="titleTour">Tour Guide</string>
+    <string name="descTour">Take a tour!</string>
+    <string name="titleNav">Navigation</string>
+    <string name="descNav">Navigate the USB</string>
+    <string name="roomName">Room Name</string>
+    <string name="available">Computers Free</string>
     <!--dashboard end-->
 
     <!--search start-->
