@@ -33,6 +33,8 @@
     <string name="navigationStairDown">Take the stairs down to %s</string>
     <string name="navigationStep">1 step</string>
     <string name="navigationSteps">%d steps</string>
+    <string name="navigationFloor">%d floor</string>
+    <string name="navigationFloors">%d floors</string>
     <string name="navigationEnd">Destination</string>
     <string name="navigationDestinationReached">You have reached your destination</string>
     <string name="navigationFromText">From:</string>

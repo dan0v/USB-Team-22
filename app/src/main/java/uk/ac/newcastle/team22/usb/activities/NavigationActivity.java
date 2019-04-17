@@ -17,6 +17,7 @@ import java.util.Map;
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
+import uk.ac.newcastle.team22.usb.navigation.CardBuilder;
 import uk.ac.newcastle.team22.usb.navigation.Direction;
 import uk.ac.newcastle.team22.usb.navigation.Edge;
 import uk.ac.newcastle.team22.usb.navigation.NavigationAdapter;
@@ -83,6 +84,7 @@ public class NavigationActivity extends USBActivity {
         int destinationNodeIdentifier = intent.getIntExtra("destinationNodeIdentifier", -1);
 
         // Tour mode or navigation mode. Default to tour mode if something goes wrong with navigation.
+        List<Edge> route;
         if (startNodeIdentifier == -1 || destinationNodeIdentifier == -1) {
             // Tour mode.
             startLocation.setText("Urban Sciences Building Tour");
@@ -95,8 +97,7 @@ public class NavigationActivity extends USBActivity {
             startTag.setVisibility(View.GONE);
             destinationTag.setVisibility(View.GONE);
 
-            List<Edge> route = Navigator.shared.getTourRoute();
-            populateRecyclerView(route);
+            route = Navigator.shared.getTourRoute();
         } else {
             // Navigation mode.
             Map<Integer, Node> nodes = USBManager.shared.getBuilding().getNavigationNodes();
@@ -112,16 +113,16 @@ public class NavigationActivity extends USBActivity {
             start = nodes.get(startNodeIdentifier);
             destination = nodes.get(destinationNodeIdentifier);
 
-            List<Edge> route = Navigator.shared.getRoute(start, destination, navigationRequiresLifts());
-            populateRecyclerView(route);
+            route = Navigator.shared.getRoute(start, destination, navigationRequiresLifts());
+        }
+        populateRecyclerView(route);
 
-            // Display compass to align user to directions.
-            int azimuthOffset = Direction.getFirstAngle(route);
-            if (azimuthOffset != -1) {
-                Intent compassIntent = new Intent(NavigationActivity.this, CompassActivity.class);
-                compassIntent.putExtra("azimuthOffset", azimuthOffset);
-                startActivity(compassIntent);
-            }
+        // Display compass to align user to directions.
+        int azimuthOffset = Direction.getFirstAngle(route);
+        if (azimuthOffset != -1) {
+            Intent compassIntent = new Intent(NavigationActivity.this, CompassActivity.class);
+            compassIntent.putExtra("azimuthOffset", azimuthOffset);
+            startActivity(compassIntent);
         }
     }
 
@@ -131,7 +132,7 @@ public class NavigationActivity extends USBActivity {
      */
     private void populateRecyclerView(List<Edge> route) {
         navigationCardList.clear();
-        navigationCardList.addAll(Direction.buildCards(route, this));
+        navigationCardList.addAll(CardBuilder.buildCards(route, this));
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 

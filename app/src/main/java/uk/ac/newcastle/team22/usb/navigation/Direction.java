@@ -1,6 +1,5 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
-import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
@@ -8,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
-import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
-import uk.ac.newcastle.team22.usb.coreUSB.Floor;
 
 /**
  * A class to define navigation directions.
@@ -186,100 +183,5 @@ public enum Direction {
             return heading;
         }
         return -1;
-    }
-
-    /**
-     * Given a list of edges, returns a list of cards for displaying turn by turn navigation between
-     * nodes.
-     * @param edges list of edges whose directions should be parsed.
-     * @return List of direction enums.
-     * @throws IllegalArgumentException
-     */
-    public static List<AbstractCardData> buildCards(List<Edge> edges, Context context) {
-        List<AbstractCardData> cards = new ArrayList();
-        List<Node> tourNodes = new ArrayList();
-        List<Double> distances = new ArrayList();
-        List<Direction> parsedDirections = parseDirections(edges);
-        List<String> formattedFloorChanges = new ArrayList();
-        List<String> floorChanges = new ArrayList();
-        int i = 0;
-
-        // Simplify input data to list of distances.
-        for (Edge currentEdge : edges) {
-
-            // Store node if tour node.
-            if (currentEdge.getOrigin().isTourNode()) {
-                tourNodes.add(currentEdge.getOrigin());
-                distances.add(i, 0.0);
-                parsedDirections.add(i, TOUR_LOCATION);
-            }
-
-            // Display the floor to exit lifts at.
-            if (currentEdge.getOrigin().getFloorNumber() != currentEdge.getDestination().getFloorNumber()) {
-                int floorNumber = currentEdge.getDestination().getFloorNumber();
-
-                Floor edgeFloor = new Floor(floorNumber);
-                formattedFloorChanges.add(edgeFloor.getFormattedName(context));
-
-                if (floorNumber == 0) {
-                    floorChanges.add(context.getString(R.string.groundFloorAbbreviated));
-                } else {
-                    floorChanges.add(edgeFloor.getNumber() + "");
-                }
-            }
-
-            // Create list of distances.
-            for (double currentDistance : currentEdge.distances) {
-                if (i == 0) {
-                    distances.add(currentDistance);
-                } else {
-                    // Combine duplicate FORWARD directions.
-                    if (parsedDirections.get(i).equals(FORWARD) && parsedDirections.get(i - 1).equals(FORWARD)) {
-                        distances.set(i - 1, currentDistance + distances.get(i - 1));
-                        parsedDirections.remove(i);
-                        i--;
-                    } else {
-                        distances.add(currentDistance);
-                    }
-                }
-                i++;
-            }
-        }
-
-        // Construct cards.
-        int currentTourNodeIndex = 0;
-        int currentFloorChange = 0;
-        for (int j = 0; j < parsedDirections.size(); j++) {
-            if (parsedDirections.get(j).equals(TOUR_LOCATION)) {
-                Node currentNode = tourNodes.get(currentTourNodeIndex);
-                TourCardData currentCard = new TourCardData(currentNode.getName(), currentNode.getDescription(), currentNode.getImageIdentifier());
-                cards.add(currentCard);
-                currentTourNodeIndex++;
-            } else {
-                if (parsedDirections.get(j).equals(LIFT_UP) || parsedDirections.get(j).equals(LIFT_DOWN) || parsedDirections.get(j).equals(STAIR_UP) || parsedDirections.get(j).equals(STAIR_DOWN)) {
-                    String directionText = String.format(context.getString(parsedDirections.get(j).getLocalisedDirection()), formattedFloorChanges.get(currentFloorChange));
-                    DirectionCardData currentCard = new DirectionCardData(directionText, floorChanges.get(currentFloorChange), parsedDirections.get(j).getImageRepresentation());
-                    cards.add(currentCard);
-                    currentFloorChange++;
-                } else {
-                    String directionText = context.getString(parsedDirections.get(j).getLocalisedDirection());
-                    int distance = ((int) Math.round(distances.get(j)));
-                    String distanceText;
-                    if (distance == 1) {
-                        distanceText = context.getString(R.string.navigationStep);
-                    }
-                    else {
-                        distanceText = String.format(context.getString(R.string.navigationSteps), distance);
-                    }
-                    DirectionCardData currentCard = new DirectionCardData(directionText, distanceText, parsedDirections.get(j).getImageRepresentation());
-                    cards.add(currentCard);
-                }
-            }
-        }
-
-        // Add destination card.
-        DirectionCardData finalCard = new DirectionCardData(context.getString(R.string.navigationEnd),context.getString(R.string.navigationDestinationReached), R.drawable.navigation_destination_flag);
-        cards.add(finalCard);
-        return cards;
     }
 }
