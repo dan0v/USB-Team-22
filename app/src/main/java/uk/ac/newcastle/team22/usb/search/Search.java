@@ -1,5 +1,6 @@
 package uk.ac.newcastle.team22.usb.search;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -95,13 +96,25 @@ public class Search<T extends Searchable>  {
      */
     private SearchResult determineWhetherSearchResult(Searchable potentialResult) {
         for (ResultReason reason : potentialResult.getSearchableReasons()) {
+            String toMatch = removeDiacriticalMarks(reason.getAttribute().toLowerCase());
             // Checks if result starts with value.
-            if (reason.getAttribute().toLowerCase().startsWith(query)) {
+            if (toMatch.startsWith(query)) {
                 return new SearchResult(potentialResult, Priority.HIGH, reason);
-            } else if (reason.getAttribute().toLowerCase().contains(query)) {
+            } else if (toMatch.contains(query)) {
                 return new SearchResult(potentialResult, Priority.LOW, reason);
             }
         }
         return null;
+    }
+
+    /**
+     * Removes diacritical marks from a string.
+     *
+     * @param string The string to adjust.
+     * @return The adjusted string.
+     */
+    private String removeDiacriticalMarks(String string) {
+        String normalizedString = Normalizer.normalize(string, Normalizer.Form.NFD);
+        return normalizedString.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 }

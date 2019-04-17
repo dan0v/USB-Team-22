@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -111,7 +110,6 @@ public class SearchActivity extends USBActivity {
                     Intent intent = new Intent(SearchActivity.this, NavigationActivity.class);
                     intent.putExtra("startNodeIdentifier", room.getNavigationNode().getNodeIdentifier());
                     intent.putExtra("destinationNodeIdentifier", destinationNodeIdentifier);
-                    Log.d("SEARCH INTENT", room.getFormattedName(getApplicationContext()));
                     intent.putExtra("startLocationName", room.getFormattedName(getApplicationContext()));
                     intent.putExtra("destinationLocationName", destinationLocationName);
                     startActivity(intent);

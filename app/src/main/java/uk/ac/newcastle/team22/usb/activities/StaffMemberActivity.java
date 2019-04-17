@@ -171,9 +171,25 @@ class StaffMemberAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
         int viewType = getItemViewType(position);
         switch (viewType) {
             case 0: {
+                final StaffMemberTitleCardData item = (StaffMemberTitleCardData) cardList.get(position);
                 StaffMemberTitleViewHolder updatingHolder = (StaffMemberTitleViewHolder) viewHolder;
-                StaffMemberTitleCardData item = (StaffMemberTitleCardData) cardList.get(position);
                 updatingHolder.nameTextView.setText(item.getFullName());
+
+                // Hide navigation icon if the staff member does not have a room.
+                if (item.getRoom() == null) {
+                    updatingHolder.navigationIcon.setVisibility(View.INVISIBLE);
+                }
+
+                // Set the action of the navigation button.
+                updatingHolder.navigationIcon.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent intent = new Intent(v.getContext(), SearchActivity.class);
+                        intent.putExtra("destinationNodeIdentifier", item.getRoom().getNavigationNode().getNodeIdentifier());
+                        intent.putExtra("destinationLocationName", item.getRoom().getFormattedName(v.getContext()));
+                        v.getContext().startActivity(intent);
+                    }
+                });
+
                 break;
             }
             default: {
@@ -241,8 +257,12 @@ class StaffMemberTitleCardData extends AbstractCardData {
     /** The full name of the staff member. */
     private String fullName;
 
+    /** The room of the staff member. */
+    private Room room;
+
     StaffMemberTitleCardData(StaffMember staffMember) {
         this.fullName = staffMember.getFullName();
+        this.room = staffMember.getRoom();
     }
 
     /**
@@ -250,6 +270,14 @@ class StaffMemberTitleCardData extends AbstractCardData {
      */
     public String getFullName() {
         return fullName;
+    }
+
+
+    /**
+     * @return The room of the staff member.
+     */
+    public Room getRoom() {
+        return room;
     }
 }
 
@@ -270,10 +298,14 @@ class StaffMemberTitleViewHolder extends AbstractViewHolder {
      */
     ImageView profilePicture;
 
+    /** The image view which on click starts the navigation to the staff member's room. */
+    ImageView navigationIcon;
+
     StaffMemberTitleViewHolder(View view, Context context) {
         super(view);
         nameTextView = view.findViewById(R.id.staffMemberTitleTextView);
         profilePicture = view.findViewById(R.id.staffMemberProfilePictureImageView);
+        navigationIcon = view.findViewById(R.id.staffMemberNavigationIcon);
 
         Bitmap avatar = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_profile_picture);
         RoundedBitmapDrawable roundDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), avatar);

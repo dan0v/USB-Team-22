@@ -3,12 +3,11 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="11dp">
-
     <TextView
         android:id="@+id/roomTitleTextView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@id/roomNavigationIcon"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/staffMemberProfilePictureImageView"
@@ -16,24 +15,35 @@
         android:paddingTop="22dp"
         android:text="Staff Member Name"
         android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"/>
-
     <TextView
         android:id="@+id/roomDetailTextView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@id/roomNavigationIcon"
         android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/roomTitleTextView"
         android:layout_marginLeft="12dp"
         android:paddingBottom="22dp"
         android:text="Staff Member Name"
-        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle" />
-
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"/>
+    <ImageView
+        android:id="@+id/roomNavigationIcon"
+        android:layout_width="@dimen/search_navigation_image_scale"
+        android:layout_height="@dimen/search_navigation_image_scale"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/navigation"
+        android:tint="@color/colorPrimary"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:scaleType="fitXY"
+        android:tooltipText="@string/navigationTooltip"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#E8E8E8"
         android:layout_alignParentBottom="true"/>
-
 </RelativeLayout>

@@ -37,6 +37,7 @@
     <string name="navigationDestinationReached">You have reached your destination</string>
     <string name="navigationFromText">From:</string>
     <string name="navigationToText">To:</string>
+    <string name="navigationTooltip">Get Directions</string>
 
     <string name="navigationCompass">Compass</string>
     <string name="navigationCompassHint">Turn to align the arrows</string>

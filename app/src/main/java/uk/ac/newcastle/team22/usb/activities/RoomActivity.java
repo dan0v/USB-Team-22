@@ -163,14 +163,27 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
         int viewType = getItemViewType(position);
         switch (viewType) {
             case 0: {
+                final RoomTitleCardData item = (RoomTitleCardData) cardList.get(position);
                 RoomTitleViewHolder updatingHolder = (RoomTitleViewHolder) viewHolder;
-                RoomTitleCardData item = (RoomTitleCardData) cardList.get(position);
                 String roomTitle;
+
+                // Set a custom title for the room.
                 if (item.getRoom().getAlternateName() == null || item.getRoom().getAlternateName().length() == 0) {
                     roomTitle = item.getRoom().getFormattedName(activity);
                 } else {
                     roomTitle = item.getRoom().getAlternateName();
                 }
+
+                // Set the action of the navigation button.
+                updatingHolder.navigationIcon.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent intent = new Intent(v.getContext(), SearchActivity.class);
+                        intent.putExtra("destinationNodeIdentifier", item.getRoom().getNavigationNode().getNodeIdentifier());
+                        intent.putExtra("destinationLocationName", item.getRoom().getFormattedName(v.getContext()));
+                        v.getContext().startActivity(intent);
+                    }
+                });
+
                 updatingHolder.titleTextView.setText(roomTitle);
                 updatingHolder.detailTextView.setText(item.getRoom().getFormattedNumber());
                 break;
@@ -272,10 +285,14 @@ class RoomTitleViewHolder extends AbstractViewHolder {
     /** The text view which displays the room number. */
     TextView detailTextView;
 
+    /** The image view which on click starts the navigation to the room. */
+    ImageView navigationIcon;
+
     RoomTitleViewHolder(View view) {
         super(view);
         titleTextView = view.findViewById(R.id.roomTitleTextView);
         detailTextView = view.findViewById(R.id.roomDetailTextView);
+        navigationIcon = view.findViewById(R.id.roomNavigationIcon);
     }
 }
 
