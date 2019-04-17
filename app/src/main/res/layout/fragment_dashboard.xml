@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
@@ -20,40 +20,46 @@
             android:id="@+id/text_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="294dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
             android:text="@string/titleTour"
             android:textColor="@color/colorBlue"
             android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/text_view_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_view_title"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="9dp"
-            android:layout_marginEnd="304dp"
-            android:text="@string/descTour"
-            android:textColor="#000" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/image_view_icon"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="37dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="36dp"
             android:background="@drawable/tour"
-            android:contentDescription="Tour icon" />
+            android:contentDescription="Tour icon"
+            android:paddingBottom="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/text_view_description"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/descTour"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <RelativeLayout
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/relativeLayout2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="102dp"
         android:clickable="true"
@@ -68,12 +74,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="294dp"
             android:text="@string/titleNav"
             android:textColor="@color/colorBlue"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_view_description2"
@@ -81,21 +89,26 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text_view_title2"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="9dp"
-            android:layout_marginEnd="274dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="48dp"
             android:text="@string/descNav"
-            android:textColor="#000" />
+            android:textColor="@color/colorBlack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/image_view_icon2"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="37dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="36dp"
             android:background="@drawable/navigation_inverted"
-            android:contentDescription="Navigation icon" />
+            android:contentDescription="Navigation icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 
     <View
         android:id="@+id/SplitLine_hor1"
@@ -104,39 +117,41 @@
         android:layout_below="@id/relativeLayout"
         android:background="@color/colorBlack" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/dashboard_header"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:orientation="horizontal"
         android:layout_below="@id/relativeLayout2"
         android:background="@color/colorPrimary"
         android:padding="8dp"
         android:paddingBottom="16dp">
         <TextView
             android:id="@+id/header_room_name"
-            android:layout_height="30dp"
-            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:text="@string/roomName"
             android:gravity="center"
             android:textStyle="bold"
             android:textColor="@color/colorWhite"
             android:textSize="20sp"
-            />
-        <TextView
-            android:id="@+id/header_available"
-            android:layout_height="30dp"
-            android:layout_width="200dp"
-            android:text="@string/available"
-            android:gravity="center"
-            android:layout_alignParentEnd="true"
-            android:textStyle="bold"
-            android:paddingRight="15dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp"
+
             />
 
+        <TextView
+            android:id="@+id/header_available"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/available"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         >
-    </RelativeLayout>
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/available_computers_view"
         android:layout_width="400dp"

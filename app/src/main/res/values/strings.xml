@@ -72,7 +72,7 @@
     <string name="titleNav">Navigation</string>
     <string name="descNav">Navigate the USB</string>
     <string name="roomName">Room Name</string>
-    <string name="available">Computers Free</string>
+    <string name="available">Available PCs</string>
     <!--dashboard end-->
 
     <!--search start-->
