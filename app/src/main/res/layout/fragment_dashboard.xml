@@ -157,10 +157,102 @@
         tools:listitem="@layout/card_view_available_computers"/>
 
     <View
-        android:id="@+id/SplitLine_hor2"
+        android:id="@+id/splitLine_hor2"
         android:layout_width="match_parent"
         android:layout_height= "2dp"
         android:layout_below="@id/available_computers_view"
         android:background="@color/colorBlack" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cafeAvailable"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/splitLine_hor2"
+        android:background="@drawable/dashboard_widgets"
+        android:paddingLeft="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Cafe Available"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/dashboard_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/outOfHoursAccess"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/cafeAvailable"
+        android:background="@drawable/dashboard_widgets"
+        android:paddingLeft="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Out of hours access"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/dashboard_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/buildingAccess"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/outOfHoursAccess"
+        android:background="@drawable/dashboard_widgets"
+        android:paddingLeft="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Building Open"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/dashboard_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </RelativeLayout>
