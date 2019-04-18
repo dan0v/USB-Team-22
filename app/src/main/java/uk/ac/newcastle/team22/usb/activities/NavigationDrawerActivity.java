@@ -130,7 +130,6 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
         navigationView.setCheckedItem(R.id.nav_dashboard);
     }
 }
-
 /**
  * A class which manages the dashboard activity
  *
