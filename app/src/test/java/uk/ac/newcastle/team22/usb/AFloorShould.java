@@ -1,13 +1,12 @@
 package uk.ac.newcastle.team22.usb;
 
-import android.graphics.Color;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.ac.newcastle.team22.usb.coreApp.ColorUtility;
 import uk.ac.newcastle.team22.usb.coreUSB.Floor;
 import uk.ac.newcastle.team22.usb.coreUSB.Resource;
 import uk.ac.newcastle.team22.usb.coreUSB.Room;
@@ -46,7 +45,7 @@ public class AFloorShould {
         // Create floor with one room.
         List<Floor> floors = new ArrayList<>();
         room = new Room(floor, "46" , resources, "Alan Tully", 109 , "Lecture Theatre");
-        floor = new Floor(3, new Color());
+        floor = new Floor(3, ColorUtility.DEFAULT_COLOR);
         room.attachFloor(floor);
         floor.attachRoom(room);
         floors.add(floor);

@@ -5,10 +5,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -66,11 +70,15 @@ public class RoomActivity extends USBActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Set the colours of the action and status bar.
+        getWindow().setStatusBarColor(ColorUtils.blendARGB(room.getFloor().getColor(), Color.BLACK, 0.15f));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(room.getFloor().getColor()));
+
         // Configure the recycler view.
         recyclerView = findViewById(R.id.room_recycler_view);
 
         List<AbstractCardData> details = buildCards();
-        RoomAdapter adapter = new RoomAdapter(details, this);
+        RoomAdapter adapter = new RoomAdapter(details, this, room);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -135,9 +143,13 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
     /** The activity which displays content in this adapter. */
     private Activity activity;
 
-    public RoomAdapter(List<AbstractCardData> cardList, Activity activity) {
+    /** The room being displayed by the adapter. */
+    private Room room;
+
+    public RoomAdapter(List<AbstractCardData> cardList, Activity activity, Room room) {
         this.cardList = cardList;
         this.activity = activity;
+        this.room = room;
     }
 
     public AbstractViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -148,11 +160,11 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
         switch (viewType) {
             case 0:
                 itemView = LayoutInflater.from(context).inflate(R.layout.card_view_room_title, viewGroup, false);
-                holder = new RoomTitleViewHolder(itemView);
+                holder = new RoomTitleViewHolder(itemView, room.getFloor().getColor());
                 break;
             default:
                 itemView = LayoutInflater.from(context).inflate(R.layout.card_view_room_attribute, viewGroup, false);
-                holder = new RoomAttributeViewHolder(itemView);
+                holder = new RoomAttributeViewHolder(itemView, room.getFloor().getColor());
                 break;
         }
 
@@ -287,11 +299,12 @@ class RoomTitleViewHolder extends AbstractViewHolder {
     /** The image view which on click starts the navigation to the room. */
     ImageView navigationIcon;
 
-    RoomTitleViewHolder(View view) {
+    RoomTitleViewHolder(View view, @ColorInt int color) {
         super(view);
         titleTextView = view.findViewById(R.id.roomTitleTextView);
         detailTextView = view.findViewById(R.id.roomDetailTextView);
         navigationIcon = view.findViewById(R.id.roomNavigationIcon);
+        navigationIcon.setColorFilter(color);
     }
 }
 
@@ -400,11 +413,12 @@ class RoomAttributeViewHolder extends AbstractViewHolder {
     /** The selection view. */
     View selectionView;
 
-    RoomAttributeViewHolder(View view) {
+    RoomAttributeViewHolder(View view, @ColorInt int color) {
         super(view);
         roomAttributeTitleTextView = view.findViewById(R.id.roomAttributeTitleTextView);
         roomAttributeDetailTextView = view.findViewById(R.id.roomAttributeDetailTextView);
         iconView = view.findViewById(R.id.roomAttributeImageView);
+        iconView.setColorFilter(color);
         selectionView = view.findViewById(R.id.roomAttributeSelectionView);
     }
 }

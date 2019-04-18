@@ -1,6 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreApp;
 
 import android.graphics.Color;
+import android.support.annotation.ColorInt;
 
 import java.util.Map;
 
@@ -16,7 +17,8 @@ public class ColorUtility {
      * The default color to return when a color could not parsed.
      * The color matches Newcastle University's main blue color.
      */
-    public static Color DEFAULT_COLOR = Color.valueOf(1, 57, 99);
+    @ColorInt
+    public static int DEFAULT_COLOR = Color.rgb(1, 57, 99);
 
     /**
      * Parses a color from a map of RGB values.
@@ -25,7 +27,8 @@ public class ColorUtility {
      * @param dictionary The map containing the color's RGB values.
      * @return The parsed color.
      */
-    public static Color valueOf(Map<String, Long> dictionary) {
+    @ColorInt
+    public static int valueOf(Map<String, Long> dictionary) {
         if (dictionary == null) {
             return DEFAULT_COLOR;
         }
@@ -39,6 +42,6 @@ public class ColorUtility {
         if (red == null || green == null || blue == null) {
             return DEFAULT_COLOR;
         }
-        return Color.valueOf(red.floatValue(), green.floatValue(), blue.floatValue());
+        return Color.rgb(red.intValue(), green.intValue(), blue.intValue());
     }
 }

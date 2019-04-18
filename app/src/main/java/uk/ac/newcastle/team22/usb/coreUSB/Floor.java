@@ -1,7 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.support.annotation.ColorInt;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,8 @@ public class Floor implements FirestoreConstructable<Floor> {
     private Map<String, Room> rooms;
 
     /** The color which represents the floor. */
-    private Color color;
+    @ColorInt
+    private int color;
 
     /** Empty constructor. */
     public Floor() {}
@@ -45,7 +46,7 @@ public class Floor implements FirestoreConstructable<Floor> {
     }
 
     /** Helper constructor for testing. */
-    public Floor(int number, Color color) {
+    public Floor(int number, @ColorInt int color) {
         this.number = number;
         this.rooms = new HashMap<>();
         this.color = color;
@@ -96,7 +97,8 @@ public class Floor implements FirestoreConstructable<Floor> {
     /**
      * @return The color which represents the floor.
      */
-    public Color getColor() {
+    @ColorInt
+    public int getColor() {
         return color;
     }
 
