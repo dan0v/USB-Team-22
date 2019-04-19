@@ -28,6 +28,11 @@ public class Cafe {
         this.openingHours = update.getOpeningHours().get(OpeningHours.Service.CAFE);
     }
 
+    /** Helper constructor for testing */
+    public Cafe(CafeMenuItem item){
+        this.items = new ArrayList<>();
+        this.items.add(item);
+    }
     /**
      * @return The items, food or drink, which are served at the café.
      */
