@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="?android:attr/listPreferredItemHeight">
     <RelativeLayout
+        android:id="@+id/staffMemberContactSelectionView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/staffMemberContactSelectionView"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
         <ImageView
             android:id="@+id/staffMemberContactImageView"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_centerVertical="true"
-            android:layout_marginRight="6dp"
+            android:layout_marginRight="6dip"
             android:layout_marginLeft="15dp"
             android:tint="@color/colorPrimary"
             android:src="@drawable/email"/>
+
         <TextView
             android:id="@+id/staffMemberContactTextView"
             android:layout_width="fill_parent"
@@ -26,6 +27,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
+            android:layout_alignWithParentIfMissing="true"
             android:layout_toRightOf="@id/staffMemberContactImageView"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"

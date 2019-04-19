@@ -31,6 +31,10 @@
             android:label="@string/urbanSciencesBuildingShorthand"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.DashboardActivity"
+            android:label="Dashboard"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.NavigationActivity"
             android:label="@string/navigation"
             android:screenOrientation="portrait"
