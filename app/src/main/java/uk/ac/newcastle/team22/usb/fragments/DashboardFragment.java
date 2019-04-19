@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
+import uk.ac.newcastle.team22.usb.coreUSB.OpeningHours;
+import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.activities.NavigationActivity;
 import uk.ac.newcastle.team22.usb.activities.SearchActivity;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
@@ -77,9 +79,34 @@ public class DashboardFragment extends Fragment implements USBFragment {
         cards.add(navigationShortcut);
 
         // Add building statuses.
-        DashboardStatusCardData buildingOpen = new DashboardStatusCardData(DashboardStatusCardData.Status.BUILDING, DashboardStatusCardData.IndicatorColor.GREEN);
-        DashboardStatusCardData outOfHours = new DashboardStatusCardData(DashboardStatusCardData.Status.OUT_OF_HOURS, DashboardStatusCardData.IndicatorColor.GREEN);
-        DashboardStatusCardData cafe = new DashboardStatusCardData(DashboardStatusCardData.Status.CAFE, DashboardStatusCardData.IndicatorColor.GREEN);
+        OpeningHours cafeOpeningHours = USBManager.shared.getBuilding().getCafe().getOpeningHours();
+        OpeningHours outOfHoursAccess = USBManager.shared.getBuilding().getOutOfHours();
+        OpeningHours buildingHours = USBManager.shared.getBuilding().getOpeningHours();
+        DashboardStatusCardData buildingOpen;
+        DashboardStatusCardData outOfHours;
+        DashboardStatusCardData cafe;
+
+        if (buildingHours.isOpen()) {
+            buildingOpen = new DashboardStatusCardData(DashboardStatusCardData.Status.BUILDING, DashboardStatusCardData.IndicatorColor.GREEN);
+        }
+        else {
+            buildingOpen = new DashboardStatusCardData(DashboardStatusCardData.Status.BUILDING, DashboardStatusCardData.IndicatorColor.RED);
+        }
+
+        if (outOfHoursAccess.isOpen()) {
+            outOfHours = new DashboardStatusCardData(DashboardStatusCardData.Status.OUT_OF_HOURS, DashboardStatusCardData.IndicatorColor.GREEN);
+        }
+        else {
+            outOfHours = new DashboardStatusCardData(DashboardStatusCardData.Status.OUT_OF_HOURS, DashboardStatusCardData.IndicatorColor.RED);
+        }
+
+        if (cafeOpeningHours.isOpen()) {
+           cafe = new DashboardStatusCardData(DashboardStatusCardData.Status.CAFE, DashboardStatusCardData.IndicatorColor.GREEN);
+        }
+        else {
+            cafe = new DashboardStatusCardData(DashboardStatusCardData.Status.CAFE, DashboardStatusCardData.IndicatorColor.RED);
+        }
+
         cards.add(buildingOpen);
         cards.add(outOfHours);
         cards.add(cafe);
