@@ -3,58 +3,47 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_margin"
         android:elevation="3dp"
         card_view:cardCornerRadius="@dimen/card_navigation_radius">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tourLocationNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingTop="@dimen/tour_name_text_padding"
-                android:paddingBottom="@dimen/tour_location_image_padding"
-                android:paddingLeft="@dimen/tour_name_text_padding"
-                android:paddingRight="@dimen/tour_name_text_padding"
-                android:text="Name"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/tour_name_text" />
-
             <ImageView
                 android:id="@+id/tourLocationImage"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tour_location_image_height"
-                android:layout_below="@id/tourLocationNameText"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:paddingTop="@dimen/tour_location_image_padding"
-                android:paddingBottom="@dimen/tour_location_image_padding"
+                android:layout_marginBottom="@dimen/tour_location_image_padding"
                 android:clickable="false"
                 android:scaleType="centerCrop"
-                android:src="@drawable/usb_hero" />
-
+                android:src="@drawable/usb_hero"/>
+            <TextView
+                android:id="@+id/tourLocationNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tourLocationImage"
+                android:gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="5dp"
+                android:text="Location Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
             <TextView
                 android:id="@+id/tourDescriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tourLocationImage"
-                android:gravity="left|center"
-                android:paddingTop="@dimen/tour_location_image_padding"
-                android:paddingBottom="@dimen/tour_description_text_padding"
-                android:paddingLeft="@dimen/tour_description_text_padding"
-                android:paddingRight="@dimen/tour_description_text_padding"
+                android:layout_below="@id/tourLocationNameText"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:paddingBottom="15dp"
                 android:text="Description"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/tour_description_text" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
         </RelativeLayout>
 
