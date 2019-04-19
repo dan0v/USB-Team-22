@@ -90,7 +90,7 @@
     <string name="floor">Floor</string>
     <string name="room">Room</string>
     <string name="searchNavigationOriginHint">Select your current location</string>
-    <string name="searchNavigationDestinationHint">Select your current location</string>
+    <string name="searchNavigationDestinationHint">Select your destination</string>
     <!--search end-->
 
     <!--opening hours start-->
