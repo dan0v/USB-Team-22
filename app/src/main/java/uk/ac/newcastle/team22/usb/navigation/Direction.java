@@ -69,7 +69,7 @@ public enum Direction {
     public static List<Direction> parseDirections(List<Edge> edges) throws IllegalArgumentException {
         // Stop crashes when navigating from a node to itself.
         if (edges.size() == 0) {
-            return new ArrayList<Direction>();
+            return new ArrayList();
         }
 
         List<Direction> directions = new ArrayList();
@@ -131,32 +131,26 @@ public enum Direction {
                 directions.add(FORWARD);
                 continue;
             }
-
             if (currentAngle > -60 && currentAngle <= -25) {
                 directions.add(MODERATE_LEFT);
                 continue;
             }
-
             if (currentAngle > -120 && currentAngle <= -60) {
                 directions.add(LEFT);
                 continue;
             }
-
             if (currentAngle >= -180 && currentAngle <= -120) {
                 directions.add(SHARP_LEFT);
                 continue;
             }
-
             if (currentAngle < 60 && currentAngle >= 25) {
                 directions.add(MODERATE_RIGHT);
                 continue;
             }
-
             if (currentAngle < 120 && currentAngle >= 60) {
                 directions.add(RIGHT);
                 continue;
             }
-
             if (currentAngle <= 180 && currentAngle >= 120) {
                 directions.add(SHARP_RIGHT);
                 continue;

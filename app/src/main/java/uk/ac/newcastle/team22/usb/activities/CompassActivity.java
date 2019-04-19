@@ -3,6 +3,7 @@ package uk.ac.newcastle.team22.usb.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -37,10 +38,9 @@ public class CompassActivity extends USBActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
 
-        // Hide activity's title and replace with custom drawn back button.
+        // Hide activity's title and hide action bar shadow.
         setTitle("");
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(0);
 
         compassBorder = findViewById(R.id.navigation_compass_border);
         setupCompass();
@@ -52,6 +52,21 @@ public class CompassActivity extends USBActivity {
         if (!isTour) {
             compassTourHint.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.compass_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.compassActionDone) {
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -123,14 +138,5 @@ public class CompassActivity extends USBActivity {
                 });
             }
         };
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            this.finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

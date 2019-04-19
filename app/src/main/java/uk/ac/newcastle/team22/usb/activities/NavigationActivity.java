@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -120,8 +119,6 @@ public class NavigationActivity extends USBActivity {
             route = Navigator.shared.getRoute(start, destination, navigationRequiresLifts());
             isTour = false;
         }
-
-        Log.d("NavigationRoute", route.toString());
 
         populateRecyclerView(route);
 

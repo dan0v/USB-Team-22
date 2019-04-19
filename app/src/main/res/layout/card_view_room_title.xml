@@ -9,7 +9,6 @@
         android:layout_toLeftOf="@id/roomNavigationIcon"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/staffMemberProfilePictureImageView"
         android:layout_marginLeft="12dp"
         android:paddingTop="22dp"
         android:text="Staff Member Name"

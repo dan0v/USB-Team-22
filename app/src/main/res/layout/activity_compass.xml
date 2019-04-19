@@ -7,30 +7,33 @@
     <TextView
         android:id="@+id/navigation_tour_compass_hint"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/search_navigation_hint"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
         android:text="@string/navigationTourCompassHint"
         android:textColor="@color/colorWhite"
-        android:textSize="16sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"
         android:background="@color/colorPrimary"
         android:gravity="center"/>
-
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/search_navigation_hint"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/navigation_tour_compass_hint"
         android:text="@string/navigationCompassHint"
         android:textColor="@color/colorWhite"
-        android:textSize="16sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
         android:background="@color/colorPrimary"
         android:gravity="center"/>
-
     <ImageView
         android:id="@+id/navigation_compass_border"
         android:layout_width="@dimen/navigation_compass_size"
         android:layout_height="@dimen/navigation_compass_size"
         android:layout_centerInParent="true"
         android:src="@drawable/navigation_compass_border" />
-
     <ImageView
         android:id="@+id/navigation_compass_needle"
         android:layout_width="@dimen/navigation_compass_size"

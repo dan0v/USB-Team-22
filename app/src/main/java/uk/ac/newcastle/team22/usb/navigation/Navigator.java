@@ -66,11 +66,11 @@ public class Navigator {
 
         // Do not calculate route from node to itself.
         if (origin.equals(destination)) {
-            return new ArrayList<Edge>();
+            return new ArrayList();
         }
 
         bestRouteWeight = Double.MAX_VALUE;
-        bestRoute = new ArrayList<>();
+        bestRoute = new ArrayList();
 
         // Find shortest route between origin and destination nodes using backtracking.
         recursiveExplore(origin, destination, origin.getFloorNumber(), new ArrayList<Node>(), accessibility, new ArrayList<Edge>(), 0);
@@ -81,7 +81,7 @@ public class Navigator {
      * @return List of edges to traverse for the Urban Sciences Building guided tour.
      */
     public List<Edge> getTourRoute() {
-        List<Edge> tourRoute = new ArrayList<Edge>();
+        List<Edge> tourRoute = new ArrayList();
         Map<Integer, Node> nodeMap = USBManager.shared.getBuilding().getNavigationNodes();
         for (int tourNodeID : USBManager.shared.getBuilding().getTourNodeIdentifiers()) {
             Node currentNode = nodeMap.get(tourNodeID);
@@ -139,7 +139,7 @@ public class Navigator {
             // Current shortest route found.
             if (currentEdge.getDestination().equals(finalDestinationNode)) {
                 candidateRoute.add(currentEdge);
-                bestRoute = new ArrayList<>(candidateRoute);
+                bestRoute = new ArrayList(candidateRoute);
                 bestRouteWeight = candidateWeight + currentEdge.weight;
 
                 // After best route has been updated, remove current edge from candidate route to move back through recursive call chain and explore along the next edge.
