@@ -51,8 +51,8 @@ public class SearchActivity extends USBActivity {
     /** The destination location name for navigation */
     private String destinationLocationName;
 
-    /** A boolean for entering explicit navigation mode */
-    private boolean isExplicitNavigation;
+    /** A boolean for searching for a navigation destination */
+    private boolean isSelectingNavigationDestination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,12 +99,12 @@ public class SearchActivity extends USBActivity {
         destinationLocationName = getIntent().getStringExtra("destinationLocationName");
 
         // Set search mode.
-        isExplicitNavigation = getIntent().getBooleanExtra("isExplicitNavigation", false);
+        isSelectingNavigationDestination = getIntent().getBooleanExtra("isExplicitNavigation", false);
 
         if (isSelectingNavigationOrigin()) {
             navigationHint.setVisibility(View.VISIBLE);
             navigationHint.setText(R.string.searchNavigationOriginHint);
-        } else if (isExplicitNavigation) {
+        } else if (isSelectingNavigationDestination) {
             navigationHint.setVisibility(View.VISIBLE);
             navigationHint.setText(R.string.searchNavigationDestinationHint);
         } else {
@@ -124,7 +124,7 @@ public class SearchActivity extends USBActivity {
                     intent.putExtra("startLocationName", room.getFormattedName(getApplicationContext()));
                     intent.putExtra("destinationLocationName", destinationLocationName);
                     startActivity(intent);
-                } else if (isExplicitNavigation) {
+                } else if (isSelectingNavigationDestination) {
                     Room room = (Room) selected.getResult();
                     Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
                     intent.putExtra("destinationNodeIdentifier", room.getNavigationNode().getNodeIdentifier());
@@ -207,7 +207,7 @@ public class SearchActivity extends USBActivity {
             @Override
             public boolean onQueryTextChange(String query) {
                 Search search;
-                if (isSelectingNavigationOrigin() || isExplicitNavigation) {
+                if (isSelectingNavigationOrigin() || isSelectingNavigationDestination) {
                     search = new Search(query, Room.class);
                 } else {
                     search = new Search(query, null);
@@ -280,7 +280,7 @@ public class SearchActivity extends USBActivity {
                 final Room room = (Room) searchResult;
                 title.setText(room.getFormattedName(context));
                 detail.setText(room.getFloor().getFormattedName(context));
-                if (!isSelectingNavigationOrigin() && !isExplicitNavigation) {
+                if (!isSelectingNavigationOrigin() && !isSelectingNavigationDestination) {
                     navigationIcon.setVisibility(View.VISIBLE);
                 }
                 // Set the action of the navigation button.
