@@ -75,6 +75,15 @@
 
     <!--dashboard start-->
     <string name="dashboard">Dashboard</string>
+    <string name="titleTour">Tour Guide</string>
+    <string name="descTour">Take a tour</string>
+    <string name="titleNav">Get Directions</string>
+    <string name="descNav">Find a room</string>
+    <string name="roomName">Room Name</string>
+    <string name="available">Available PCs</string>
+    <string name="building">Building</string>
+    <string name="outOfHours">Out Of Hours</string>
+    <string name="navigationIcon">Navigation icon</string>
     <!--dashboard end-->
 
     <!--search start-->
