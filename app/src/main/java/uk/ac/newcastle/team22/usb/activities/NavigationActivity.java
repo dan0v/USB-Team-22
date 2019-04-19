@@ -94,6 +94,7 @@ public class NavigationActivity extends USBActivity {
             destinationLocation.setVisibility(View.GONE);
 
             // Clear navigation tags text - temporary visual fix.
+            setTitle(R.string.tourTitle);
             TextView startTag = findViewById(R.id.navigation_start_tag);
             TextView destinationTag = findViewById(R.id.navigation_destination_tag);
             startTag.setVisibility(View.GONE);

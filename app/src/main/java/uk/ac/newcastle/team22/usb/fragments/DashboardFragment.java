@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
+import uk.ac.newcastle.team22.usb.activities.NavigationActivity;
 import uk.ac.newcastle.team22.usb.activities.SearchActivity;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractViewHolder;
@@ -134,12 +135,14 @@ class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
                     public void onClick(View v) {
                         switch (item.getShortcut()) {
                             case TOUR:
-                                // TODO: Show tour.
+                                Intent navIntent = new Intent(v.getContext(), NavigationActivity.class);
+                                v.getContext().startActivity(navIntent);
                                 break;
                             case NAVIGATION:
                                 Intent intent = new Intent(v.getContext(), SearchActivity.class);
                                 intent.putExtra("isExplicitNavigation", true);
                                 v.getContext().startActivity(intent);
+                                break;
                             default:
                                 break;
                         }

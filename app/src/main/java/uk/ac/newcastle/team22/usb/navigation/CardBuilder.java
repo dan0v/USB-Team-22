@@ -1,6 +1,7 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,6 @@ public class CardBuilder {
      * nodes.
      * @param edges list of edges whose directions should be parsed.
      * @return List of direction enums.
-     * @throws IllegalArgumentException
      */
     public static List<AbstractCardData> buildCards(List<Edge> edges, Context context) {
         List<AbstractCardData> cards = new ArrayList();
@@ -42,6 +42,7 @@ public class CardBuilder {
                 tourNodes.add(currentEdge.getOrigin());
                 distances.add(i, 0.0);
                 parsedDirections.add(i, Direction.TOUR_LOCATION);
+                i++;
             }
 
             // Display the floor to exit lifts at.
@@ -75,10 +76,11 @@ public class CardBuilder {
         // Construct cards.
         int currentTourNodeIndex = 0;
         int currentFloorChange = 0;
+        
         for (int j = 0; j < parsedDirections.size(); j++) {
             if (parsedDirections.get(j).equals(Direction.TOUR_LOCATION)) {
                 Node currentNode = tourNodes.get(currentTourNodeIndex);
-                TourCardData currentCard = new TourCardData(currentNode.getName(), currentNode.getDescription(), currentNode.getImage());
+                TourCardData currentCard = new TourCardData(currentNode.getName(), (currentNode.getDescription().replace("\\n", "\n")), currentNode.getImage());
                 cards.add(currentCard);
                 currentTourNodeIndex++;
             } else {
@@ -99,6 +101,12 @@ public class CardBuilder {
                     String directionText = context.getString(parsedDirections.get(j).getLocalisedDirection());
                     int distance = ((int) Math.round(distances.get(j)));
                     String distanceText;
+
+                    // Ignore tour directions in the same location.
+                    if (distance == 0) {
+                        continue;
+                    }
+
                     if (distance == 1) {
                         distanceText = context.getString(R.string.navigationStep);
                     }

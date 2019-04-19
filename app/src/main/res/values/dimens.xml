@@ -26,7 +26,7 @@
     <dimen name="navigation_distance_text">15sp</dimen>
     <dimen name="navigation_distance_text_width">60dp</dimen>
 
-    <dimen name="tour_location_image_height">140dp</dimen>
+    <dimen name="tour_location_image_height">250dp</dimen>
     <dimen name="tour_location_image_width">60dp</dimen>
     <dimen name="tour_location_image_padding">10dp</dimen>
     <dimen name="tour_description_text_padding">20dp</dimen>

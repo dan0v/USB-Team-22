@@ -32,7 +32,7 @@
 
             <ImageView
                 android:id="@+id/tourLocationImage"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/tour_location_image_height"
                 android:layout_below="@id/tourLocationNameText"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tourLocationImage"
-                android:gravity="center"
+                android:gravity="left|center"
                 android:paddingTop="@dimen/tour_location_image_padding"
                 android:paddingBottom="@dimen/tour_description_text_padding"
                 android:paddingLeft="@dimen/tour_description_text_padding"
