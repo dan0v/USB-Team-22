@@ -78,7 +78,7 @@ public class CardBuilder {
         for (int j = 0; j < parsedDirections.size(); j++) {
             if (parsedDirections.get(j).equals(Direction.TOUR_LOCATION)) {
                 Node currentNode = tourNodes.get(currentTourNodeIndex);
-                TourCardData currentCard = new TourCardData(currentNode.getName(), currentNode.getDescription(), currentNode.getImageIdentifier());
+                TourCardData currentCard = new TourCardData(currentNode.getName(), currentNode.getDescription(), currentNode.getImage());
                 cards.add(currentCard);
                 currentTourNodeIndex++;
             } else {

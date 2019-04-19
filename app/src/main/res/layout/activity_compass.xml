@@ -5,8 +5,19 @@
     android:background="@color/colorPrimary">
 
     <TextView
+        android:id="@+id/navigation_tour_compass_hint"
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_navigation_hint"
+        android:text="@string/navigationTourCompassHint"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_navigation_hint"
+        android:layout_below="@id/navigation_tour_compass_hint"
         android:text="@string/navigationCompassHint"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"

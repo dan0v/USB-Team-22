@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.navigation.Compass;
@@ -42,6 +44,14 @@ public class CompassActivity extends USBActivity {
 
         compassBorder = findViewById(R.id.navigation_compass_border);
         setupCompass();
+
+        Intent intent = getIntent();
+        // Show or hide tour hint.
+        boolean isTour = intent.getBooleanExtra("isTour", false);
+        TextView compassTourHint = findViewById(R.id.navigation_tour_compass_hint);
+        if (!isTour) {
+            compassTourHint.setVisibility(View.GONE);
+        }
     }
 
     @Override

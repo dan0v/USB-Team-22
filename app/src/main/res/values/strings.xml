@@ -43,6 +43,7 @@
 
     <string name="navigationCompass">Compass</string>
     <string name="navigationCompassHint">Turn to align the arrows</string>
+    <string name="navigationTourCompassHint">The building tour begins at the main entrance</string>
 
     <!--navigation end-->
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -85,6 +86,7 @@ public class NavigationActivity extends USBActivity {
 
         // Tour mode or navigation mode. Default to tour mode if something goes wrong with navigation.
         List<Edge> route;
+        boolean isTour;
         if (startNodeIdentifier == -1 || destinationNodeIdentifier == -1) {
             // Tour mode.
             startLocation.setText("Urban Sciences Building Tour");
@@ -98,6 +100,7 @@ public class NavigationActivity extends USBActivity {
             destinationTag.setVisibility(View.GONE);
 
             route = Navigator.shared.getTourRoute();
+            isTour = true;
         } else {
             // Navigation mode.
             Map<Integer, Node> nodes = USBManager.shared.getBuilding().getNavigationNodes();
@@ -114,7 +117,11 @@ public class NavigationActivity extends USBActivity {
             destination = nodes.get(destinationNodeIdentifier);
 
             route = Navigator.shared.getRoute(start, destination, navigationRequiresLifts());
+            isTour = false;
         }
+
+        Log.d("NavigationRoute", route.toString());
+
         populateRecyclerView(route);
 
         // Display compass to align user to directions.
@@ -122,6 +129,7 @@ public class NavigationActivity extends USBActivity {
         if (azimuthOffset != -1) {
             Intent compassIntent = new Intent(NavigationActivity.this, CompassActivity.class);
             compassIntent.putExtra("azimuthOffset", azimuthOffset);
+            compassIntent.putExtra("isTour", isTour);
             startActivity(compassIntent);
         }
     }

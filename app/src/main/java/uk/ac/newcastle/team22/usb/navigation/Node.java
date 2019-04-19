@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
 
@@ -103,11 +104,51 @@ public class Node implements FirestoreConstructable<Node> {
     }
 
     /**
-     * @return Image name of this Tour Node's location.
+     * @return Image of this Tour Node's location.
      */
-    public int getImageIdentifier() {
+    public int getImage() {
         if (!this.isTourNode) {throw new IllegalArgumentException("Non TourNode is being treated as TourNode.");}
-        return imageIdentifier;
+
+        switch (imageIdentifier) {
+            case 1:
+                return R.drawable.tour_image_1;
+            case 2:
+                return R.drawable.tour_image_2;
+            case 3:
+                return R.drawable.tour_image_3;
+            case 4:
+                return R.drawable.tour_image_4;
+            case 5:
+                return R.drawable.tour_image_5;
+            case 6:
+                return R.drawable.tour_image_6;
+            case 7:
+                return R.drawable.tour_image_7;
+            case 8:
+                return R.drawable.tour_image_8;
+            case 9:
+                return R.drawable.tour_image_9;
+            case 10:
+                return R.drawable.tour_image_10;
+            case 11:
+                return R.drawable.tour_image_11;
+            case 12:
+                return R.drawable.tour_image_12;
+            case 13:
+                return R.drawable.tour_image_13;
+            case 14:
+                return R.drawable.tour_image_14;
+            case 15:
+                return R.drawable.tour_image_15;
+            case 16:
+                return R.drawable.tour_image_16;
+            case 17:
+                return R.drawable.tour_image_17;
+            case 18:
+                return R.drawable.tour_image_18;
+            default:
+                return R.drawable.usb_hero;
+        }
     }
 
     /**
