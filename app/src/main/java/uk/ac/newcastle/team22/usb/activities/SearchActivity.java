@@ -51,6 +51,9 @@ public class SearchActivity extends USBActivity {
     /** The destination location name for navigation */
     private String destinationLocationName;
 
+    /** A boolean for entering explicit navigation mode */
+    private boolean isExplicitNavigation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_search);
@@ -94,8 +97,16 @@ public class SearchActivity extends USBActivity {
         TextView navigationHint = findViewById(R.id.searchNavigationHint);
         destinationNodeIdentifier = getIntent().getIntExtra("destinationNodeIdentifier", -1);
         destinationLocationName = getIntent().getStringExtra("destinationLocationName");
+
+        // Set search mode.
+        isExplicitNavigation = getIntent().getBooleanExtra("isExplicitNavigation", false);
+
         if (isSelectingNavigationOrigin()) {
             navigationHint.setVisibility(View.VISIBLE);
+            navigationHint.setText(R.string.searchNavigationOriginHint);
+        } else if (isExplicitNavigation) {
+            navigationHint.setVisibility(View.VISIBLE);
+            navigationHint.setText(R.string.searchNavigationDestinationHint);
         } else {
             navigationHint.setVisibility(View.GONE);
         }
@@ -112,6 +123,12 @@ public class SearchActivity extends USBActivity {
                     intent.putExtra("destinationNodeIdentifier", destinationNodeIdentifier);
                     intent.putExtra("startLocationName", room.getFormattedName(getApplicationContext()));
                     intent.putExtra("destinationLocationName", destinationLocationName);
+                    startActivity(intent);
+                } else if (isExplicitNavigation) {
+                    Room room = (Room) selected.getResult();
+                    Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
+                    intent.putExtra("destinationNodeIdentifier", room.getNavigationNode().getNodeIdentifier());
+                    intent.putExtra("destinationLocationName", room.getFormattedName(getApplicationContext()));
                     startActivity(intent);
                 } else {
                     presentSearchResult(selected.getResult());
@@ -190,7 +207,7 @@ public class SearchActivity extends USBActivity {
             @Override
             public boolean onQueryTextChange(String query) {
                 Search search;
-                if (isSelectingNavigationOrigin()) {
+                if (isSelectingNavigationOrigin() || isExplicitNavigation) {
                     search = new Search(query, Room.class);
                 } else {
                     search = new Search(query, null);
@@ -263,7 +280,7 @@ public class SearchActivity extends USBActivity {
                 final Room room = (Room) searchResult;
                 title.setText(room.getFormattedName(context));
                 detail.setText(room.getFloor().getFormattedName(context));
-                if (!isSelectingNavigationOrigin()) {
+                if (!isSelectingNavigationOrigin() && !isExplicitNavigation) {
                     navigationIcon.setVisibility(View.VISIBLE);
                 }
                 // Set the action of the navigation button.

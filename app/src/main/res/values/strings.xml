@@ -89,7 +89,8 @@
     <string name="groundFloorAbbreviated">G</string>
     <string name="floor">Floor</string>
     <string name="room">Room</string>
-    <string name="secondInstanceHint">Select your current location</string>
+    <string name="searchNavigationOriginHint">Select your current location</string>
+    <string name="searchNavigationDestinationHint">Select your current location</string>
     <!--search end-->
 
     <!--opening hours start-->
