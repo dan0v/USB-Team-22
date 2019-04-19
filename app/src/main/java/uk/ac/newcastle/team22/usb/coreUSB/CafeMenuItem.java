@@ -55,9 +55,11 @@ public class CafeMenuItem implements FirestoreConstructable<CafeMenuItem>, Searc
     /** Empty constructor. */
     public CafeMenuItem() {}
 
-    public CafeMenuItem(int price, String name) {
-        this.price = price;
+    public CafeMenuItem(String name, int price, CafeMenuItemCategory category, boolean isMealDeal) {
         this.name = name;
+        this.price = price;
+        this.category = category;
+        this.isMealDeal = isMealDeal;
     }
 
     /**
