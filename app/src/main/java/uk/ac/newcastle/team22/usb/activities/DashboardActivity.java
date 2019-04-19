@@ -22,6 +22,7 @@ import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractViewHolder;
 import uk.ac.newcastle.team22.usb.coreUSB.Floor;
+import uk.ac.newcastle.team22.usb.coreUSB.OpeningHours;
 import uk.ac.newcastle.team22.usb.coreUSB.Room;
 import uk.ac.newcastle.team22.usb.coreUSB.USB;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
@@ -46,12 +47,13 @@ public class DashboardActivity extends USBActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("myTag", "This is my message");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dashboard);
         dashboardCardList = new ArrayList();
         USBManager.shared.updateComputerAvailability();
         initData();
+
+        //On click of navigation button start the search activity
 
         navigationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +63,18 @@ public class DashboardActivity extends USBActivity {
             }
         });
 
+        //Chnage cafe widget circle on dashboard from red to green based on opening hours
+
+        View cafeAvailable = findViewById(R.id.available_cafe_icon);
+        OpeningHours openingHours = USBManager.shared.getBuilding().getCafe().getOpeningHours();
+        if (openingHours.isOpen()) {
+            cafeAvailable.setBackgroundColor(getResources().getColor(R.color.colorOpen, null));
+        } else {
+            cafeAvailable.setBackgroundColor(getResources().getColor(R.color.colorClosed, null));
+        }
+
         //Setting up RecyclerView
+
         recyclerView = (RecyclerView) findViewById(R.id.available_computers_view);
         adapter = new DashboardAdapter(dashboardCardList);
         recyclerView.setHasFixedSize(true);
@@ -71,17 +84,11 @@ public class DashboardActivity extends USBActivity {
         buildCards();
     }
 
-//    public void tourButton(View view) {
-//        Intent intent = new Intent(DashboardActivity.this, TourActivity.class);
-//        startActivity(intent);
-//    }
-
     /**
      * Take live data on computer availability from JSON and sort top 5 rooms with most
      * available computers
      */
-
-
+    
     private void initData() {
         USB building = USBManager.shared.getBuilding();
         List<Floor> floorsList = new ArrayList<Floor>(building.getFloors().values());

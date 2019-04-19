@@ -183,6 +183,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <View
+            android:id="@+id/available_cafe_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
@@ -213,6 +214,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <View
+            android:id="@+id/available_out_of_hours_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
@@ -244,6 +246,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <View
+            android:id="@+id/available_building_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
