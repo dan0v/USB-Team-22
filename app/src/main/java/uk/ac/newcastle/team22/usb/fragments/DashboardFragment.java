@@ -2,11 +2,14 @@ package uk.ac.newcastle.team22.usb.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -73,9 +76,9 @@ public class DashboardFragment extends Fragment implements USBFragment {
         cards.add(navigationShortcut);
 
         // Add building statuses.
-        DashboardStatusCardData buildingOpen = new DashboardStatusCardData(DashboardStatusCardData.Status.BUILDING);
-        DashboardStatusCardData outOfHours = new DashboardStatusCardData(DashboardStatusCardData.Status.OUT_OF_HOURS);
-        DashboardStatusCardData cafe = new DashboardStatusCardData(DashboardStatusCardData.Status.CAFE);
+        DashboardStatusCardData buildingOpen = new DashboardStatusCardData(DashboardStatusCardData.Status.BUILDING, DashboardStatusCardData.IndicatorColor.GREEN);
+        DashboardStatusCardData outOfHours = new DashboardStatusCardData(DashboardStatusCardData.Status.OUT_OF_HOURS, DashboardStatusCardData.IndicatorColor.GREEN);
+        DashboardStatusCardData cafe = new DashboardStatusCardData(DashboardStatusCardData.Status.CAFE, DashboardStatusCardData.IndicatorColor.GREEN);
         cards.add(buildingOpen);
         cards.add(outOfHours);
         cards.add(cafe);
@@ -151,6 +154,13 @@ class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
                 final DashboardStatusCardData item = (DashboardStatusCardData) cardList.get(position);
                 DashboardStatusViewHolder updatingHolder = (DashboardStatusViewHolder) viewHolder;
                 updatingHolder.titleTextView.setText(item.getStatus().getLocalisedTitle());
+
+                // Set the indicator color.
+                GradientDrawable indicator = new GradientDrawable();
+                int indicatorColor = ContextCompat.getColor(updatingHolder.indicatorView.getContext(), item.getIndicatorColor().getColor());
+                indicator.setColor(indicatorColor);
+                indicator.setShape(GradientDrawable.OVAL);
+                updatingHolder.indicatorView.setBackground(indicator);
             }
             default:
                 break;
@@ -283,6 +293,9 @@ class DashboardStatusCardData extends AbstractCardData {
     /** The status being displayed. */
     private Status status;
 
+    /** The indicator color of the building feature. */
+    private IndicatorColor indicatorColor;
+
     /** A Urban Sciences Building status. */
     enum Status {
         BUILDING, OUT_OF_HOURS, CAFE;
@@ -305,8 +318,29 @@ class DashboardStatusCardData extends AbstractCardData {
         }
     }
 
-    DashboardStatusCardData(Status status) {
+    /** The indicator color of the building feature. */
+    enum IndicatorColor {
+        GREEN, RED;
+
+        /**
+         * @return The color of the indicator.
+         */
+        @ColorRes
+        int getColor() {
+            switch (this) {
+                case GREEN:
+                    return R.color.colorOpen;
+                case RED:
+                    return R.color.colorClosed;
+                default:
+                    return 0;
+            }
+        }
+    }
+
+    DashboardStatusCardData(Status status, IndicatorColor color) {
         this.status = status;
+        this.indicatorColor = color;
     }
 
     /**
@@ -314,6 +348,13 @@ class DashboardStatusCardData extends AbstractCardData {
      */
     public Status getStatus() {
         return status;
+    }
+
+    /**
+     * @return The indicator color of the building feature.
+     */
+    public IndicatorColor getIndicatorColor() {
+        return indicatorColor;
     }
 }
 
