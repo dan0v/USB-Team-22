@@ -21,9 +21,6 @@ public class USBManager {
     /** The Urban Sciences Building. */
     private USB building;
 
-    /** The data fetcher for NUIT JSON data. */
-    private JSONDataFetcher dataFetcher = new JSONDataFetcher();
-
     /**
      * Prepares the Urban Sciences Building.
      *
@@ -109,13 +106,6 @@ public class USBManager {
      */
     public void setBuilding(USB building) {
         this.building = building;
-    }
-
-    /**
-     * Download and update local data using the Urban Sciences Building computer availability JSON provided by NUIT.
-     */
-    public void updateComputerAvailability() {
-        dataFetcher.execute();
     }
 
     /** Constructor. */

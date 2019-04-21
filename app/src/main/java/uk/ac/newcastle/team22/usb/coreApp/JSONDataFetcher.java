@@ -33,6 +33,15 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
 
     private final String USBJsonURL = "https://csi.ncl.ac.uk/usb/?json=y";
 
+    private AsyncResponse reference = null;
+
+    /**
+     * @param reference UI activity fetching JSON update.
+     */
+    public JSONDataFetcher(AsyncResponse reference) {
+        this.reference = reference;
+    }
+
     @Override
     public Void doInBackground(Void... voids) {
         try {
@@ -62,12 +71,24 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
                     Log.e("JSON Updater", "Room is missing from Firestore.: Floor: " + floor + " Room: " + number);
                 }
             }
+
+            // Successful update.
+            reference.onComplete();
+
         } catch (Exception e) {
-            Log.e("JSON", "Something went wrong with fetching JSON data.: ");
-            e.printStackTrace();
-            // TODO Notify user of "newcastle-university" wifi connection requirement.
+            if (e instanceof java.net.UnknownHostException) {
+                // Notify UI that there is a network issue.
+                reference.onBadNetwork();
+            } else {
+                Log.e("JSON", "Something went wrong with fetching JSON data.: ");
+                e.printStackTrace();
+            }
         }
         return null;
+    }
+
+    public void setReference(AsyncResponse reference) {
+        reference = reference;
     }
 
     private HostnameVerifier getHostnameVerifier() {

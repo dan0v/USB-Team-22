@@ -87,6 +87,7 @@
     <string name="building">Building</string>
     <string name="outOfHours">Out Of Hours</string>
     <string name="navigationIcon">Navigation icon</string>
+    <string name="badNetwork">Please connect to \"newcastle-university\" WiFi with your university credentials for live computer availability</string>
     <!--dashboard end-->
 
     <!--search start-->

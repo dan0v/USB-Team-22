@@ -2,30 +2,31 @@ package uk.ac.newcastle.team22.usb.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
-import uk.ac.newcastle.team22.usb.coreUSB.OpeningHours;
-import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.activities.NavigationActivity;
 import uk.ac.newcastle.team22.usb.activities.SearchActivity;
+import uk.ac.newcastle.team22.usb.coreApp.AsyncResponse;
+import uk.ac.newcastle.team22.usb.coreApp.JSONDataFetcher;
+import uk.ac.newcastle.team22.usb.coreUSB.Floor;
+import uk.ac.newcastle.team22.usb.coreUSB.OpeningHours;
+import uk.ac.newcastle.team22.usb.coreUSB.Room;
+import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractViewHolder;
 
@@ -34,12 +35,19 @@ import uk.ac.newcastle.team22.usb.coreApp.AbstractViewHolder;
  * This fragment is the default fragment to be displayed when the application is launched.
  *
  * @author Alexander MacLeod
+ * @author Daniel Vincent
  * @version 1.0
  */
 public class DashboardFragment extends Fragment implements USBFragment {
 
     /** The recycler view which displays the dashboard's content. */
     private RecyclerView recyclerView;
+
+    /** The list of cards to display in the recyclerview. */
+    private List<AbstractCardData> cardList = new ArrayList();
+
+    /** The class to update computer availability data. */
+    private JSONDataFetcher jsonDataFetcher;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,15 +58,37 @@ public class DashboardFragment extends Fragment implements USBFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Basic UI setup.
+        setupStaticElements(view);
+
         // Configure the recycler view.
         recyclerView = view.findViewById(R.id.dashboard_recycler_view);
 
-        List<AbstractCardData> details = buildCards();
-        DashboardAdapter adapter = new DashboardAdapter(details);
+        DashboardAdapter adapter = new DashboardAdapter(cardList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
+
+
+        // Download and update local data using the Urban Sciences Building computer availability JSON provided by NUIT.
+        jsonDataFetcher = new JSONDataFetcher(new AsyncResponse() {
+            @Override
+            public void onComplete() {
+                // If successful download of new data.
+                populateRecyclerView();
+            }
+
+            @Override
+            public void onBadNetwork() {
+                DashboardCardData card = new DashboardCardData(getString(R.string.badNetwork), "");
+                cardList.clear();
+                cardList.add(card);
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
+        });
+
+        jsonDataFetcher.execute();
     }
 
     @Override
@@ -67,63 +97,113 @@ public class DashboardFragment extends Fragment implements USBFragment {
     }
 
     /**
+     * Populate recycler view with card list.
+     */
+    public void populateRecyclerView() {
+        cardList.clear();
+        cardList.addAll(buildCards());
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    /**
+     * Set up static UI elements such as buttons and the colours for building open hours.
+     * @param view
+     */
+    private void setupStaticElements(View view) {
+        // Display out of hours info.
+        OpeningHours cafeOpeningHours = USBManager.shared.getBuilding().getCafe().getOpeningHours();
+        OpeningHours outOfHoursAccess = USBManager.shared.getBuilding().getOutOfHours();
+        OpeningHours buildingHours = USBManager.shared.getBuilding().getOpeningHours();
+        View cafe = view.findViewById(R.id.dashboardStatusIndicatorViewCafe);
+        View buildingOpen = view.findViewById(R.id.dashboardStatusIndicatorViewBuildingOpen);
+        View outOfHours = view.findViewById(R.id.dashboardStatusIndicatorViewOutOfHours);
+
+        if (buildingHours.isOpen()) {
+            buildingOpen.getBackground().setTint(getResources().getColor(R.color.colorOpen));
+        } else {
+            buildingOpen.getBackground().setTint(getResources().getColor(R.color.colorClosed));
+        }
+
+        if (outOfHoursAccess.isOpen()) {
+            outOfHours.getBackground().setTint(getResources().getColor(R.color.colorOpen));
+        } else {
+            outOfHours.getBackground().setTint(getResources().getColor(R.color.colorClosed));
+        }
+
+        if (cafeOpeningHours.isOpen()) {
+            cafe.getBackground().setTint(getResources().getColor(R.color.colorOpen));
+        } else {
+            cafe.getBackground().setTint(getResources().getColor(R.color.colorClosed));
+        }
+
+        CardView tourButton = view.findViewById(R.id.tour_card_view);
+        CardView navigationButton = view.findViewById(R.id.navigation_card_view);
+
+        tourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), NavigationActivity.class);
+                v.getContext().startActivity(intent);
+            }
+        });
+
+        navigationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), SearchActivity.class);
+                intent.putExtra("isExplicitNavigation", true);
+                v.getContext().startActivity(intent);
+            }
+        });
+    }
+
+    /**
      * @return The cards to display for the dashboard.
      */
     private List<AbstractCardData> buildCards() {
         List<AbstractCardData> cards = new ArrayList();
+        DashboardCardData card;
 
-        // Add tour and navigation shortcuts.
-        DashboardShortcutCardData tourShortcut = new DashboardShortcutCardData(DashboardShortcutCardData.Shortcut.TOUR);
-        DashboardShortcutCardData navigationShortcut = new DashboardShortcutCardData(DashboardShortcutCardData.Shortcut.NAVIGATION);
-        cards.add(tourShortcut);
-        cards.add(navigationShortcut);
-
-        // Add building statuses.
-        OpeningHours cafeOpeningHours = USBManager.shared.getBuilding().getCafe().getOpeningHours();
-        OpeningHours outOfHoursAccess = USBManager.shared.getBuilding().getOutOfHours();
-        OpeningHours buildingHours = USBManager.shared.getBuilding().getOpeningHours();
-        DashboardStatusCardData buildingOpen;
-        DashboardStatusCardData outOfHours;
-        DashboardStatusCardData cafe;
-
-        if (buildingHours.isOpen()) {
-            buildingOpen = new DashboardStatusCardData(DashboardStatusCardData.Status.BUILDING, DashboardStatusCardData.IndicatorColor.GREEN);
-        }
-        else {
-            buildingOpen = new DashboardStatusCardData(DashboardStatusCardData.Status.BUILDING, DashboardStatusCardData.IndicatorColor.RED);
+        List<Room> rooms = new ArrayList();
+        for (Floor floor : USBManager.shared.getBuilding().getFloors().values()) {
+            for (Room room : floor.getRooms().values()) {
+                rooms.add(room);
+            }
         }
 
-        if (outOfHoursAccess.isOpen()) {
-            outOfHours = new DashboardStatusCardData(DashboardStatusCardData.Status.OUT_OF_HOURS, DashboardStatusCardData.IndicatorColor.GREEN);
-        }
-        else {
-            outOfHours = new DashboardStatusCardData(DashboardStatusCardData.Status.OUT_OF_HOURS, DashboardStatusCardData.IndicatorColor.RED);
-        }
+        rooms.sort(new Comparator<Room>() {
+            @Override
+            public int compare(Room o1, Room o2) {
+                return o2.getComputers().getAvailable() - o1.getComputers().getAvailable();
+            }
+        });
 
-        if (cafeOpeningHours.isOpen()) {
-           cafe = new DashboardStatusCardData(DashboardStatusCardData.Status.CAFE, DashboardStatusCardData.IndicatorColor.GREEN);
+        for (Room room : rooms) {
+            if (room.getComputers().getAvailable() > 0) {
+                card = new DashboardCardData(room.getFormattedName(getContext()), room.getComputers().getAvailable() + "");
+                cards.add(card);
+            }
         }
-        else {
-            cafe = new DashboardStatusCardData(DashboardStatusCardData.Status.CAFE, DashboardStatusCardData.IndicatorColor.RED);
-        }
-
-        cards.add(buildingOpen);
-        cards.add(outOfHours);
-        cards.add(cafe);
 
         return cards;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // Prevent memory leaks.
+        jsonDataFetcher.setReference(null);
     }
 }
 
 /**
- * A class which defines the detail views of the dashboard.
+ * A class to define a room card on the dashboard.
  *
- * @author Alexander MacLeod
+ * @author Daniel Vincent
  * @version 1.0
  */
 class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
-
-    /** The list of cards. */
     private List<AbstractCardData> cardList;
 
     public DashboardAdapter(List<AbstractCardData> cardList) {
@@ -134,76 +214,17 @@ class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
         AbstractViewHolder holder;
         View itemView;
         Context context = viewGroup.getContext();
-
-        switch (viewType) {
-            case 0:
-                itemView = LayoutInflater.from(context).inflate(R.layout.card_view_dashboard_shortcut, viewGroup, false);
-                holder = new DashboardShortcutViewHolder(itemView);
-                break;
-            default:
-                itemView = LayoutInflater.from(context).inflate(R.layout.card_view_dashboard_status, viewGroup, false);
-                holder = new DashboardStatusViewHolder(itemView);
-                break;
-        }
-
+        itemView = LayoutInflater.from(context).inflate(R.layout.card_view_available_computers, viewGroup, false);
+        holder = new DashboardViewHolder(itemView);
         return holder;
     }
 
     public void onBindViewHolder(AbstractViewHolder viewHolder, int position) {
-        int viewType = getItemViewType(position);
-        switch (viewType) {
-            case 0: {
-                final DashboardShortcutCardData item = (DashboardShortcutCardData) cardList.get(position);
-                DashboardShortcutViewHolder updatingHolder = (DashboardShortcutViewHolder) viewHolder;
+        DashboardViewHolder updatingHolder = (DashboardViewHolder) viewHolder;
+        DashboardCardData item = (DashboardCardData) cardList.get(position);
+        updatingHolder.roomNameText.setText(item.getRoomNameText());
+        updatingHolder.computersAvailableText.setText(item.getComputersAvailableText());
 
-                updatingHolder.titleTextView.setText(item.getShortcut().getLocalisedTitle());
-                updatingHolder.detailTextView.setText(item.getShortcut().getLocalisedDetail());
-                updatingHolder.imageView.setImageResource(item.getShortcut().getIcon());
-
-                updatingHolder.selectionView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        switch (item.getShortcut()) {
-                            case TOUR:
-                                Intent navIntent = new Intent(v.getContext(), NavigationActivity.class);
-                                v.getContext().startActivity(navIntent);
-                                break;
-                            case NAVIGATION:
-                                Intent intent = new Intent(v.getContext(), SearchActivity.class);
-                                intent.putExtra("isExplicitNavigation", true);
-                                v.getContext().startActivity(intent);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                });
-                break;
-            }
-            case 1: {
-                final DashboardStatusCardData item = (DashboardStatusCardData) cardList.get(position);
-                DashboardStatusViewHolder updatingHolder = (DashboardStatusViewHolder) viewHolder;
-                updatingHolder.titleTextView.setText(item.getStatus().getLocalisedTitle());
-
-                // Set the indicator color.
-                GradientDrawable indicator = new GradientDrawable();
-                int indicatorColor = ContextCompat.getColor(updatingHolder.indicatorView.getContext(), item.getIndicatorColor().getColor());
-                indicator.setColor(indicatorColor);
-                indicator.setShape(GradientDrawable.OVAL);
-                updatingHolder.indicatorView.setBackground(indicator);
-            }
-            default:
-                break;
-        }
-    }
-
-    public int getItemViewType(int position) {
-        AbstractCardData card = cardList.get(position);
-        if (card instanceof DashboardShortcutCardData) {
-            return 0;
-        } else {
-            return 1;
-        }
     }
 
     public int getItemCount() {
@@ -212,230 +233,51 @@ class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
 }
 
 /**
- * A class which defines the data to be displayed by a {@link DashboardShortcutViewHolder}.
+ * A class to represent the information stored in a room card on the dashboard.
  *
- * @author Alexander MacLeod
+ * @author Daniel Vincent
  * @version 1.0
  */
-class DashboardShortcutCardData extends AbstractCardData {
+class DashboardCardData extends AbstractCardData {
 
-    /** The shortcut being displayed. */
-    private Shortcut shortcut;
+    private String roomNameText;
+    private String computersAvailableText;
 
-    /** A dashboard shortcut. */
-    enum Shortcut {
-        TOUR, NAVIGATION;
-
-        /**
-         * @return The localised title of the shortcut.
-         */
-        @StringRes
-        int getLocalisedTitle() {
-            switch (this) {
-                case TOUR:
-                    return R.string.titleTour;
-                case NAVIGATION:
-                    return R.string.titleNav;
-                default:
-                    return 0;
-            }
-        }
-
-        /**
-         * @return The localised detail of the shortcut.
-         */
-        @StringRes
-        int getLocalisedDetail() {
-            switch (this) {
-                case TOUR:
-                    return R.string.descTour;
-                case NAVIGATION:
-                    return R.string.descNav;
-                default:
-                    return 0;
-            }
-        }
-
-        /**
-         * @return The localised detail.
-         */
-        int getIcon() {
-            switch (this) {
-                case TOUR:
-                    return R.drawable.tour;
-                case NAVIGATION:
-                    return R.drawable.navigation;
-                default:
-                    return 0;
-            }
-        }
+    public DashboardCardData(String roomNameText, String computersAvailableText) {
+        this.roomNameText = roomNameText;
+        this.computersAvailableText = computersAvailableText;
     }
 
-    DashboardShortcutCardData(Shortcut shortcut) {
-        this.shortcut = shortcut;
+    public void setRoomNameText(String roomNameText) {
+        this.roomNameText = roomNameText;
     }
 
-    /**
-     * @return The shortcut being displayed.
-     */
-    public Shortcut getShortcut() {
-        return shortcut;
+    public String getRoomNameText() {
+        return roomNameText;
+    }
+
+    public void setComputersAvailableText(String computersAvailableText) {
+        this.computersAvailableText = computersAvailableText;
+    }
+
+    public String getComputersAvailableText() {
+        return computersAvailableText;
     }
 }
 
 /**
- * A class which defines the view to be display data from a {@link DashboardShortcutCardData}.
+ * A class which manages presenting the information in each room card.
  *
- * @author Alexander MacLeod
+ * @author Daniel Vincent
  * @version 1.0
  */
-class DashboardShortcutViewHolder extends AbstractViewHolder {
+class DashboardViewHolder extends AbstractViewHolder {
+    public TextView roomNameText;
+    public TextView computersAvailableText;
 
-    /** The text view which displays the shortcut title. */
-    TextView titleTextView;
-
-    /** The text view which displays the shortcut detail. */
-    TextView detailTextView;
-
-    /** The image view which displays an icon for the shortcut. */
-    ImageView imageView;
-
-    /** The selection view which displays the shortcut's content. */
-    View selectionView;
-
-    DashboardShortcutViewHolder(View view) {
+    public DashboardViewHolder(View view) {
         super(view);
-        titleTextView = view.findViewById(R.id.dashboardShortcutTitleTextView);
-        detailTextView = view.findViewById(R.id.dashboardShortcutDetailTextView);
-        imageView = view.findViewById(R.id.dashboardShortcutImageView);
-        selectionView = view.findViewById(R.id.dashboardShortcutSelectionView);
+        roomNameText = view.findViewById(R.id.roomNameText);
+        computersAvailableText = view.findViewById(R.id.computersAvailableText);
     }
 }
-
-/**
- * A class which defines the data to be displayed by a {@link DashboardStatusViewHolder}.
- *
- * @author Alexander MacLeod
- * @version 1.0
- */
-class DashboardStatusCardData extends AbstractCardData {
-
-    /** The status being displayed. */
-    private Status status;
-
-    /** The indicator color of the building feature. */
-    private IndicatorColor indicatorColor;
-
-    /** A Urban Sciences Building status. */
-    enum Status {
-        BUILDING, OUT_OF_HOURS, CAFE;
-
-        /**
-         * @return The localised title of the shortcut.
-         */
-        @StringRes
-        int getLocalisedTitle() {
-            switch (this) {
-                case BUILDING:
-                    return R.string.building;
-                case OUT_OF_HOURS:
-                    return R.string.outOfHours;
-                case CAFE:
-                    return R.string.cafe;
-                default:
-                    return 0;
-            }
-        }
-    }
-
-    /** The indicator color of the building feature. */
-    enum IndicatorColor {
-        GREEN, RED;
-
-        /**
-         * @return The color of the indicator.
-         */
-        @ColorRes
-        int getColor() {
-            switch (this) {
-                case GREEN:
-                    return R.color.colorOpen;
-                case RED:
-                    return R.color.colorClosed;
-                default:
-                    return 0;
-            }
-        }
-    }
-
-    DashboardStatusCardData(Status status, IndicatorColor color) {
-        this.status = status;
-        this.indicatorColor = color;
-    }
-
-    /**
-     * @return The status being displayed.
-     */
-    public Status getStatus() {
-        return status;
-    }
-
-    /**
-     * @return The indicator color of the building feature.
-     */
-    public IndicatorColor getIndicatorColor() {
-        return indicatorColor;
-    }
-}
-
-/**
- * A class which defines the view to be display data from a {@link DashboardStatusCardData}.
- *
- * @author Alexander MacLeod
- * @version 1.0
- */
-class DashboardStatusViewHolder extends AbstractViewHolder {
-
-    /** The text view which displays the status title. */
-    TextView titleTextView;
-
-    /** The indicator view representing the status of a feature. */
-    View indicatorView;
-
-    DashboardStatusViewHolder(View view) {
-        super(view);
-        titleTextView = view.findViewById(R.id.dashboardStatusTitleTextView);
-        indicatorView = view.findViewById(R.id.dashboardStatusIndicatorView);
-    }
-}
-
-/* OLD ALEX BEECHING CODE FOR REFERENCE
-
-//Chnage cafe widget circle on dashboard from red to green based on opening hours
-
-        View cafeAvailable = findViewById(R.id.available_cafe_icon);
-        OpeningHours openingHours = USBManager.shared.getBuilding().getCafe().getOpeningHours();
-        if (openingHours.isOpen()) {
-            cafeAvailable.setBackgroundColor(getResources().getColor(R.color.colorOpen, null));
-        } else {
-            cafeAvailable.setBackgroundColor(getResources().getColor(R.color.colorClosed, null));
-        }
-
-    private void initData() {
-        USB building = USBManager.shared.getBuilding();
-        List<Floor> floorsList = new ArrayList<Floor>(building.getFloors().values());
-        Map<String, Room> roomsMap = new HashMap<String, Room>();
-        Map<Integer, Room> availableMap = new TreeMap<Integer, Room>(Collections.reverseOrder());
-        for (Floor floor : floorsList) {
-            roomsMap.putAll(floor.getRooms());
-        }
-        for (Room room : roomsMap.values()) {
-            availableMap.put(room.getComputers().getAvailable(), room);
-        }
-        for (Map.Entry<Integer, Room> map : availableMap.entrySet()) {
-            displayMap.put(map.getValue().getFormattedNumber(), map.getKey());
-        }
-        nameList = new ArrayList<String>(displayMap.keySet());
-        computerList = new ArrayList<Integer>(displayMap.values());
-    }
- */
