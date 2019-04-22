@@ -82,11 +82,11 @@
     <string name="descTour">Take a tour</string>
     <string name="titleNav">Get Directions</string>
     <string name="descNav">Find a room</string>
-    <string name="roomName">Room Name</string>
-    <string name="available">Available PCs</string>
     <string name="building">Building</string>
     <string name="outOfHours">Out Of Hours</string>
     <string name="navigationIcon">Navigation icon</string>
+    <string name="availableComputers">Available PCs</string>
+    <string name="roomName">Room Name</string>
     <string name="badNetwork">Please connect to \"newcastle-university\" WiFi with your university credentials for live computer availability</string>
     <!--dashboard end-->
 

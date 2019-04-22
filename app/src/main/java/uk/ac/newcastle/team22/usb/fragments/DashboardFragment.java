@@ -76,15 +76,13 @@ public class DashboardFragment extends Fragment implements USBFragment {
             @Override
             public void onComplete() {
                 // If successful download of new data.
-                populateRecyclerView();
+                populateRecyclerView(true);
             }
 
             @Override
             public void onBadNetwork() {
-                DashboardCardData card = new DashboardCardData(getString(R.string.badNetwork), "");
-                cardList.clear();
-                cardList.add(card);
-                recyclerView.getAdapter().notifyDataSetChanged();
+                // If unsuccessful download of new data.
+                populateRecyclerView(false);
             }
         });
 
@@ -99,8 +97,12 @@ public class DashboardFragment extends Fragment implements USBFragment {
     /**
      * Populate recycler view with card list.
      */
-    public void populateRecyclerView() {
+    public void populateRecyclerView(boolean success) {
         cardList.clear();
+        if (!success) {
+            DashboardCardData card = new DashboardCardData(getString(R.string.badNetwork), "");
+            cardList.add(card);
+        }
         cardList.addAll(buildCards());
         recyclerView.getAdapter().notifyDataSetChanged();
     }

@@ -76,13 +76,10 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
             reference.onComplete();
 
         } catch (Exception e) {
-            if (e instanceof java.net.UnknownHostException) {
-                // Notify UI that there is a network issue.
-                reference.onBadNetwork();
-            } else {
-                Log.e("JSON", "Something went wrong with fetching JSON data.: ");
-                e.printStackTrace();
-            }
+            // Notify UI that there is a network issue.
+            reference.onBadNetwork();
+            Log.e("JSON", "Something went wrong with fetching JSON data.: ");
+            e.printStackTrace();
         }
         return null;
     }
