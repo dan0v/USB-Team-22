@@ -87,6 +87,8 @@
     <string name="building">Building</string>
     <string name="outOfHours">Out Of Hours</string>
     <string name="navigationIcon">Navigation icon</string>
+    <string name="availableComputers">Available</string>
+    <string name="roomName">Room</string>
     <string name="badNetworkTitle">Unable To Load</string>
     <string name="badNetworkDetail">Please connect to \"newcastle-university\" WiFi with your university credentials to view live computer availability</string>
     <!--dashboard end-->

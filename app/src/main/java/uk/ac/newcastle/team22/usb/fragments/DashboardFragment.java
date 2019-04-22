@@ -104,7 +104,7 @@ public class DashboardFragment extends Fragment implements USBFragment {
     public void populateRecyclerView(boolean success) {
         cardList.clear();
         if (!success) {
-            DashboardCardData card = new DashboardCardData(getString(R.string.badNetwork), "");
+            BadNetworkCardData card = new BadNetworkCardData();
             cardList.add(card);
         }
         cardList.addAll(buildCards());
