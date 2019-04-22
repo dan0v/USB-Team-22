@@ -1,7 +1,5 @@
 package uk.ac.newcastle.team22.usb;
 
-import android.graphics.Color;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,7 +44,7 @@ public class ARoomShould {
         // Create floor with one room.
         List<Floor> floors = new ArrayList<>();
         room = new Room(floor, "46" , resources, "Alan Tully", 109 , "Lecture Theatre");
-        floor = new Floor(2, new Color());
+        floor = new Floor(2, 0);
         room.attachFloor(floor);
         floor.attachRoom(room);
         floors.add(floor);
@@ -89,7 +87,7 @@ public class ARoomShould {
         resources.add(new Resource(ResourceType.PRINTER, 1));
         resources.add(new Resource(ResourceType.WHITEBOARD, 2));
         resources.add(new Resource(ResourceType.PROJECTOR, 1));
-        resources.add(new Resource(ResourceType.WORK_SPACE, 57));
+        resources.add(new Resource(ResourceType.WORKSPACE, 57));
 
         // Assert 2nd resource is of type PRINTER.
         assertEquals(room.getResources().get(1).getType(), ResourceType.PRINTER);
