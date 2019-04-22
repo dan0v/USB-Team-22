@@ -2,6 +2,51 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_weight="0.5"
+            android:layout_height="0dp">
+            <ImageView
+                android:id="@+id/search_splash_icon_view"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerHorizontal="true"
+                android:tint="#9B9B9B"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_above="@id/search_splash_title_view"
+                android:src="@drawable/search"/>
+            <TextView
+                android:id="@+id/search_splash_title_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                android:text="@string/searchSplashTitle"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+            <TextView
+                android:id="@+id/search_splash_detail_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/search_splash_title_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="@string/searchSplashDetails"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+        </RelativeLayout>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/searchNavigationHint"
         android:layout_width="match_parent"
@@ -15,5 +60,5 @@
         android:id="@+id/searchResultsListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchNavigationHint"/>
+        android:layout_below="@id/searchNavigationHint" />
 </RelativeLayout>

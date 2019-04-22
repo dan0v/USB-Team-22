@@ -107,6 +107,8 @@
     <string name="room">Room</string>
     <string name="searchNavigationOriginHint">Select your current location</string>
     <string name="searchNavigationDestinationHint">Select your destination</string>
+    <string name="searchSplashTitle">Search Building</string>
+    <string name="searchSplashDetails">Search rooms, facilities, staff and the café menu</string>
     <!--search end-->
 
     <!--opening hours start-->

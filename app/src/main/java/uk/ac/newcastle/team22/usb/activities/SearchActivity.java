@@ -48,10 +48,10 @@ public class SearchActivity extends USBActivity {
     /** The destination node identifier for navigation. */
     private int destinationNodeIdentifier;
 
-    /** The destination location name for navigation */
+    /** The destination location name for navigation. */
     private String destinationLocationName;
 
-    /** A boolean for searching for a navigation destination */
+    /** A boolean for searching for a navigation destination. */
     private boolean isSelectingNavigationDestination;
 
     @Override
@@ -100,6 +100,7 @@ public class SearchActivity extends USBActivity {
 
         // Set search mode.
         isSelectingNavigationDestination = getIntent().getBooleanExtra("isExplicitNavigation", false);
+        updateSplashViews();
 
         if (isSelectingNavigationOrigin()) {
             navigationHint.setVisibility(View.VISIBLE);
@@ -181,6 +182,21 @@ public class SearchActivity extends USBActivity {
         }
     }
 
+    /** Updates the visibility of the splash views. */
+    private void updateSplashViews() {
+        View searchSplashIcon = findViewById(R.id.search_splash_icon_view);
+        View searchSplashTitleTextView = findViewById(R.id.search_splash_title_view);
+        View searchSplashDetailTextView = findViewById(R.id.search_splash_detail_view);
+
+        int visibility = adapter.getSearchResults().isEmpty() ? View.VISIBLE : View.INVISIBLE;
+        if (isSelectingNavigationDestination) {
+            visibility = View.INVISIBLE;
+        }
+        searchSplashIcon.setVisibility(visibility);
+        searchSplashTitleTextView.setVisibility(visibility);
+        searchSplashDetailTextView.setVisibility(visibility);
+    }
+
     /**
      * Configures the search view displayed by the activity.
      *
@@ -212,9 +228,14 @@ public class SearchActivity extends USBActivity {
                 } else {
                     search = new Search(query, null);
                 }
+
+                // Populate search results.
+                List<SearchResult> results = search.search();
                 adapter.searchResults.clear();
-                adapter.addAll(search.search());
+                adapter.addAll(results);
                 adapter.notifyDataSetChanged();
+                updateSplashViews();
+
                 return false;
             }
         });
@@ -299,6 +320,13 @@ public class SearchActivity extends USBActivity {
             }
 
             return view;
+        }
+
+        /**
+         * @return The search results.
+         */
+        public List<SearchResult> getSearchResults() {
+            return searchResults;
         }
     }
 }
