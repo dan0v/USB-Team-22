@@ -3,6 +3,7 @@ package uk.ac.newcastle.team22.usb;
 import org.junit.Test;
 
 import uk.ac.newcastle.team22.usb.coreUSB.Floor;
+import uk.ac.newcastle.team22.usb.coreUSB.Room;
 import uk.ac.newcastle.team22.usb.coreUSB.StaffMember;
 
 import static org.junit.Assert.assertEquals;
