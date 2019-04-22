@@ -129,8 +129,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="workspace" />
-                            <entry key="sourceFile" value="$USER_HOME$/Desktop/workspace.svg" />
+                            <entry key="outputName" value="bad_network" />
+                            <entry key="sourceFile" value="$USER_HOME$/Desktop/badNetwork.svg" />
                           </map>
                         </option>
                       </PersistentState>

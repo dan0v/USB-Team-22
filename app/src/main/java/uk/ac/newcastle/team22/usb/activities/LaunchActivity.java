@@ -1,11 +1,15 @@
 
 package uk.ac.newcastle.team22.usb.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
@@ -39,6 +43,14 @@ public class LaunchActivity extends AppCompatActivity {
 
     /** Called when the Urban Sciences Building was initialised. */
     private void didInitialiseUSB() {
+        // Check for location permission.
+        if (checkLocationPermission()) {
+            presentDashboard();
+        }
+    }
+
+    /** Presents the dashboard. */
+    private void presentDashboard() {
         Intent i = new Intent(LaunchActivity.this, NavigationDrawerActivity.class);
         startActivity(i);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -153,5 +165,44 @@ public class LaunchActivity extends AppCompatActivity {
                 didInitialiseUSB();
             }
         });
+    }
+
+    /** The request code for the user's location. */
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
+    /** Checks whether the user has granted permission for the app to access the user's location. */
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.locationPermissionTitle)
+                    .setMessage(R.string.locationPermissionDetail)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.requestPermissions(LaunchActivity.this,
+                                    new String[]{ Manifest.permission.ACCESS_FINE_LOCATION },
+                                    MY_PERMISSIONS_REQUEST_LOCATION);
+                        }
+                    })
+                    .create()
+                    .show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                presentDashboard();
+            }
+            default:
+                break;
+        }
     }
 }

@@ -15,6 +15,9 @@
     <string name="install">Install</string>
     <string name="cancel">Cancel</string>
     <string name="retry">Retry</string>
+    <string name="ok">OK</string>
+    <string name="locationPermissionTitle">Allow Location Access</string>
+    <string name="locationPermissionDetail">Grant the Urban Sciences Building access to your location in order to determine the availability of computers.</string>
     <!--usb update manager end-->
 
     <!--navigation start-->
@@ -46,7 +49,6 @@
     <string name="navigationTourCompassHint">The building tour begins at the main entrance</string>
     <string name="navigationGoUp">Up</string>
     <string name="navigationGoDown">Down</string>
-
     <!--navigation end-->
 
     <!--drawer start-->
@@ -87,7 +89,8 @@
     <string name="building">Building</string>
     <string name="outOfHours">Out Of Hours</string>
     <string name="navigationIcon">Navigation icon</string>
-    <string name="badNetwork">Please connect to \"newcastle-university\" WiFi with your university credentials for live computer availability</string>
+    <string name="badNetworkTitle">Unable To Load</string>
+    <string name="badNetworkDetail">Please connect to \"newcastle-university\" WiFi with your university credentials to view live computer availability</string>
     <!--dashboard end-->
 
     <!--search start-->

@@ -1,6 +1,11 @@
 package uk.ac.newcastle.team22.usb.coreApp;
 
+import android.app.Activity;
+import android.content.Context;
 import android.net.SSLCertificateSocketFactory;
+import android.net.wifi.SupplicantState;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -27,29 +32,51 @@ import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
  * A class that downloads JSON data describing available computers in the Urban Sciences Building from NUIT.
  *
  * @author Daniel Vincent
+ * @author Alexander MacLeod
  * @version 1.0
  */
 public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
 
-    private final String USBJsonURL = "https://csi.ncl.ac.uk/usb/?json=y";
+    /** The URL for accessing live computer availability. */
+    private final String NUIT_ADDRESS = "https://csi.ncl.ac.uk/usb/?json=y";
 
-    private AsyncResponse reference = null;
+    /** The required Wi-FI SSID to access NUIT computer availability. */
+    private final String NEWCASTLE_WIFI_SSID = "newcastle-university";
+
+    /** The Wi-Fi manager. */
+    private WifiManager wifiManager;
+
+    /** The response reference. */
+    private AsyncResponse reference;
 
     /**
+     * @param activity The current activity.
      * @param reference UI activity fetching JSON update.
      */
-    public JSONDataFetcher(AsyncResponse reference) {
+    public JSONDataFetcher(Activity activity, AsyncResponse reference) {
         this.reference = reference;
+        wifiManager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
     }
 
     @Override
     public Void doInBackground(Void... voids) {
         try {
-            URL url = new URL(USBJsonURL);
+            // Initial check for the correct WIFI SSID.
+            WifiInfo wifiInfo;
+            wifiInfo = wifiManager.getConnectionInfo();
+            if (wifiInfo.getSupplicantState() == SupplicantState.COMPLETED) {
+                if (!wifiInfo.getSSID().equals(NEWCASTLE_WIFI_SSID)) {
+                    throw new java.net.UnknownHostException();
+                }
+            }
+
+            // Request computer availability.
+            URL url = new URL(NUIT_ADDRESS);
             HttpsURLConnection connection = (HttpsURLConnection ) url.openConnection();
             connection.setSSLSocketFactory(SSLCertificateSocketFactory.getInsecure(0, null));
             connection.setHostnameVerifier(getHostnameVerifier());
             connection.connect();
+
             JsonParser parser = new JsonParser();
             JsonObject base = parser.parse(new InputStreamReader((InputStream) connection.getContent())).getAsJsonObject();
             JsonArray locationSummary = base.get("usb_location_summary").getAsJsonArray();
@@ -58,8 +85,8 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
             for (JsonElement location : locationSummary) {
                 JsonObject locationObject = location.getAsJsonObject();
 
-                int floor  = Integer.parseInt(locationObject.get("location_name").getAsString().substring(4,5));
-                int number  = Integer.parseInt(locationObject.get("location_name").getAsString().substring(6,9));
+                int floor = Integer.parseInt(locationObject.get("location_name").getAsString().substring(4,5));
+                int number = Integer.parseInt(locationObject.get("location_name").getAsString().substring(6,9));
                 int availableComputers = Integer.parseInt(locationObject.get("location_free").getAsString());
                 int totalComputers = Integer.parseInt(locationObject.get("location_total").getAsString());
 
@@ -68,7 +95,7 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
                     buildingFloors.get(floor).getRooms().get(number).updateComputerAvailability(temp);
                     Log.d("JSON Updater", "Floor: " + floor + " Room: " + number + "'s available computer data has been updated");
                 } catch (Exception e) {
-                    Log.e("JSON Updater", "Room is missing from Firestore.: Floor: " + floor + " Room: " + number);
+                    Log.e("JSON Updater", "Room is missing from Firestore: Floor: " + floor + " Room: " + number);
                 }
             }
 
@@ -81,6 +108,7 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
                 reference.onBadNetwork();
             } else {
                 Log.e("JSON", "Something went wrong with fetching JSON data.: ");
+                reference.onBadNetwork();
                 e.printStackTrace();
             }
         }
@@ -88,7 +116,7 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
     }
 
     public void setReference(AsyncResponse reference) {
-        reference = reference;
+        this.reference = reference;
     }
 
     private HostnameVerifier getHostnameVerifier() {
