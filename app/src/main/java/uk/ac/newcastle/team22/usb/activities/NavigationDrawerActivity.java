@@ -15,7 +15,6 @@ import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.fragments.CafeFragment;
 import uk.ac.newcastle.team22.usb.fragments.DashboardFragment;
 import uk.ac.newcastle.team22.usb.fragments.SettingsFragment;
-import uk.ac.newcastle.team22.usb.fragments.TourFragment;
 import uk.ac.newcastle.team22.usb.fragments.USBFragment;
 
 /**
@@ -48,9 +47,6 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
                 break;
             case R.id.nav_settings:
                 fragment = new SettingsFragment();
-                break;
-            case R.id.nav_tour:
-                fragment = new TourFragment();
                 break;
             default:
                 break;
