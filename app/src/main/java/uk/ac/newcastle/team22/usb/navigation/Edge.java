@@ -1,7 +1,5 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -97,7 +95,6 @@ public class Edge {
             return USBManager.shared.getBuilding().getNavigationNodes().get(destinationIdentifier);
         } catch (Exception exception) {
             String msg = String.format("A destination node of node: %s is not in map", this.origin.getNodeIdentifier());
-            Log.e("Navigator", msg, exception);
         }
         return this.origin;
     }

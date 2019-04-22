@@ -1,14 +1,15 @@
 package uk.ac.newcastle.team22.usb;
 
 import org.junit.Test;
+
 import java.util.ArrayList;
-import java.util.List;
-import static org.junit.Assert.*;
 
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
-import uk.ac.newcastle.team22.usb.navigation.Direction;
 import uk.ac.newcastle.team22.usb.navigation.Edge;
 import uk.ac.newcastle.team22.usb.navigation.Node;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * A test class for {@link Edge}.
@@ -21,7 +22,6 @@ public class AnEdgeShould {
     public void haveAnOrigin() {
         Node testNode = new Node(10,2, new ArrayList<Edge>());
         Edge testEdge = new Edge(testNode, 1, 0, new ArrayList<Integer>(), new ArrayList<Double>(), false, true);
-
         assertEquals(testNode, testEdge.getOrigin());
     }
 
@@ -38,11 +38,9 @@ public class AnEdgeShould {
     @Test
     public void haveAWeight() {
         int testWeight = 5;
-
         Node testNode = new Node(10,2, new ArrayList<Edge>());
         Edge testEdge = new Edge(testNode, 1, 0, new ArrayList<Integer>(), new ArrayList<Double>(), false, true);
-
-        assertEquals(testWeight, testEdge.weight);
+        assertEquals(testWeight, testEdge.weight, 0);
     }
 
     @Test
@@ -50,7 +48,6 @@ public class AnEdgeShould {
         Node testNode = new Node(10,2, new ArrayList<Edge>());
         Edge testEdge = new Edge(testNode, 1, 0, new ArrayList<Integer>(), new ArrayList<Double>(), false, true);
         Edge testEdge2 = new Edge(testNode, 1, 0, new ArrayList<Integer>(), new ArrayList<Double>(), false, true);
-
         assertTrue(testEdge.equals(testEdge2));
     }
 }

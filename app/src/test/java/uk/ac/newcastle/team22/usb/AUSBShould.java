@@ -6,17 +6,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.newcastle.team22.usb.coreApp.ColorUtility;
-import uk.ac.newcastle.team22.usb.coreUSB.Cafe;
 import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItem;
 import uk.ac.newcastle.team22.usb.coreUSB.Floor;
-import uk.ac.newcastle.team22.usb.coreUSB.Room;
 import uk.ac.newcastle.team22.usb.coreUSB.StaffMember;
 import uk.ac.newcastle.team22.usb.coreUSB.USB;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
 import uk.ac.newcastle.team22.usb.coreUSB.USBUpdate;
 
-import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 /**
@@ -25,14 +21,13 @@ import static junit.framework.TestCase.assertNotNull;
  * @author Patrick Lindley
  * @version 1.0
  */
-
 public class AUSBShould {
 
     @Before
     public void setUp() {
         //Creates a USB with one floor, cafe and staff member
         List<Floor> floors = new ArrayList<>();
-        Floor floor = new Floor(3, ColorUtility.DEFAULT_COLOR);
+        Floor floor = new Floor(3, 0);
         floors.add(floor);
 
         List<StaffMember> staffs = new ArrayList<>();
