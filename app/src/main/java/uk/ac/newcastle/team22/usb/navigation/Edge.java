@@ -1,5 +1,7 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -89,14 +91,12 @@ public class Edge {
      * @return Node with <pre>nodeIdentifier</pre> of this edge from <pre>USB.navigationNodes</pre>.
      */
     public Node getDestination() {
-        try {
-            if (USBManager.shared.getBuilding().getNavigationNodes().get(destinationIdentifier) == null)
-                return this.origin;
-            return USBManager.shared.getBuilding().getNavigationNodes().get(destinationIdentifier);
-        } catch (Exception exception) {
-            String msg = String.format("A destination node of node: %s is not in map", this.origin.getNodeIdentifier());
+        if (USBManager.shared.getBuilding().getNavigationNodes().get(this.destinationIdentifier) == null) {
+            String msg = String.format("A destination node of the edge between node: %s and: %s is not in the node map", this.origin.getNodeIdentifier(), this.destinationIdentifier);
+            Log.e("Navigator", msg);
+            return this.origin;
         }
-        return this.origin;
+        return USBManager.shared.getBuilding().getNavigationNodes().get(this.destinationIdentifier);
     }
 
     /**
