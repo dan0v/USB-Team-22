@@ -21,6 +21,7 @@ import java.util.List;
 
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.activities.NavigationActivity;
+import uk.ac.newcastle.team22.usb.activities.RoomActivity;
 import uk.ac.newcastle.team22.usb.activities.SearchActivity;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 import uk.ac.newcastle.team22.usb.coreApp.AbstractViewHolder;
@@ -65,7 +66,7 @@ public class DashboardFragment extends Fragment implements USBFragment {
         // Configure the recycler view.
         recyclerView = view.findViewById(R.id.dashboard_recycler_view);
 
-        DashboardAdapter adapter = new DashboardAdapter(cardList);
+        DashboardAdapter adapter = new DashboardAdapter(cardList, getContext());
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -103,9 +104,12 @@ public class DashboardFragment extends Fragment implements USBFragment {
      */
     public void populateRecyclerView(boolean success) {
         cardList.clear();
-        if (!success) {
-            BadNetworkCardData card = new BadNetworkCardData();
-            cardList.add(card);
+        if (success) {
+            ComputerAvailabilityHeaderCardData headerCard = new ComputerAvailabilityHeaderCardData();
+            cardList.add(headerCard);
+        } else {
+            BadNetworkCardData badNetworkCard = new BadNetworkCardData();
+            cardList.add(badNetworkCard);
         }
         cardList.addAll(buildCards());
         recyclerView.getAdapter().notifyDataSetChanged();
@@ -182,7 +186,7 @@ public class DashboardFragment extends Fragment implements USBFragment {
         });
         for (Room room : rooms) {
             if (room.getComputers().getAvailable() > 0) {
-                card = new DashboardCardData(room.getFormattedName(getContext()), room.getComputers().getAvailable() + "");
+                card = new DashboardCardData(room, room.getComputers().getAvailable());
                 cards.add(card);
             }
         }
@@ -205,10 +209,16 @@ public class DashboardFragment extends Fragment implements USBFragment {
  * @version 1.0
  */
 class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
+
+    /** The list of cards to be displayed. */
     private List<AbstractCardData> cardList;
 
-    public DashboardAdapter(List<AbstractCardData> cardList) {
+    /** The current context. */
+    private Context context;
+
+    public DashboardAdapter(List<AbstractCardData> cardList, Context context) {
         this.cardList = cardList;
+        this.context = context;
     }
 
     public AbstractViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -218,12 +228,16 @@ class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
 
         switch (viewType) {
             case 0:
-                itemView = LayoutInflater.from(context).inflate(R.layout.card_view_available_computers, viewGroup, false);
+                itemView = LayoutInflater.from(context).inflate(R.layout.card_view_computer_availability, viewGroup, false);
                 holder = new DashboardViewHolder(itemView);
                 break;
-            default:
+            case 1:
                 itemView = LayoutInflater.from(context).inflate(R.layout.card_view_bad_network, viewGroup, false);
                 holder = new BadNetworkViewHolder(itemView);
+                break;
+            default:
+                itemView = LayoutInflater.from(context).inflate(R.layout.card_view_computer_availability_header, viewGroup, false);
+                holder = new ComputerAvailabilityHeaderViewHolder(itemView);
                 break;
         }
 
@@ -234,11 +248,20 @@ class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
         int viewType = getItemViewType(position);
         switch (viewType) {
             case 0: {
+                final DashboardCardData item = (DashboardCardData) cardList.get(position);
                 DashboardViewHolder updatingHolder = (DashboardViewHolder) viewHolder;
-                DashboardCardData item = (DashboardCardData) cardList.get(position);
 
-                updatingHolder.roomNameText.setText(item.getRoomNameText());
-                updatingHolder.computersAvailableText.setText(item.getComputersAvailableText());
+                updatingHolder.roomNameText.setText(item.getRoom().getFormattedName(context));
+                updatingHolder.computersAvailableText.setText(item.getComputersAvailable() + "");
+
+                updatingHolder.selectionView.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent intent = new Intent(v.getContext(), RoomActivity.class);
+                        intent.putExtra("floorNumber", item.getRoom().getFloor().getNumber());
+                        intent.putExtra("roomNumber", item.getRoom().getNumber());
+                        context.startActivity(intent);
+                    }
+                });
             }
             default:
                 break;
@@ -249,8 +272,10 @@ class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
         AbstractCardData card = cardList.get(position);
         if (card instanceof DashboardCardData) {
             return 0;
-        } else {
+        } else if (card instanceof BadNetworkCardData) {
             return 1;
+        } else {
+            return 2;
         }
     }
 
@@ -260,49 +285,66 @@ class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
 }
 
 /**
- * A class to represent the information stored in a room card on the dashboard.
+ * A class which defines the data to be displayed by a {@link DashboardViewHolder}.
  *
  * @author Daniel Vincent
  * @version 1.0
  */
 class DashboardCardData extends AbstractCardData {
 
-    private String roomNameText;
-    private String computersAvailableText;
+    /** The room being described. */
+    private Room room;
 
-    public DashboardCardData(String roomNameText, String computersAvailableText) {
-        this.roomNameText = roomNameText;
-        this.computersAvailableText = computersAvailableText;
+    /** The number of computers available. */
+    private int computersAvailable;
+
+    public DashboardCardData(Room room, int computersAvailable) {
+        this.room = room;
+        this.computersAvailable = computersAvailable;
     }
 
-    public String getRoomNameText() {
-        return roomNameText;
+    /**
+     * @return The room.
+     */
+    public Room getRoom() {
+        return room;
     }
 
-    public String getComputersAvailableText() {
-        return computersAvailableText;
+    /**
+     * @return The number of computers available.
+     */
+    public int getComputersAvailable() {
+        return computersAvailable;
     }
 }
 
 /**
- * A class which manages presenting the information in each room card.
+ * A class which defines the view to be display data from a {@link DashboardCardData}.
  *
  * @author Daniel Vincent
  * @version 1.0
  */
 class DashboardViewHolder extends AbstractViewHolder {
-    public TextView roomNameText;
-    public TextView computersAvailableText;
+
+    /** The room name text view. */
+    TextView roomNameText;
+
+    /** The number of computers available text view. */
+    TextView computersAvailableText;
+
+    /** The selection view. */
+    View selectionView;
 
     public DashboardViewHolder(View view) {
         super(view);
         roomNameText = view.findViewById(R.id.roomNameText);
         computersAvailableText = view.findViewById(R.id.computersAvailableText);
+        selectionView = view.findViewById(R.id.computer_availability_selection_view);
     }
 }
 
 /**
- * A class to represent the a bad network error.
+ * A class which defines the data to be displayed by a {@link BadNetworkViewHolder}.
  *
  * @author Alexander MacLeod
  * @version 1.0
@@ -312,7 +354,7 @@ class BadNetworkCardData extends AbstractCardData {
 }
 
 /**
- * A class to represent the a bad network error.
+ * A class which defines the view to be display data from a {@link BadNetworkCardData}.
  *
  * @author Alexander MacLeod
  * @version 1.0
@@ -325,5 +367,27 @@ class BadNetworkViewHolder extends AbstractViewHolder {
     public BadNetworkViewHolder(View view) {
         super(view);
         detailTextView = view.findViewById(R.id.bad_network_detail_text_view);
+    }
+}
+
+/**
+ * A class which defines the data to be displayed by a {@link ComputerAvailabilityHeaderViewHolder}.
+ *
+ * @author Alexander MacLeod
+ * @version 1.0
+ */
+class ComputerAvailabilityHeaderCardData extends AbstractCardData {
+    public ComputerAvailabilityHeaderCardData() {}
+}
+
+/**
+ * A class which defines the view to be display data from a {@link ComputerAvailabilityHeaderCardData}.
+ *
+ * @author Alexander MacLeod
+ * @version 1.0
+ */
+class ComputerAvailabilityHeaderViewHolder extends AbstractViewHolder {
+    public ComputerAvailabilityHeaderViewHolder(View view) {
+        super(view);
     }
 }
