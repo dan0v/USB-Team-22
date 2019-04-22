@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,14 +22,14 @@ import java.util.List;
 import uk.ac.newcastle.team22.usb.R;
 import uk.ac.newcastle.team22.usb.activities.NavigationActivity;
 import uk.ac.newcastle.team22.usb.activities.SearchActivity;
+import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
+import uk.ac.newcastle.team22.usb.coreApp.AbstractViewHolder;
 import uk.ac.newcastle.team22.usb.coreApp.AsyncResponse;
 import uk.ac.newcastle.team22.usb.coreApp.JSONDataFetcher;
 import uk.ac.newcastle.team22.usb.coreUSB.Floor;
 import uk.ac.newcastle.team22.usb.coreUSB.OpeningHours;
 import uk.ac.newcastle.team22.usb.coreUSB.Room;
 import uk.ac.newcastle.team22.usb.coreUSB.USBManager;
-import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
-import uk.ac.newcastle.team22.usb.coreApp.AbstractViewHolder;
 
 /**
  * A class which represents the dashboard fragment of the Urban Sciences Building.
@@ -43,7 +44,7 @@ public class DashboardFragment extends Fragment implements USBFragment {
     /** The recycler view which displays the dashboard's content. */
     private RecyclerView recyclerView;
 
-    /** The list of cards to display in the recyclerview. */
+    /** The list of cards to display in the recycler view. */
     private List<AbstractCardData> cardList = new ArrayList();
 
     /** The class to update computer availability data. */
@@ -70,9 +71,8 @@ public class DashboardFragment extends Fragment implements USBFragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
 
-
         // Download and update local data using the Urban Sciences Building computer availability JSON provided by NUIT.
-        jsonDataFetcher = new JSONDataFetcher(new AsyncResponse() {
+        jsonDataFetcher = new JSONDataFetcher(getActivity(), new AsyncResponse() {
             @Override
             public void onComplete() {
                 // If successful download of new data.
@@ -81,8 +81,12 @@ public class DashboardFragment extends Fragment implements USBFragment {
 
             @Override
             public void onBadNetwork() {
-                // If unsuccessful download of new data.
-                populateRecyclerView(false);
+                 getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        populateRecyclerView(false);
+                    }
+                });
             }
         });
 
@@ -100,7 +104,7 @@ public class DashboardFragment extends Fragment implements USBFragment {
     public void populateRecyclerView(boolean success) {
         cardList.clear();
         if (!success) {
-            DashboardCardData card = new DashboardCardData(getString(R.string.badNetwork), "");
+            BadNetworkCardData card = new BadNetworkCardData();
             cardList.add(card);
         }
         cardList.addAll(buildCards());
@@ -112,7 +116,6 @@ public class DashboardFragment extends Fragment implements USBFragment {
      * @param view
      */
     private void setupStaticElements(View view) {
-        // Display out of hours info.
         OpeningHours cafeOpeningHours = USBManager.shared.getBuilding().getCafe().getOpeningHours();
         OpeningHours outOfHoursAccess = USBManager.shared.getBuilding().getOutOfHours();
         OpeningHours buildingHours = USBManager.shared.getBuilding().getOpeningHours();
@@ -120,22 +123,21 @@ public class DashboardFragment extends Fragment implements USBFragment {
         View buildingOpen = view.findViewById(R.id.dashboardStatusIndicatorViewBuildingOpen);
         View outOfHours = view.findViewById(R.id.dashboardStatusIndicatorViewOutOfHours);
 
+        // Set the building statuses.
         if (buildingHours.isOpen()) {
-            buildingOpen.getBackground().setTint(getResources().getColor(R.color.colorOpen));
+            buildingOpen.getBackground().setTint(ContextCompat.getColor(getContext(), R.color.colorOpen));
         } else {
-            buildingOpen.getBackground().setTint(getResources().getColor(R.color.colorClosed));
+            buildingOpen.getBackground().setTint(ContextCompat.getColor(getContext(), R.color.colorClosed));
         }
-
         if (outOfHoursAccess.isOpen()) {
-            outOfHours.getBackground().setTint(getResources().getColor(R.color.colorOpen));
+            outOfHours.getBackground().setTint(ContextCompat.getColor(getContext(), R.color.colorOpen));
         } else {
-            outOfHours.getBackground().setTint(getResources().getColor(R.color.colorClosed));
+            outOfHours.getBackground().setTint(ContextCompat.getColor(getContext(), R.color.colorClosed));
         }
-
         if (cafeOpeningHours.isOpen()) {
-            cafe.getBackground().setTint(getResources().getColor(R.color.colorOpen));
+            cafe.getBackground().setTint(ContextCompat.getColor(getContext(), R.color.colorOpen));
         } else {
-            cafe.getBackground().setTint(getResources().getColor(R.color.colorClosed));
+            cafe.getBackground().setTint(ContextCompat.getColor(getContext(), R.color.colorClosed));
         }
 
         CardView tourButton = view.findViewById(R.id.tour_card_view);
@@ -172,21 +174,18 @@ public class DashboardFragment extends Fragment implements USBFragment {
                 rooms.add(room);
             }
         }
-
         rooms.sort(new Comparator<Room>() {
             @Override
             public int compare(Room o1, Room o2) {
                 return o2.getComputers().getAvailable() - o1.getComputers().getAvailable();
             }
         });
-
         for (Room room : rooms) {
             if (room.getComputers().getAvailable() > 0) {
                 card = new DashboardCardData(room.getFormattedName(getContext()), room.getComputers().getAvailable() + "");
                 cards.add(card);
             }
         }
-
         return cards;
     }
 
@@ -216,17 +215,43 @@ class DashboardAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
         AbstractViewHolder holder;
         View itemView;
         Context context = viewGroup.getContext();
-        itemView = LayoutInflater.from(context).inflate(R.layout.card_view_available_computers, viewGroup, false);
-        holder = new DashboardViewHolder(itemView);
+
+        switch (viewType) {
+            case 0:
+                itemView = LayoutInflater.from(context).inflate(R.layout.card_view_available_computers, viewGroup, false);
+                holder = new DashboardViewHolder(itemView);
+                break;
+            default:
+                itemView = LayoutInflater.from(context).inflate(R.layout.card_view_bad_network, viewGroup, false);
+                holder = new BadNetworkViewHolder(itemView);
+                break;
+        }
+
         return holder;
     }
 
     public void onBindViewHolder(AbstractViewHolder viewHolder, int position) {
-        DashboardViewHolder updatingHolder = (DashboardViewHolder) viewHolder;
-        DashboardCardData item = (DashboardCardData) cardList.get(position);
-        updatingHolder.roomNameText.setText(item.getRoomNameText());
-        updatingHolder.computersAvailableText.setText(item.getComputersAvailableText());
+        int viewType = getItemViewType(position);
+        switch (viewType) {
+            case 0: {
+                DashboardViewHolder updatingHolder = (DashboardViewHolder) viewHolder;
+                DashboardCardData item = (DashboardCardData) cardList.get(position);
 
+                updatingHolder.roomNameText.setText(item.getRoomNameText());
+                updatingHolder.computersAvailableText.setText(item.getComputersAvailableText());
+            }
+            default:
+                break;
+        }
+    }
+
+    public int getItemViewType(int position) {
+        AbstractCardData card = cardList.get(position);
+        if (card instanceof DashboardCardData) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     public int getItemCount() {
@@ -250,16 +275,8 @@ class DashboardCardData extends AbstractCardData {
         this.computersAvailableText = computersAvailableText;
     }
 
-    public void setRoomNameText(String roomNameText) {
-        this.roomNameText = roomNameText;
-    }
-
     public String getRoomNameText() {
         return roomNameText;
-    }
-
-    public void setComputersAvailableText(String computersAvailableText) {
-        this.computersAvailableText = computersAvailableText;
     }
 
     public String getComputersAvailableText() {
@@ -281,5 +298,32 @@ class DashboardViewHolder extends AbstractViewHolder {
         super(view);
         roomNameText = view.findViewById(R.id.roomNameText);
         computersAvailableText = view.findViewById(R.id.computersAvailableText);
+    }
+}
+
+/**
+ * A class to represent the a bad network error.
+ *
+ * @author Alexander MacLeod
+ * @version 1.0
+ */
+class BadNetworkCardData extends AbstractCardData {
+    public BadNetworkCardData() {}
+}
+
+/**
+ * A class to represent the a bad network error.
+ *
+ * @author Alexander MacLeod
+ * @version 1.0
+ */
+class BadNetworkViewHolder extends AbstractViewHolder {
+
+    /** The detail text view. */
+    public TextView detailTextView;
+
+    public BadNetworkViewHolder(View view) {
+        super(view);
+        detailTextView = view.findViewById(R.id.bad_network_detail_text_view);
     }
 }

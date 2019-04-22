@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uk.ac.newcastle.team22.usb">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:name=".coreApp.AppDelegate"
@@ -30,10 +32,6 @@
             android:name=".activities.NavigationDrawerActivity"
             android:label="@string/urbanSciencesBuildingShorthand"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.DashboardActivity"
-            android:label="Dashboard"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.NavigationActivity"
             android:label="@string/navigation"
