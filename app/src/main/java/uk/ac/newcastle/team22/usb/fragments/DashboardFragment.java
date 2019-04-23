@@ -77,7 +77,12 @@ public class DashboardFragment extends Fragment implements USBFragment {
             @Override
             public void onComplete() {
                 // If successful download of new data.
-                populateRecyclerView(true);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        populateRecyclerView(true);
+                    }
+                });
             }
 
             @Override
