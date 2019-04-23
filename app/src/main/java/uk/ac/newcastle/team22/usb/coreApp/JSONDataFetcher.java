@@ -65,7 +65,7 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
             WifiInfo wifiInfo;
             wifiInfo = wifiManager.getConnectionInfo();
             if (wifiInfo.getSupplicantState() == SupplicantState.COMPLETED) {
-                if (!wifiInfo.getSSID().equals(NEWCASTLE_WIFI_SSID)) {
+                if (!wifiInfo.getSSID().equals(NEWCASTLE_WIFI_SSID) && !wifiInfo.getSSID().equals("<unknown ssid>")) {
                     throw new java.net.UnknownHostException();
                 }
             }
