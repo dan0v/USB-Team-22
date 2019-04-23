@@ -76,7 +76,6 @@ public class DashboardFragment extends Fragment implements USBFragment {
         jsonDataFetcher = new JSONDataFetcher(getActivity(), new AsyncResponse() {
             @Override
             public void onComplete() {
-                // If successful download of new data.
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -84,7 +83,6 @@ public class DashboardFragment extends Fragment implements USBFragment {
                     }
                 });
             }
-
             @Override
             public void onBadNetwork() {
                  getActivity().runOnUiThread(new Runnable() {
@@ -95,7 +93,6 @@ public class DashboardFragment extends Fragment implements USBFragment {
                 });
             }
         });
-
         jsonDataFetcher.execute();
     }
 
