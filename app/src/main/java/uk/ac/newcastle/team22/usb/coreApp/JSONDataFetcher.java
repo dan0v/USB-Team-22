@@ -123,6 +123,9 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
 
                 // Successful update.
                 reference.onComplete();
+            } else {
+                // Successful update.
+                reference.onComplete();
             }
 
         } catch (Exception e) {

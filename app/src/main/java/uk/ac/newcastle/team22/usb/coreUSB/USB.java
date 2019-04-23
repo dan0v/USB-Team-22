@@ -134,17 +134,17 @@ public class USB {
     }
 
     /**
-     * @return The floors in the Urban Sciences Building.
+     * @return The time of the last known update to computer availability data.
      */
     public Calendar getLastJSONUpdateTime() {
         return this.lastJSONUpdate;
     }
 
     /**
-     * @return The floors in the Urban Sciences Building.
+     * @return The time of the last known update to computer availability data.
      */
     public void setLastJSONUpdateTime(Calendar newUpdate) {
-        lastJSONUpdate = newUpdate;
+        this.lastJSONUpdate = newUpdate;
     }
 
     /**
