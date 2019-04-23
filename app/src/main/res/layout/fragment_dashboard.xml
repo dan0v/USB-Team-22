@@ -165,13 +165,48 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent">
                 <RelativeLayout
-                    android:id="@+id/dashboardCafeStatus"
+                    android:id="@+id/dashboardBuildingOpenStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="60dp"
+                        android:background="@drawable/dashboard_widgets">
+                        <TextView
+                            android:id="@+id/dashboardStatusTitleTextViewBuildingOpen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/building"
+                            android:textColor="@color/colorWhite"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toLeftOf="@id/dashboardStatusIndicatorViewBuildingOpen"
+                            android:layout_alignParentLeft="true"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                        <View
+                            android:id="@+id/dashboardStatusIndicatorViewBuildingOpen"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/dashboard_circle"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/dashboardCafeStatus"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:paddingBottom="5dp"
                     android:layout_marginTop="5dp"
-                    app:layout_constraintLeft_toLeftOf="parent">
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_below="@id/dashboardBuildingOpenStatus">
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -229,42 +264,6 @@
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
                         <View
                             android:id="@+id/dashboardStatusIndicatorViewOutOfHours"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/dashboard_circle"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"/>
-                    </RelativeLayout>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/dashboardBuildingOpenStatus"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:layout_below="@id/dashboardOutOfHoursStatus">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginRight="60dp"
-                        android:background="@drawable/dashboard_widgets">
-                        <TextView
-                            android:id="@+id/dashboardStatusTitleTextViewBuildingOpen"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/building"
-                            android:textColor="@color/colorWhite"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginBottom="12dp"
-                            android:layout_marginLeft="15dp"
-                            android:layout_toLeftOf="@id/dashboardStatusIndicatorViewBuildingOpen"
-                            android:layout_alignParentLeft="true"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-                        <View
-                            android:id="@+id/dashboardStatusIndicatorViewBuildingOpen"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_centerVertical="true"

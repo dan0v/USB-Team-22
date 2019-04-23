@@ -98,7 +98,7 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
                     buildingFloors.get(floor).getRooms().get(number).updateComputerAvailability(temp);
                     Log.d("JSON Updater", "Floor: " + floor + " Room: " + number + "'s available computer data has been updated");
                 } catch (Exception e) {
-                    Log.e("JSON Updater", "Room is missing from Firestore: Floor: " + floor + " Room: " + number);
+                    Log.e("JSON Updater", "Room is missing from Firestore: Floor: " + floor + " Room: " + number + " Exception: " + e);
                 }
             }
 
