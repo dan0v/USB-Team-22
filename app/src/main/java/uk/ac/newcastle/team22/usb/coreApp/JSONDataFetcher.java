@@ -97,7 +97,7 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
                 // Remove leading 0's from room names.
                 for (int i = 0; i < formattedNumber.length() - 1; i++) {
                     if (formattedNumber.charAt(0) == '0') {
-                        formattedNumber = formattedNumber.substring(i + 1);
+                        formattedNumber = formattedNumber.substring(1);
                     }
                     else {
                         break;
