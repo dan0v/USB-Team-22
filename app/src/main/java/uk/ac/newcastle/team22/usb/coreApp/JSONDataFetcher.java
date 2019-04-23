@@ -90,15 +90,25 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
 
                 int floor = Integer.parseInt(locationObject.get("location_name").getAsString().substring(4,5));
                 String number = locationObject.get("location_name").getAsString().substring(6,9);
+                String formattedNumber = number;
                 int availableComputers = Integer.parseInt(locationObject.get("location_free").getAsString());
                 int totalComputers = Integer.parseInt(locationObject.get("location_total").getAsString());
 
+                for (int i = 0; i < number.length() - 1; i++) {
+                    if (formattedNumber.charAt(i) == '0') {
+                        formattedNumber = formattedNumber.substring(i + 1);
+                    }
+                    else {
+                        break;
+                    }
+                }
+
                 Resource temp = new Resource(ResourceType.COMPUTER, availableComputers, totalComputers);
                 try {
-                    buildingFloors.get(floor).getRooms().get(number).updateComputerAvailability(temp);
+                    buildingFloors.get(floor).getRooms().get(formattedNumber).updateComputerAvailability(temp);
                     Log.d("JSON Updater", "Floor: " + floor + " Room: " + number + "'s available computer data has been updated");
                 } catch (Exception e) {
-                    Log.e("JSON Updater", "Room is missing from Firestore: Floor: " + floor + " Room: " + number);
+                    Log.e("JSON Updater", "Room is missing from Firestore: Floor: " + floor + " Room: " + number + ", " + formattedNumber);
                     e.printStackTrace();
                 }
             }
