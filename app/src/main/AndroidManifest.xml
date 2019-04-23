@@ -15,12 +15,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.StaffMemberActivity"></activity>
-        <activity android:name=".activities.CafeMenuItemActivity" />
-        <activity android:name=".activities.RoomActivity" />
+        <activity
+            android:name=".activities.StaffMemberActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".activities.CafeMenuItemActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity
+            android:name=".activities.RoomActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".activities.LaunchActivity"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -31,7 +42,9 @@
         <activity
             android:name=".activities.NavigationDrawerActivity"
             android:label="@string/urbanSciencesBuildingShorthand"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".activities.NavigationActivity"
             android:label="@string/navigation"
@@ -44,7 +57,9 @@
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".activities.SearchActivity"
-            android:label="@string/search">
+            android:label="@string/search"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
