@@ -167,9 +167,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
      */
     public void updateComputerAvailability(Resource newComputers) {
         // Concurrency exception workaround.
-        int size = this.resources.size();
-
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < this.resources.size(); i++) {
             Resource currentResource = this.resources.get(i);
             if (currentResource.getType().equals(ResourceType.COMPUTER)) {
                 this.resources.remove(currentResource);

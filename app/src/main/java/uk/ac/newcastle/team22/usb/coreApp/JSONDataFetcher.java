@@ -95,7 +95,7 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
                 int totalComputers = Integer.parseInt(locationObject.get("location_total").getAsString());
 
                 // Remove leading 0's from room names.
-                for (int i = 0; i < number.length() - 1; i++) {
+                for (int i = 0; i < formattedNumber.length() - 1; i++) {
                     if (formattedNumber.charAt(i) == '0') {
                         formattedNumber = formattedNumber.substring(i + 1);
                     }
