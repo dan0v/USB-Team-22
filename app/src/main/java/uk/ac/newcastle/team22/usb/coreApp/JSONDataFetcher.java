@@ -41,7 +41,10 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
     private final String NUIT_ADDRESS = "https://csi.ncl.ac.uk/usb/?json=y";
 
     /** The required Wi-FI SSID to access NUIT computer availability. */
-    private final String NEWCASTLE_WIFI_SSID = "newcastle-university";
+    private final String NEWCASTLE_WIFI_SSID = "\"newcastle-university\"";
+
+    /** The response when the Wi-Fi SSID is not available. */
+    private final String UNKNOWN_WIFI_SSID = "<unknown ssid>";
 
     /** The Wi-Fi manager. */
     private WifiManager wifiManager;
@@ -65,7 +68,7 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
             WifiInfo wifiInfo;
             wifiInfo = wifiManager.getConnectionInfo();
             if (wifiInfo.getSupplicantState() == SupplicantState.COMPLETED) {
-                if (!wifiInfo.getSSID().equals(NEWCASTLE_WIFI_SSID) && !wifiInfo.getSSID().equals("<unknown ssid>")) {
+                if (!wifiInfo.getSSID().equals(NEWCASTLE_WIFI_SSID) && !wifiInfo.getSSID().equals(UNKNOWN_WIFI_SSID)) {
                     throw new java.net.UnknownHostException();
                 }
             }
