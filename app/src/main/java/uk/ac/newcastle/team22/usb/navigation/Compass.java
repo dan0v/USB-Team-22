@@ -33,10 +33,16 @@ public class Compass implements SensorEventListener {
     /** The m sensor geomagnetic. */
     private float[] mGeomagnetic = new float[3];
 
+    /** The collection of Rs. */
     private float[] R = new float[9];
+
+    /** The collection of Is. */
     private float[] I = new float[9];
-    
+
+    /** The current azimuth. */
     private float azimuth;
+
+    /** The current azimuth offset. */
     private int azimuthOffset;
 
     public Compass(Context context) {
@@ -54,20 +60,6 @@ public class Compass implements SensorEventListener {
     /** Stops the sensor listener. */
     public void stop() {
         sensorManager.unregisterListener(this);
-    }
-
-    /**
-     * Used to alter the heading users should face.
-     *
-     * @param offset heading the user should face in degrees.
-     */
-    public void setAzimuthOffset(int offset) {
-        int mirror = 360 - offset;
-        azimuthOffset = mirror;
-    }
-
-    public void setListener(CompassListener l) {
-        listener = l;
     }
 
     @Override
@@ -95,6 +87,25 @@ public class Compass implements SensorEventListener {
                 }
             }
         }
+    }
+
+    /**
+     * Used to alter the heading users should face.
+     *
+     * @param offset heading the user should face in degrees.
+     */
+    public void setAzimuthOffset(int offset) {
+        int mirror = 360 - offset;
+        azimuthOffset = mirror;
+    }
+
+    /**
+     * Sets the compass listener.
+     *
+     * @param l The compass listener.
+     */
+    public void setListener(CompassListener l) {
+        listener = l;
     }
 
     @Override
