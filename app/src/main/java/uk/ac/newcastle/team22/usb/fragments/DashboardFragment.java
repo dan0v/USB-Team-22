@@ -66,6 +66,7 @@ public class DashboardFragment extends Fragment implements USBFragment {
         // Configure the recycler view.
         recyclerView = view.findViewById(R.id.dashboard_recycler_view);
 
+        cardList = new ArrayList<>();
         DashboardAdapter adapter = new DashboardAdapter(cardList, getContext());
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
