@@ -66,7 +66,6 @@ public class OpeningHours implements FirestoreConstructable<OpeningHours> {
      */
     public String getDescription(Context context, DayOfWeek day) {
         Hours dayOpeningHours = openingHours.get(day);
-
         // If the day has null opening hours, treat the service as closed all day.
         if (dayOpeningHours == null) {
             return context.getString(R.string.closed);
@@ -110,6 +109,7 @@ public class OpeningHours implements FirestoreConstructable<OpeningHours> {
 
     /**
      * Creates a {@link LocalTime} from the Firestore representation of the time.
+     *
      * @param representation The {@code String} representation of the time.
      * @return The {@link LocalTime}.
      */
@@ -118,13 +118,11 @@ public class OpeningHours implements FirestoreConstructable<OpeningHours> {
         if (representation == null) {
             return null;
         }
-
         // Check whether time has been represented correctly.
         String[] components = representation.toString().split(":", 2);
         if (components.length != 2) {
             return null;
         }
-
         int hours = Integer.parseInt(components[0]);
         int minutes = Integer.parseInt(components[1]);
         return LocalTime.of(hours, minutes);
@@ -151,6 +149,7 @@ public class OpeningHours implements FirestoreConstructable<OpeningHours> {
 
         /**
          * Constructor for {@link Service} using its raw value.
+         *
          * @param identifier The {@code String} representation or raw value of the service;
          */
         Service(String identifier) {
@@ -159,6 +158,7 @@ public class OpeningHours implements FirestoreConstructable<OpeningHours> {
 
         /**
          * Returns the {@link Service} for a given identifier.
+         *
          * @param rawIdentifier The identifier of the service.
          * @return The {@link Service}.
          * @throws FirestoreConstructable.InitialisationFailed

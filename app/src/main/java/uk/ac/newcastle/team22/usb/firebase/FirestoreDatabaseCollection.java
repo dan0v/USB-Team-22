@@ -12,7 +12,6 @@ import uk.ac.newcastle.team22.usb.navigation.Node;
 
 /**
  * A Firestore Database collection.
- * <p>
  * See <a href="https://firebase.google.com/docs/firestore/data-model">Firestore Data Model</a> for more information on collections.
  *
  * @author Alexander MacLeod

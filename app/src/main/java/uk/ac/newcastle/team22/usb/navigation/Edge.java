@@ -17,16 +17,31 @@ import uk.ac.newcastle.team22.usb.firebase.FirestoreConstructable;
  * @version 1.0
  */
 public class Edge {
+
+    /** The origin node. */
     private final Node origin;
+
+    /** The destination node identifier. */
     private final int destinationIdentifier;
+
+    /** The weight of the edge. */
     public final double weight;
+
+    /** The directions from the edge. */
     public final List<Integer> directions;
+
+    /** The distances from the edge. */
     public final List<Double> distances;
+
+    /** Boolean value whether the edge requires card authorization. */
     public final boolean cardLocked;
+
+    /** Boolean value whether the edge is accessible. */
     public final boolean accessible;
 
     /**
      * Construct an edge between nodes.
+     *
      * @param origin Origin node of this edge.
      * @param destinationIdentifier Identifier of destination node of this edge.
      * @param weight Total weight of the path this edge represents.
@@ -47,6 +62,7 @@ public class Edge {
 
     /**
      * Initialise an edge from Firebase.
+     *
      * @param origin Origin node of this edge.
      * @param firestoreDictionary Map representation of this edge in Firebase.
      */
@@ -88,7 +104,7 @@ public class Edge {
     }
 
     /**
-     * @return Node with <pre>nodeIdentifier</pre> of this edge from <pre>USB.navigationNodes</pre>.
+     * @return Node with {@code nodeIdentifier} of this edge from {@code USB.navigationNodes}.
      */
     public Node getDestination() {
         if (USBManager.shared.getBuilding().getNavigationNodes().get(this.destinationIdentifier) == null) {
@@ -100,9 +116,10 @@ public class Edge {
     }
 
     /**
-     * Logical equality checking for Edges, falls back to superclass for unknown object types.
-     * @param obj Object to compare to <pre>this</pre>.
-     * @return True if Edges are logically equivalent, or Objects have the same hash, false otherwise.
+     * Logical equality checking for edges, falls back to superclass for unknown object types.
+     *
+     * @param obj Object to compare to {@code this}.
+     * @return @{code true} if edges are logically equivalent, or objects have the same hash, otherwise {@code false}.
      */
     @Override
     public boolean equals(Object obj) {
@@ -116,7 +133,7 @@ public class Edge {
     }
 
     /**
-     * @return String representation of an Edge.
+     * @return String representation of an edge.
      */
     @Override
     public String toString() {

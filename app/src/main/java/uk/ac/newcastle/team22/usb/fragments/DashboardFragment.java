@@ -46,7 +46,7 @@ public class DashboardFragment extends Fragment implements USBFragment {
     private RecyclerView recyclerView;
 
     /** The list of cards to display in the recycler view. */
-    private List<AbstractCardData> cardList = new ArrayList();
+    private List<AbstractCardData> cardList;
 
     /** The class to update computer availability data. */
     private JSONDataFetcher jsonDataFetcher;
@@ -103,9 +103,11 @@ public class DashboardFragment extends Fragment implements USBFragment {
 
     /**
      * Populate recycler view with card list.
+     *
+     * @param success Boolean value whether the computer availability request was successful.
      */
     public void populateRecyclerView(boolean success) {
-        cardList.clear();
+        cardList = new ArrayList<>();
         if (success) {
             ComputerAvailabilityHeaderCardData headerCard = new ComputerAvailabilityHeaderCardData();
             cardList.add(headerCard);
@@ -119,7 +121,8 @@ public class DashboardFragment extends Fragment implements USBFragment {
 
     /**
      * Set up static UI elements such as buttons and the colours for building open hours.
-     * @param view
+     *
+     * @param view The current view.
      */
     private void setupStaticElements(View view) {
         OpeningHours cafeOpeningHours = USBManager.shared.getBuilding().getCafe().getOpeningHours();

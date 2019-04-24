@@ -1,17 +1,13 @@
 package uk.ac.newcastle.team22.usb.activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -240,22 +236,6 @@ class RoomAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
 
     public int getItemCount() {
         return cardList.size();
-    }
-
-    /**
-     * Attempts to start the call activity.
-     * Permission may be needed to allow initiating a new phone call.
-     *
-     * @param intent The call intent.
-     * @param activity The activity.
-     * @param context The context.
-     */
-    private void startCallActivity(Intent intent, Activity activity, Context context) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{ Manifest.permission.CALL_PHONE }, 0);
-            return;
-        }
-        context.startActivity(intent);
     }
 }
 

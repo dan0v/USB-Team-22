@@ -80,6 +80,7 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
             connection.setHostnameVerifier(getHostnameVerifier());
             connection.connect();
 
+            // Parse response from NUIT.
             JsonParser parser = new JsonParser();
             JsonObject base = parser.parse(new InputStreamReader((InputStream) connection.getContent())).getAsJsonObject();
             JsonArray locationSummary = base.get("usb_location_summary").getAsJsonArray();
@@ -114,10 +115,18 @@ public class JSONDataFetcher extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+    /**
+     * Updates the {@link AsyncResponse} reference.
+     *
+     * @param reference The async response.
+     */
     public void setReference(AsyncResponse reference) {
         this.reference = reference;
     }
 
+    /**
+     * @return The hostname verifier.
+     */
     private HostnameVerifier getHostnameVerifier() {
         HostnameVerifier hostnameVerifier = new HostnameVerifier() {
             @Override

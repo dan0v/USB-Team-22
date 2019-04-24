@@ -1,5 +1,6 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
+import android.support.annotation.DrawableRes;
 
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 
@@ -11,9 +12,14 @@ import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
  */
 public class TourCardData extends AbstractCardData {
 
+    /** The name of the tour location. */
     private String nameText;
+
+    /** The description of the tour location. */
     private String descriptionText;
-    private int image;
+
+    /** The image of the tour location. */
+    @DrawableRes private int image;
 
     public TourCardData(String nameText, String descriptionText, int image) {
         this.nameText = nameText;
@@ -25,23 +31,11 @@ public class TourCardData extends AbstractCardData {
         return nameText;
     }
 
-    public void setNameText(String nameText) {
-        this.nameText = nameText;
-    }
-
     public String getDescriptionText() {
         return descriptionText;
     }
 
-    public void setDescriptionText(String descriptionText) {
-        this.descriptionText = descriptionText;
-    }
-
     public int getImage() {
         return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
     }
 }

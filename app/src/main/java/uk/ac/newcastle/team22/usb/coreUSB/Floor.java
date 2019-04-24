@@ -28,8 +28,7 @@ public class Floor implements FirestoreConstructable<Floor> {
     private Map<String, Room> rooms;
 
     /** The color which represents the floor. */
-    @ColorInt
-    private int color;
+    @ColorInt private int color;
 
     /** Empty constructor. */
     public Floor() {}
@@ -54,6 +53,7 @@ public class Floor implements FirestoreConstructable<Floor> {
 
     /**
      * Helper constructor for navigation and testing.
+     *
      * @param number The floor number.
      */
     public Floor(int number) {

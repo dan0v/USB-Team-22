@@ -9,7 +9,6 @@ import android.view.View;
  * @author Daniel Vincent
  * @version 1.0
  */
-
 public class AbstractViewHolder extends RecyclerView.ViewHolder {
 
     public AbstractViewHolder(View view) {

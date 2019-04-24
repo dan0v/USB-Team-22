@@ -22,6 +22,7 @@ public class USBConfiguration implements FirestoreConstructable<USBConfiguration
         return this;
     }
 
+    /** Empty constructor. */
     public USBConfiguration() {}
 
     /**

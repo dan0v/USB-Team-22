@@ -1,5 +1,7 @@
 package uk.ac.newcastle.team22.usb.navigation;
 
+import android.support.annotation.DrawableRes;
+
 import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
 
 /**
@@ -10,9 +12,14 @@ import uk.ac.newcastle.team22.usb.coreApp.AbstractCardData;
  */
 public class DirectionCardData extends AbstractCardData {
 
+    /** The title of the direction. */
     private String directionText;
+
+    /** A description of the distance. */
     private String distanceText;
-    private int directionImage;
+
+    /** The image of the direction. */
+    @DrawableRes private int directionImage;
 
     public DirectionCardData(String directionText, String distanceText, int directionImage) {
         this.directionText = directionText;
@@ -24,23 +31,11 @@ public class DirectionCardData extends AbstractCardData {
         return directionText;
     }
 
-    public void setDirectionText(String directionText) {
-        this.directionText = directionText;
-    }
-
     public String getDistanceText() {
         return distanceText;
     }
 
-    public void setDistanceText(String distanceText) {
-        this.distanceText = distanceText;
-    }
-
     public int getDirectionImage() {
         return directionImage;
-    }
-
-    public void setDirectionImage(int directionImage) {
-        this.directionImage = directionImage;
     }
 }

@@ -1,8 +1,6 @@
 package uk.ac.newcastle.team22.usb.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,14 +21,16 @@ import uk.ac.newcastle.team22.usb.navigation.Compass;
  */
 public class CompassActivity extends USBActivity {
 
-    private static final String TAG = "CompassActivity";
+    /** The acceptable error bounds in degrees for ensuring the user is facing the correct direction. */
+    private static final int COMPASS_ACCURACY = 3;
 
-    // Acceptable error in degrees for checking user heading.
-    private static final int compassAccuracyRange = 3;
-
+    /** The current instance of the compass. */
     private Compass compass;
+
+    /** The compass image view. */
     private ImageView compassBorder;
 
+    /** The current azimuth. */
     private float currentAzimuth;
 
     @Override
@@ -42,12 +42,12 @@ public class CompassActivity extends USBActivity {
         setTitle("");
         getSupportActionBar().setElevation(0);
 
+        // Configure the compass.
         compassBorder = findViewById(R.id.navigation_compass_border);
         setupCompass();
 
-        Intent intent = getIntent();
         // Show or hide tour hint.
-        boolean isTour = intent.getBooleanExtra("isTour", false);
+        boolean isTour = getIntent().getBooleanExtra("isTour", false);
         TextView compassTourHint = findViewById(R.id.navigation_tour_compass_hint);
         if (!isTour) {
             compassTourHint.setVisibility(View.GONE);
@@ -72,7 +72,6 @@ public class CompassActivity extends USBActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "start compass");
         compass.start();
     }
 
@@ -91,14 +90,12 @@ public class CompassActivity extends USBActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "stop compass");
         compass.stop();
     }
 
     private void setupCompass() {
-        Intent intent = getIntent();
         // Offset the zero location in compass logic to determine the heading users should face.
-        int azimuthOffset = intent.getIntExtra("azimuthOffset", 0);
+        int azimuthOffset = getIntent().getIntExtra("azimuthOffset", 0);
         compass = new Compass(this);
         Compass.CompassListener cl = getCompassListener();
         compass.setListener(cl);
@@ -106,9 +103,6 @@ public class CompassActivity extends USBActivity {
     }
 
     private void adjustArrow(float azimuth) {
-        Log.d(TAG, "will set rotation from " + currentAzimuth + " to "
-                + azimuth);
-
         Animation an = new RotateAnimation(-currentAzimuth, -azimuth,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
                 0.5f);
@@ -117,10 +111,10 @@ public class CompassActivity extends USBActivity {
         an.setDuration(300);
         an.setRepeatCount(0);
         an.setFillAfter(true);
-
         compassBorder.startAnimation(an);
+
         // Stop activity if user is facing correct direction (within range).
-        if (currentAzimuth > (compassAccuracyRange * -1) && currentAzimuth < compassAccuracyRange) {
+        if (currentAzimuth > (COMPASS_ACCURACY * -1) && currentAzimuth < COMPASS_ACCURACY) {
             compass.stop();
             this.finish();
         }

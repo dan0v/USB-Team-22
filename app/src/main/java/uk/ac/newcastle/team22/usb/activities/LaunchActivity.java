@@ -67,7 +67,6 @@ public class LaunchActivity extends AppCompatActivity {
                     presentUSBUpdateAvailableAlert();
                 }
             }
-
             @Override
             public void loadedFromCache() {
                 didInitialiseUSB();
@@ -81,13 +80,11 @@ public class LaunchActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setTitle(R.string.updateRequired);
         builder.setMessage(R.string.usbUpdateRequiredInstallMessage);
-
         builder.setPositiveButton(R.string.install, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 startUSBBuildingUpdate();
             }
         });
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -98,7 +95,6 @@ public class LaunchActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setTitle(R.string.updateAvailable);
         builder.setMessage(R.string.usbUpdateAvailableInstallMessage);
-
         builder.setPositiveButton(R.string.install, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 startUSBBuildingUpdate();
@@ -109,7 +105,6 @@ public class LaunchActivity extends AppCompatActivity {
                 didInitialiseUSB();
             }
         });
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -120,7 +115,6 @@ public class LaunchActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setTitle(R.string.updateUnableToInstall);
         builder.setMessage(R.string.usbUpdateUnableToInstallMessage);
-
         builder.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 startUSBBuildingUpdate();

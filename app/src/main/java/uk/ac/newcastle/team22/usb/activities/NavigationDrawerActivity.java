@@ -35,6 +35,7 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
 
     /**
      * Navigates to the {@link USBFragment} represented by the selected menu item.
+     *
      * @param item The selected menu item.
      */
     @Override
@@ -73,6 +74,7 @@ public class NavigationDrawerActivity extends USBActivity implements NavigationV
 
     /**
      * Navigates to a fragment in the navigation drawer.
+     *
      * @param fragment The destination fragment.
      */
     private void navigateTo(USBFragment fragment) {

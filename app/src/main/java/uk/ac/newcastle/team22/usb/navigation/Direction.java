@@ -17,8 +17,8 @@ import uk.ac.newcastle.team22.usb.R;
 public enum Direction {
     FORWARD, LEFT, MODERATE_LEFT, SHARP_LEFT, RIGHT, MODERATE_RIGHT, SHARP_RIGHT, LIFT_UP, LIFT_DOWN, STAIR_UP, STAIR_DOWN, TOUR_LOCATION;
 
-    // All angles in the database deviate 10 degrees from reality.
-    private static final int compassHeadingOffset = 10;
+    /** All angles in the database deviate 10 degrees from reality. */
+    private static final int COMPASS_HEADING_OFFSET = 10;
 
     /**
      * @return Localised string representation of the direction.
@@ -62,12 +62,13 @@ public enum Direction {
 
     /**
      * Given a list of edges, returns a list of directions for turn by turn navigation between nodes.
+     *
      * @param edges list of edges whose directions should be parsed.
      * @return List of direction enums.
      * @throws IllegalArgumentException
      */
     public static List<Direction> parseDirections(List<Edge> edges) throws IllegalArgumentException {
-        // Stop crashes when navigating from a node to itself.
+        // Prevent navigating to itself.
         if (edges.size() == 0) {
             return new ArrayList();
         }
@@ -165,12 +166,13 @@ public enum Direction {
 
     /**
      * Given a list of edges, return the heading users should face to follow parsed directions.
+     *
      * @param edges list of edges whose directions the user will follow.
      * @return
      */
     public static int getFirstAngle(List<Edge> edges) {
         if (edges.size() > 0) {
-            int heading = edges.get(0).directions.get(0) + compassHeadingOffset;
+            int heading = edges.get(0).directions.get(0) + COMPASS_HEADING_OFFSET;
             if (heading > 360) {
                 heading = heading - 360;
             }

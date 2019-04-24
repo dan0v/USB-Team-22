@@ -85,6 +85,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
         this.nodeIdentifier = nodeIdentifier;
         this.alternateName = alternateName;
     }
+
     /**
      * Helper method to set the floor on which this room is situated.
      *
@@ -163,7 +164,7 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     /**
      * Update the number of available computers from JSON file.
      *
-     * @param newComputers
+     * @param newComputers The new computers which are available.
      */
     public void updateComputerAvailability(Resource newComputers) {
         for (Resource resource : this.resources) {
@@ -175,16 +176,17 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     }
 
     /**
-     * @return The computer resource of this room.
      * Returns a new resource with 0 total and 0 available computers if this room has none.
+     *
+     * @return The computer resource of this room.
      */
     public Resource getComputers() {
-            for (Resource resource : this.resources) {
-                if (resource.getType().equals(ResourceType.COMPUTER)) {
-                    return resource;
-                }
+        for (Resource resource : this.resources) {
+            if (resource.getType().equals(ResourceType.COMPUTER)) {
+                return resource;
             }
-            return new Resource(ResourceType.COMPUTER, 0, 0);
+        }
+        return new Resource(ResourceType.COMPUTER, 0, 0);
     }
 
     /**
@@ -209,14 +211,11 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
     @Override
     public List<ResultReason> getSearchableReasons() {
         List<ResultReason> reasons = new ArrayList();
-
         reasons.add(new ResultReason(number, ResultReason.Reason.ROOM_NUMBER));
         reasons.add(new ResultReason(getFormattedNumber(), ResultReason.Reason.ROOM_FORMATTED_NUMBER));
-
         if (getAlternateName() != null) {
             reasons.add(new ResultReason(getAlternateName(), ResultReason.Reason.ROOM_ALTERNATE_NAME));
         }
-
         return reasons;
     }
 

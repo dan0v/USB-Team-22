@@ -29,6 +29,7 @@ public enum ResourceType {
 
     /**
      * Returns the {@link ResourceType} for a given identifier.
+     *
      * @param rawIdentifier The identifier of the resource type.
      * @return The {@link ResourceType}.
      * @throws FirestoreConstructable.InitialisationFailed

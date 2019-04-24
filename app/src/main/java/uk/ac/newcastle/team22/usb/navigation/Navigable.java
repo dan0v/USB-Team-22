@@ -7,5 +7,9 @@ package uk.ac.newcastle.team22.usb.navigation;
  * @version 1.0
  */
 public interface Navigable {
+
+    /**
+     * @return The navigation node.
+     */
     Node getNavigationNode();
 }

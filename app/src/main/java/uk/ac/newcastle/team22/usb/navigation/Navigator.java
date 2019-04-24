@@ -22,10 +22,11 @@ public class Navigator {
     private double bestRouteWeight = Double.MAX_VALUE;
 
     /** The list of edges for the best route between two locations in the Urban Sciences Building. */
-    private List<Edge> bestRoute = new ArrayList<Edge>();
+    private List<Edge> bestRoute = new ArrayList();
 
     /**
      * Calculates route from start navigable to end navigable.
+     *
      * @param origin The origin of the journey.
      * @param destination The destination of the journey.
      * @param accessibility Boolean value whether the journey needs to be accessible.
@@ -37,6 +38,7 @@ public class Navigator {
 
     /**
      * Calculate route from building entrance if no start position provided.
+     *
      * @param destination The destination of the journey.
      * @param accessibility Boolean value whether the journey needs to be accessible.
      * @return List of edges to be traversed to reach destination.
@@ -47,6 +49,7 @@ public class Navigator {
 
     /**
      * Calculate route from building entrance if no start position provided.
+     *
      * @param destination The destionation of the journey.
      * @param accessibility Boolean value whether the journey needs to be accessible.
      * @return List of edges to be traversed to reach destination.
@@ -57,18 +60,17 @@ public class Navigator {
 
     /**
      * Calculate route from start Node to end Node.
+     *
      * @param origin The origin of the journey.
      * @param destination The destination of the journey.
      * @param accessibility Boolean value whether the journey needs to be accessible.
      * @return List of edges to be traversed to reach the destination.
      */
     public List<Edge> getRoute(Node origin, Node destination, boolean accessibility) {
-
         // Do not calculate route from node to itself.
         if (origin.equals(destination)) {
             return new ArrayList();
         }
-
         bestRouteWeight = Double.MAX_VALUE;
         bestRoute = new ArrayList();
 
@@ -135,7 +137,6 @@ public class Navigator {
             if (candidateWeight + currentEdge.weight >= bestRouteWeight) {
                 continue;
             }
-
             // Current shortest route found.
             if (currentEdge.getDestination().equals(finalDestinationNode)) {
                 candidateRoute.add(currentEdge);

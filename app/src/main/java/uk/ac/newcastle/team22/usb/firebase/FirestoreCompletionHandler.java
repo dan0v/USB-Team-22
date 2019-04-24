@@ -13,6 +13,7 @@ public abstract class FirestoreCompletionHandler<Response> {
 
     /**
      * Called when the Firestore operation has completed.
+     *
      * @param response The response of the operation.
      */
     public void completed(Response response) {
@@ -23,6 +24,7 @@ public abstract class FirestoreCompletionHandler<Response> {
 
     /**
      * Called when the Firestore operation has failed.
+     *
      * @param exception The throwable exception.
      */
     public void failed(Exception exception) {
@@ -32,14 +34,15 @@ public abstract class FirestoreCompletionHandler<Response> {
     }
 
     /**
-     * Constructor for Firestore Completion handler.
+     * Constructor for Firestore Completion handler with watched operations.
+     *
      * @param toComplete The number of operators to complete.
      */
     public FirestoreCompletionHandler(int toComplete) {
         this.operationsToComplete = toComplete;
     }
 
-    /** Constructor for Firestore Completion handler. */
+    /** Constructor for Firestore Completion handler with no watched operations. */
     public FirestoreCompletionHandler() {
         this.operationsToComplete = 0;
     }

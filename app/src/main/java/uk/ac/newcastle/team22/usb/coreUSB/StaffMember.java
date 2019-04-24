@@ -132,7 +132,6 @@ public class StaffMember implements FirestoreConstructable<StaffMember>, Searcha
     @Override
     public List<ResultReason> getSearchableReasons() {
         List<ResultReason> reasons = new ArrayList();
-
         if (firstName != null && lastName != null) {
             reasons.add(new ResultReason(firstName + " " + lastName, ResultReason.Reason.STAFF));
         }
@@ -145,7 +144,6 @@ public class StaffMember implements FirestoreConstructable<StaffMember>, Searcha
         if (title != null) {
             reasons.add(new ResultReason(title, ResultReason.Reason.STAFF));
         }
-
         return reasons;
     }
 

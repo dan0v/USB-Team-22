@@ -32,7 +32,6 @@ public class ColorUtility {
         if (dictionary == null) {
             return DEFAULT_COLOR;
         }
-
         // Abstract RGB values.
         Long red = dictionary.get("r");
         Long green = dictionary.get("g");
@@ -42,6 +41,7 @@ public class ColorUtility {
         if (red == null || green == null || blue == null) {
             return DEFAULT_COLOR;
         }
+
         return Color.rgb(red.intValue(), green.intValue(), blue.intValue());
     }
 }
