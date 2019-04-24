@@ -167,9 +167,12 @@ public class Room implements FirestoreConstructable<Room>, Navigable, Searchable
      * @param newComputers The new computers which are available.
      */
     public void updateComputerAvailability(Resource newComputers) {
-        for (Resource resource : this.resources) {
-            if (resource.getType().equals(ResourceType.COMPUTER)) {
-                this.resources.remove(resource);
+        // Concurrency exception workaround.
+        for (int i = 0; i < this.resources.size(); i++) {
+            Resource currentResource = this.resources.get(i);
+            if (currentResource.getType().equals(ResourceType.COMPUTER)) {
+                this.resources.remove(currentResource);
+                i--;
             }
         }
         this.resources.add(newComputers);

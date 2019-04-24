@@ -1,6 +1,7 @@
 package uk.ac.newcastle.team22.usb.coreUSB;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,9 @@ public class USB {
 
     /** The configuration of the Urban Sciences Building. */
     private USBConfiguration configuration;
+
+    /** The last time a successful JSON update was executed. */
+    private Calendar lastJSONUpdate;
 
     /**
      * Constructor using a {@link USBUpdate}.
@@ -127,6 +131,20 @@ public class USB {
      */
     public OpeningHours getOutOfHours() {
         return outOfHours;
+    }
+
+    /**
+     * @return The time of the last known update to computer availability data.
+     */
+    public Calendar getLastJSONUpdateTime() {
+        return this.lastJSONUpdate;
+    }
+
+    /**
+     * @return The time of the last known update to computer availability data.
+     */
+    public void setLastJSONUpdateTime(Calendar newUpdate) {
+        this.lastJSONUpdate = newUpdate;
     }
 
     /**
