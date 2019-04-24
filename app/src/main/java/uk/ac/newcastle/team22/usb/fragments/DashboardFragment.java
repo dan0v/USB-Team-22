@@ -108,7 +108,7 @@ public class DashboardFragment extends Fragment implements USBFragment {
      * @param success Boolean value whether the computer availability request was successful.
      */
     public void populateRecyclerView(boolean success) {
-        cardList = new ArrayList<>();
+        cardList.clear();
         if (success) {
             ComputerAvailabilityHeaderCardData headerCard = new ComputerAvailabilityHeaderCardData();
             cardList.add(headerCard);
