@@ -2,7 +2,7 @@ package uk.ac.newcastle.team22.usb;
 
 import org.junit.Test;
 
-import uk.ac.newcastle.team22.usb.coreUSB.*;
+import uk.ac.newcastle.team22.usb.coreUSB.CafeMenuItemCategory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -13,7 +13,6 @@ import static org.junit.Assert.assertNotNull;
  * @author Moeez Shahid
  * @version 1.0
  */
-
 public class ACafeMenuItemCategoryShould {
 
     /** Assert that a category has a name. */
@@ -29,5 +28,4 @@ public class ACafeMenuItemCategoryShould {
         CafeMenuItemCategory testCategory = new CafeMenuItemCategory("Test Category", 5);
         assertNotNull(testCategory.getIcon());
     }
-
 }

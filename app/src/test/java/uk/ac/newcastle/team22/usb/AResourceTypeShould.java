@@ -16,13 +16,13 @@ import static org.junit.Assert.assertEquals;
  */
 public class AResourceTypeShould {
 
-    /** Assert the correct ResourceType will be returned from an identifier. */
+    /** Assert the correct {@link ResourceType} will be returned from an identifier. */
     @Test
     public void returnTypeFromIdentifier() throws FirestoreConstructable.InitialisationFailed {
         assertEquals(ResourceType.COMPUTER, ResourceType.valueFor("1"));
     }
 
-    /** Assert the correct identifier will be returned from a given ResourceType. */
+    /** Assert the correct identifier will be returned from a given {@link ResourceType}. */
     @Test
     public void beAbleToReturnIdentifier () {
         assertEquals(4, ResourceType.PROJECTOR.getIdentifier());

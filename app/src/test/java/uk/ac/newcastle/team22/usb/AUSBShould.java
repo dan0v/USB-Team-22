@@ -47,16 +47,19 @@ public class AUSBShould {
         USBManager.shared.setBuilding(building);
     }
 
+    /** Assert that a building should have floors. */
     @Test
     public void haveFloors(){
         assertNotNull(USBManager.shared.getBuilding().getFloors());
     }
 
+    /** Assert that a building should staff members. */
     @Test
     public void haveStaffMembers() {
         assertNotNull(USBManager.shared.getBuilding().getStaffMembers());
     }
 
+    /** Assert that a building should have a café. */
     @Test
     public void haveCafe() {
         assertNotNull(USBManager.shared.getBuilding().getCafe());

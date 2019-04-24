@@ -12,10 +12,10 @@ import static org.junit.Assert.assertEquals;
  * @author Patrick Lindley
  * @version 1.0
  */
-
 public class AStaffMemberShould {
 
     @Test
+    /** Assert that a staff member has a first name. */
     public void haveAFirstName() {
         StaffMember newStaffMember = new StaffMember("1234", "Mr", "Patrick", "Lindley",
                 "0111111111", "test@ncl.ac.uk");
@@ -23,6 +23,7 @@ public class AStaffMemberShould {
     }
 
     @Test
+    /** Assert that a staff member has a last name. */
     public void haveALastName() {
         StaffMember newStaffMember = new StaffMember("1234", "Mr", "Patrick", "Lindley",
                 "0111111111", "test@ncl.ac.uk");
@@ -30,6 +31,7 @@ public class AStaffMemberShould {
     }
 
     @Test
+    /** Assert that a staff member has a phone number. */
     public void haveAPhoneNumber() {
         StaffMember newStaffMember = new StaffMember("1234", "Mr", "Patrick", "Lindley",
                 "0111111111", "test@ncl.ac.uk");
@@ -37,6 +39,7 @@ public class AStaffMemberShould {
     }
 
     @Test
+    /** Assert that a staff member has an email address. */
     public void haveAnEmailAddress() {
         StaffMember newStaffMember = new StaffMember("1234", "Mr", "Patrick", "Lindley",
                 "0111111111", "test@ncl.ac.uk");
