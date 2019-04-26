@@ -26,6 +26,9 @@ public class Node implements FirestoreConstructable<Node> {
     /** Boolean value whether the node is part of the tour. */
     private boolean isTourNode = false;
 
+    /** Boolean value whether the node is a part of the tour despite not being a location. */
+    private boolean isTourRouteNode = false;
+
     /** The identifier of the node. */
     @DrawableRes private int imageIdentifier;
 
@@ -70,6 +73,14 @@ public class Node implements FirestoreConstructable<Node> {
         this.nodeIdentifier = Integer.parseInt(documentIdentifier);
         this.floorNumber = ((Number) firestoreDictionary.get("floor")).intValue();
 
+        // Unique case where non tour node should be included in tour route.
+        if ((Boolean) firestoreDictionary.get("isTourRouteNode") != null) {
+            this.isTourRouteNode = (Boolean) firestoreDictionary.get("isTourRouteNode");
+        }
+        else {
+            this.isTourRouteNode = false;
+        }
+
         // Initialise node's edges.
         List<Map<String, Object>> edges = (ArrayList<Map<String, Object>>) firestoreDictionary.get("edges");
         if (edges != null) {
@@ -98,10 +109,17 @@ public class Node implements FirestoreConstructable<Node> {
     }
 
     /**
-     * @return Floor number which the node resides on.
+     * @return Boolean value whether the node is a tour location.
      */
     public boolean isTourNode() {
         return this.isTourNode;
+    }
+
+    /**
+     * @return Boolean value whether the node is a part of the tour despite not being a location.
+     */
+    public boolean isTourRouteNode() {
+        return this.isTourRouteNode;
     }
 
     /**

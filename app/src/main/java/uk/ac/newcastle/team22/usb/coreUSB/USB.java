@@ -76,7 +76,7 @@ public class USB {
 
         for (Node node : update.getNavigationNodes()) {
             this.navigationNodes.put(node.getNodeIdentifier(), node);
-            if (node.isTourNode()) {
+            if (node.isTourNode() || node.isTourRouteNode()) {
                 tourNodeIdentifiers.add(node.getNodeIdentifier());
             }
         }
