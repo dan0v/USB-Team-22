@@ -15,7 +15,7 @@ import uk.ac.newcastle.team22.usb.R;
  * @version 1.0
  */
 public enum Direction {
-    FORWARD, LEFT, MODERATE_LEFT, SHARP_LEFT, RIGHT, MODERATE_RIGHT, SHARP_RIGHT, LIFT_UP, LIFT_DOWN, STAIR_UP, STAIR_DOWN, TOUR_LOCATION;
+    FORWARD, BACKWARD, LEFT, MODERATE_LEFT, SHARP_LEFT, RIGHT, MODERATE_RIGHT, SHARP_RIGHT, LIFT_UP, LIFT_DOWN, STAIR_UP, STAIR_DOWN, TOUR_LOCATION;
 
     /** All angles in the database deviate 10 degrees from reality. */
     private static final int COMPASS_HEADING_OFFSET = 10;
@@ -26,6 +26,7 @@ public enum Direction {
     public @StringRes int getLocalisedDirection() {
         switch (this) {
             case FORWARD:           return R.string.navigationForward;
+            case BACKWARD:           return R.string.navigationBackward;
             case LEFT:              return R.string.navigationLeft;
             case MODERATE_LEFT:     return R.string.navigationModerateLeft;
             case SHARP_LEFT:        return R.string.navigationSharpLeft;
@@ -46,6 +47,7 @@ public enum Direction {
     public @DrawableRes int getImageRepresentation() {
         switch (this) {
             case FORWARD:           return R.drawable.navigation_forward;
+            case BACKWARD:           return R.drawable.navigation_backward;
             case LEFT:              return R.drawable.navigation_left;
             case MODERATE_LEFT:     return R.drawable.navigation_moderate_left;
             case SHARP_LEFT:        return R.drawable.navigation_sharp_left;
@@ -132,6 +134,10 @@ public enum Direction {
                 directions.add(FORWARD);
                 continue;
             }
+            if (currentAngle < -170 || currentAngle > 170) {
+                directions.add(BACKWARD);
+                continue;
+            }
             if (currentAngle > -60 && currentAngle <= -25) {
                 directions.add(MODERATE_LEFT);
                 continue;
@@ -140,7 +146,7 @@ public enum Direction {
                 directions.add(LEFT);
                 continue;
             }
-            if (currentAngle >= -180 && currentAngle <= -120) {
+            if (currentAngle >= -170 && currentAngle <= -120) {
                 directions.add(SHARP_LEFT);
                 continue;
             }
@@ -152,7 +158,7 @@ public enum Direction {
                 directions.add(RIGHT);
                 continue;
             }
-            if (currentAngle <= 180 && currentAngle >= 120) {
+            if (currentAngle <= 170 && currentAngle >= 120) {
                 directions.add(SHARP_RIGHT);
                 continue;
             }

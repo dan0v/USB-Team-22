@@ -24,6 +24,7 @@
     <string name="navigation">Navigation</string>
     <string name="directions">Directions</string>
     <string name="navigationForward">Continue forward</string>
+    <string name="navigationBackward">Turn around</string>
     <string name="navigationLeft">Turn left</string>
     <string name="navigationModerateLeft">Turn slightly left</string>
     <string name="navigationSharpLeft">Turn sharp left</string>
