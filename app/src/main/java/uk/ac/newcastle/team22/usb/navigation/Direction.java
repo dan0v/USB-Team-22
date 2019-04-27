@@ -67,7 +67,7 @@ public enum Direction {
      *
      * @param edges list of edges whose directions should be parsed.
      * @return List of direction enums.
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException Invalid directions were found along the route.
      */
     public static List<Direction> parseDirections(List<Edge> edges) throws IllegalArgumentException {
         // Prevent navigating to itself.
@@ -174,7 +174,7 @@ public enum Direction {
      * Given a list of edges, return the heading users should face to follow parsed directions.
      *
      * @param edges list of edges whose directions the user will follow.
-     * @return
+     * @return The first angle the user should face to begin navigation.
      */
     public static int getFirstAngle(List<Edge> edges) {
         if (edges.size() > 0) {
