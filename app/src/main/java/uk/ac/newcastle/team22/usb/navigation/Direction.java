@@ -115,19 +115,22 @@ public enum Direction {
             }
 
             // Reformat input data to be between -179 and 180 degrees.
-            if (currentAngle > 180)
+            if (currentAngle > 180) {
                 currentAngle = currentAngle - 360;
-            if (previousAngle > 180)
+            }
+            if (previousAngle > 180) {
                 previousAngle = previousAngle - 360;
+            }
 
             // Calculate the difference between the current and previous angles.
             currentAngle = currentAngle - previousAngle;
 
             // Ensure angles are kept within expected range.
-            if (currentAngle > 180)
+            if (currentAngle > 180) {
                 currentAngle = currentAngle - 360;
-            else if (currentAngle < -180)
+            } else if (currentAngle < -180) {
                 currentAngle = currentAngle + 360;
+            }
 
             // Assign a Direction to each quadrant the resultant angle can be in.
             if (currentAngle > -25 && currentAngle < 25) {

@@ -74,10 +74,9 @@ public class Node implements FirestoreConstructable<Node> {
         this.floorNumber = ((Number) firestoreDictionary.get("floor")).intValue();
 
         // Unique case where non tour node should be included in tour route.
-        if ((Boolean) firestoreDictionary.get("isTourRouteNode") != null) {
+        if (firestoreDictionary.get("isTourRouteNode") != null) {
             this.isTourRouteNode = (Boolean) firestoreDictionary.get("isTourRouteNode");
-        }
-        else {
+        } else {
             this.isTourRouteNode = false;
         }
 
@@ -186,7 +185,9 @@ public class Node implements FirestoreConstructable<Node> {
      * @return Tour name of this tour node's location.
      */
     public String getName() {
-        if (!this.isTourNode) {throw new IllegalArgumentException("Non TourNode is being treated as TourNode.");}
+        if (!this.isTourNode) {
+            throw new IllegalArgumentException("Non TourNode is being treated as TourNode.");
+        }
         return name;
     }
 
