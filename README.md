@@ -2,7 +2,21 @@
 ## Team-22 project
 This application provides navigation around the Urban Sciences Building (School of Computing building), as well as details about facility availability within the building (available computing stations / printers etc.) and the menu and pricing of the on-location Coffee Shop.
 
+### The Team
+View [`Specification and Resources/Specification.pdf`](Specification%20and%20Resources/Specification.pdf) for more information
+
+#### Alphabetic order
+- Shorif Akhonda
+- Alex Beeching
+- Patrick Lindley
+- Chester Lloyd
+- Alexander MacLeod
+- Moeez Shahid
+- Daniel Vincent
+- Daniel Walker
+
 ### Design Overview
+View [`Specification and Resources/User Guide.pdf`](Specification%20and%20Resources/User%20Guide.pdf) for more information
 <img src="Specification%20and%20Resources/Screenshots/Overview.png" alt="Overview">
 
 ### Final Screenshots
